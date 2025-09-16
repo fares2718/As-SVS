@@ -1,6 +1,0 @@
-@As_SVS_HostAddress = http://localhost:5272
-
-GET {{As_SVS_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
