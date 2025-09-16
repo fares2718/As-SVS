@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace As_SVS.EF.Models;
+namespace As_SVS.Core.Models;
 
-public partial class Assignment
+public partial class Annoucement
 {
     public int Id { get; set; }
 
@@ -13,15 +13,9 @@ public partial class Assignment
 
     public string Title { get; set; } = null!;
 
-    public string FileUrl { get; set; } = null!;
-
-    public DateOnly DueDate { get; set; }
+    public string Annoucement1 { get; set; } = null!;
 
     public DateOnly CreatedAt { get; set; }
-
-    public DateOnly UpdatedDue { get; set; }
-
-    public virtual ICollection<AssignmentSubmission> AssignmentSubmissions { get; set; } = new List<AssignmentSubmission>();
 
     public virtual Course Course { get; set; } = null!;
 
