@@ -3,6 +3,14 @@ using System.Collections.Generic;
 
 namespace As_SVS.Core.Models;
 
+[Flags]
+public enum Permissions
+{
+    None = 0,
+    Student = 1 << 1,
+    Teacher = 1 << 1,
+    Admin = 1 << 2
+}
 public partial class Person
 {
     public int Id { get; set; }
@@ -12,6 +20,10 @@ public partial class Person
     public string MiddleName { get; set; } = null!;
 
     public string LastName { get; set; } = null!;
+    public string FullName()
+    {
+        return $"{FirstName} {MiddleName} {LastName}";
+    }
 
     public DateOnly DateOfBirth { get; set; }
 
@@ -25,7 +37,7 @@ public partial class Person
 
     public bool Gender { get; set; }
 
-    public int? Permissions { get; set; }
+    public  Permissions Permission { get; set; }
 
     public virtual ICollection<Admin> Admins { get; set; } = new List<Admin>();
 

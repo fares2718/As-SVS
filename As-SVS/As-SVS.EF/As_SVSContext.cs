@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using As_SVS.EF.Models;
+using As_SVS.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace As_SVS.EF;
 
-public partial class AsSuwaydaOnlineSchoolContext : DbContext
+public partial class As_SVSContext : DbContext
 {
-    public AsSuwaydaOnlineSchoolContext()
+    public As_SVSContext()
     {
     }
 
-    public AsSuwaydaOnlineSchoolContext(DbContextOptions<AsSuwaydaOnlineSchoolContext> options)
+    public As_SVSContext(DbContextOptions<As_SVSContext> options)
         : base(options)
     {
     }
@@ -64,7 +64,7 @@ public partial class AsSuwaydaOnlineSchoolContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-O1ENIR6;User ID=sa;Password=sa123456;
-            Initial Catalog=As-Suwayda Online School;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;
+            Database=As-SVSDb;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;
             Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -375,7 +375,9 @@ public partial class AsSuwaydaOnlineSchoolContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(60)
                 .HasColumnName("password");
-            entity.Property(e => e.Permissions).HasColumnName("permissions");
+            entity.Property(e => e.Permission)
+                  .HasConversion<int>()
+                  .HasColumnName("permissions");
             entity.Property(e => e.Phone)
                 .HasMaxLength(20)
                 .HasColumnName("phone");

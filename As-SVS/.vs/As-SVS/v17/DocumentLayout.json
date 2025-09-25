@@ -3,20 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E245258C-B470-415D-A5B3-151501EACDD3}|As-SVS.API\\As-SVS.API.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E245258C-B470-415D-A5B3-151501EACDD3}|As-SVS.API\\As-SVS.API.csproj|solutionrelative:as-svs.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3C429A95-5D57-4387-B8C1-521D25012872}|As-SVS.Core\\As-SVS.Core.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.core\\interfaces\\istudentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C429A95-5D57-4387-B8C1-521D25012872}|As-SVS.Core\\As-SVS.Core.csproj|solutionrelative:as-svs.core\\interfaces\\istudentrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.ef\\assuwaydaonlineschoolcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|solutionrelative:as-svs.ef\\assuwaydaonlineschoolcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3C429A95-5D57-4387-B8C1-521D25012872}|As-SVS.Core\\As-SVS.Core.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.core\\models\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C429A95-5D57-4387-B8C1-521D25012872}|As-SVS.Core\\As-SVS.Core.csproj|solutionrelative:as-svs.core\\models\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.ef\\as-svs.ef.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|solutionrelative:as-svs.ef\\as-svs.ef.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{3C429A95-5D57-4387-B8C1-521D25012872}|As-SVS.Core\\As-SVS.Core.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.core\\interfaces\\ibaserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C429A95-5D57-4387-B8C1-521D25012872}|As-SVS.Core\\As-SVS.Core.csproj|solutionrelative:as-svs.core\\interfaces\\ibaserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.ef\\models\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|solutionrelative:as-svs.ef\\models\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3C429A95-5D57-4387-B8C1-521D25012872}|As-SVS.Core\\As-SVS.Core.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.core\\interfaces\\ipersonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3C429A95-5D57-4387-B8C1-521D25012872}|As-SVS.Core\\As-SVS.Core.csproj|solutionrelative:as-svs.core\\interfaces\\ipersonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.ef\\repositories\\personrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|solutionrelative:as-svs.ef\\repositories\\personrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|c:\\users\\fares\\as-suwayda_virtual_school\\as-svs\\as-svs\\as-svs.ef\\repositories\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AB422416-4E72-44E2-AF08-408C00F697F5}|As-SVS.EF\\As-SVS.EF.csproj|solutionrelative:as-svs.ef\\repositories\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,57 +34,88 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Admin.cs",
-              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\Models\\Admin.cs",
-              "RelativeDocumentMoniker": "As-SVS.EF\\Models\\Admin.cs",
-              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\Models\\Admin.cs",
-              "RelativeToolTip": "As-SVS.EF\\Models\\Admin.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-16T11:06:07.659Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "As-SVS.EF",
-              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\As-SVS.EF.csproj",
-              "RelativeDocumentMoniker": "As-SVS.EF\\As-SVS.EF.csproj",
-              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\As-SVS.EF.csproj",
-              "RelativeToolTip": "As-SVS.EF\\As-SVS.EF.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-09-16T11:03:10.85Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "AsSuwaydaOnlineSchoolContext.cs",
-              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\AsSuwaydaOnlineSchoolContext.cs",
-              "RelativeDocumentMoniker": "As-SVS.EF\\AsSuwaydaOnlineSchoolContext.cs",
-              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\AsSuwaydaOnlineSchoolContext.cs",
-              "RelativeToolTip": "As-SVS.EF\\AsSuwaydaOnlineSchoolContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAXAAAAAAAAAA==",
+              "Title": "Student.cs",
+              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.Core\\Models\\Student.cs",
+              "RelativeDocumentMoniker": "As-SVS.Core\\Models\\Student.cs",
+              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.Core\\Models\\Student.cs",
+              "RelativeToolTip": "As-SVS.Core\\Models\\Student.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-16T10:59:30.15Z",
+              "WhenOpened": "2025-09-19T05:30:00.72Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.API\\Program.cs",
-              "RelativeDocumentMoniker": "As-SVS.API\\Program.cs",
-              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.API\\Program.cs",
-              "RelativeToolTip": "As-SVS.API\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAtAAAAAAAAAA==",
+              "Title": "IStudentRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.Core\\Interfaces\\IStudentRepository.cs",
+              "RelativeDocumentMoniker": "As-SVS.Core\\Interfaces\\IStudentRepository.cs",
+              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.Core\\Interfaces\\IStudentRepository.cs",
+              "RelativeToolTip": "As-SVS.Core\\Interfaces\\IStudentRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-16T10:57:02.609Z",
+              "WhenOpened": "2025-09-19T05:28:55.07Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PersonRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\Repositories\\PersonRepository.cs",
+              "RelativeDocumentMoniker": "As-SVS.EF\\Repositories\\PersonRepository.cs",
+              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\Repositories\\PersonRepository.cs",
+              "RelativeToolTip": "As-SVS.EF\\Repositories\\PersonRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T11:05:45.693Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IPersonRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.Core\\Interfaces\\IPersonRepository.cs",
+              "RelativeDocumentMoniker": "As-SVS.Core\\Interfaces\\IPersonRepository.cs",
+              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.Core\\Interfaces\\IPersonRepository.cs",
+              "RelativeToolTip": "As-SVS.Core\\Interfaces\\IPersonRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T10:37:24.922Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "BaseRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\Repositories\\BaseRepository.cs",
+              "RelativeDocumentMoniker": "As-SVS.EF\\Repositories\\BaseRepository.cs",
+              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.EF\\Repositories\\BaseRepository.cs",
+              "RelativeToolTip": "As-SVS.EF\\Repositories\\BaseRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T09:46:57.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IBaseRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.Core\\Interfaces\\IBaseRepository.cs",
+              "RelativeDocumentMoniker": "As-SVS.Core\\Interfaces\\IBaseRepository.cs",
+              "ToolTip": "C:\\Users\\Fares\\As-Suwayda_Virtual_School\\As-SVS\\As-SVS\\As-SVS.Core\\Interfaces\\IBaseRepository.cs",
+              "RelativeToolTip": "As-SVS.Core\\Interfaces\\IBaseRepository.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAwAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T09:21:32.025Z",
               "EditorCaption": ""
             }
           ]

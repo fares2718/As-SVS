@@ -7,4 +7,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\As-SVS.Core\As-SVS.Core.csproj" />
+    <ProjectReference Include="..\As-SVS.DTOs\As-SVS.DTOs.csproj" />
+    <ProjectReference Include="..\As-SVS.EF\As-SVS.EF.csproj" />
+  </ItemGroup>
+
 </Project>
