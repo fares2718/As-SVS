@@ -19,6 +19,7 @@ namespace As_SVS.API
 
             builder.Services.AddTransient(typeof(IPersonSevices), typeof(PersonServices));
             builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            builder.Services.AddTransient(typeof(IPersonRepository), typeof(PersonRepository));
             builder.Services.AddTransient(typeof(PasswordHasher<>));
 
             // Add services to the container.

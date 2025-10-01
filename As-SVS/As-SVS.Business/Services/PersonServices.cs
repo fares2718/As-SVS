@@ -14,9 +14,11 @@ namespace As_SVS.Business.Services
     public class PersonServices : IPersonSevices
     {
         private readonly IBaseRepository<Person> _baseRepository;
-        public PersonServices(IBaseRepository<Person> baseRepository)
+        private readonly IPersonRepository _personRepository;
+        public PersonServices(IBaseRepository<Person> baseRepository, IPersonRepository personRepository)
         {
             _baseRepository = baseRepository;
+            _personRepository = personRepository;
         }
         private Person? MapDTO(PersonDTO personDTO)
         {
@@ -93,6 +95,27 @@ namespace As_SVS.Business.Services
         {
             Person? updatedEntity = MapDTO(entity);
            return await  _baseRepository.UpdateAsync(updatedEntity);
+        }
+
+        public async Task<List<PersonDTO?>> FilterByName(string name)
+        {
+            var filterResult = await _personRepository.FilterByName(name);
+            List<PersonDTO?> filterResultDTO =  filterResult.Select(p => MapDTO(p)).ToList();
+            return filterResultDTO;
+        }
+
+        public async Task<List<PersonDTO?>> FilterByDOB(DateOnly dateOfBirth)
+        {
+            var filterResult = await _personRepository.FilterByDOB(dateOfBirth);
+            List<PersonDTO?> filterResultDTO = filterResult.Select(p => MapDTO(p)).ToList();
+            return filterResultDTO;
+        }
+
+        public async Task<List<PersonDTO?>> FilterByGender(bool gender)
+        {
+            var filterResult = await _personRepository.FilterByGender(gender);
+            List<PersonDTO?> filterResultDTO = filterResult.Select(p => MapDTO(p)).ToList();
+            return filterResultDTO;
         }
     }
 }

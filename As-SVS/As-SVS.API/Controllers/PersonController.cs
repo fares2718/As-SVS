@@ -3,6 +3,7 @@ using As_SVS.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace As_SVS.API.Controllers
 {
@@ -55,6 +56,45 @@ namespace As_SVS.API.Controllers
                 return Ok(person);
         }
 
+        [HttpGet("{name}", Name = "FilterByName")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<PersonDTO?>>> FilterByName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return BadRequest("Name Must Be Entered");
+            var list = await _services.FilterByName(name);
+            if (list.Count == 0)
+                return NotFound($"Did not find any person with name {name}");
+            else
+                return Ok(list);
+        }
+
+        [HttpGet("{dateOfBirth}", Name = "FilterByDOB")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<PersonDTO?>>> FilterByDOB(DateOnly dateOfBirth)
+        {
+            var list = await _services.FilterByDOB(dateOfBirth);
+            if (list.Count == 0)
+                return NotFound($"Did not find any person with date of birth : {dateOfBirth}");
+            else
+                return Ok(list);
+        }
+
+        [HttpGet("{gender}", Name = "FilterBygender")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<PersonDTO?>>> FilterByGender(bool gender)
+        {
+            var list = await _services.FilterByGender(gender);
+            if (list.Count == 0)
+                return NotFound($"Did not find any person with date of birth : {gender}");
+            else
+                return Ok(list);
+        }
+
         [HttpDelete("{id}", Name = "DeletePerson")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -96,7 +136,10 @@ namespace As_SVS.API.Controllers
             if (person == null)
                 return NotFound("Person does not exist");
             newPersonInfo.Id = id;
-            person = newPersonInfo;
+            person.FirstName = newPersonInfo.FirstName;
+            person.MiddleName = newPersonInfo.MiddleName;
+            person.LastName = newPersonInfo.LastName;
+            person.Password = newPersonInfo.Password;
             await _services.UpdateAsync(person);
                 return Ok(person);
         }

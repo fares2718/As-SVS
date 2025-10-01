@@ -15,5 +15,8 @@ namespace As_SVS.Business.Interfaces
         Task<Person> AddNewAsync(PersonDTO DTO);
         Task<bool> UpdateAsync(PersonDTO entity);
         Task<bool> DeleteAsync(int id);
+        Task<List<PersonDTO?>> FilterByName(string name);
+        Task<List<PersonDTO?>> FilterByDOB(DateOnly dateOfBirth);
+        Task<List<PersonDTO?>> FilterByGender(bool gender);
     }
 }
