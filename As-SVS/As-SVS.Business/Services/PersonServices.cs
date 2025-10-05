@@ -2,6 +2,7 @@
 using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
 using As_SVS.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -116,6 +117,13 @@ namespace As_SVS.Business.Services
             var filterResult = await _personRepository.FilterByGender(gender);
             List<PersonDTO?> filterResultDTO = filterResult.Select(p => MapDTO(p)).ToList();
             return filterResultDTO;
+        }
+
+        public async Task<PersonDTO?> GetPersonByEmailAsync(string email)
+        {
+            Person? person = await _personRepository.GetPersonByEmailAsync(email);
+            PersonDTO? personDTO = MapDTO(person);
+            return personDTO;
         }
     }
 }

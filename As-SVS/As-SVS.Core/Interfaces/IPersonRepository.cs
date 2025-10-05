@@ -13,5 +13,6 @@ namespace As_SVS.Core.Interfaces
         Task<List<Person>> FilterByName(string name);
         Task<List<Person>> FilterByDOB(DateOnly dateOfBirth);
         Task<List<Person>> FilterByGender(bool gender);
+        Task<Person?> GetPersonByEmailAsync(string email);
     }
 }

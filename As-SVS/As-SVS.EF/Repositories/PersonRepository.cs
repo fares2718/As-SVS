@@ -34,5 +34,11 @@ namespace As_SVS.EF.Repositories
             var filterResult = _context.People.Where(p=>p.FullName().Contains(name)).ToListAsync();
             return await filterResult;
         }
+
+        public async Task<Person?> GetPersonByEmailAsync(string email)
+        {
+            var person = _context.People.FirstOrDefaultAsync(p => p.Email == email);
+            return await person;
+        }
     }
 }
