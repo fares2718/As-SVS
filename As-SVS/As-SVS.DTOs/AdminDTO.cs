@@ -10,5 +10,7 @@ namespace As_SVS.DTOs
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public decimal Salary { get; set; }
+        public int Id { get; set; }
     }
 }

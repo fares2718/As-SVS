@@ -18,8 +18,10 @@ namespace As_SVS.API
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddTransient(typeof(IPersonSevices), typeof(PersonServices));
+            builder.Services.AddTransient(typeof(IAdminServices), typeof(AdminServices));
             builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             builder.Services.AddTransient(typeof(IPersonRepository), typeof(PersonRepository));
+            builder.Services.AddTransient(typeof(IAdminRepository), typeof(AdminRepository));
             builder.Services.AddTransient(typeof(PasswordHasher<>));
 
             // Add services to the container.

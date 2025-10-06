@@ -21,7 +21,7 @@ namespace As_SVS.Business.Services
             _baseRepository = baseRepository;
             _personRepository = personRepository;
         }
-        private Person? MapDTO(PersonDTO personDTO)
+        public static Person? MapDTO(PersonDTO personDTO)
         {
             if(personDTO!=null)
             {
