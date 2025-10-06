@@ -98,21 +98,21 @@ namespace As_SVS.Business.Services
            return await  _baseRepository.UpdateAsync(updatedEntity);
         }
 
-        public async Task<List<PersonDTO?>> FilterByName(string name)
+        public async Task<IEnumerable<PersonDTO?>> FilterByName(string name)
         {
             var filterResult = await _personRepository.FilterByName(name);
             List<PersonDTO?> filterResultDTO =  filterResult.Select(p => MapDTO(p)).ToList();
             return filterResultDTO;
         }
 
-        public async Task<List<PersonDTO?>> FilterByDOB(DateOnly dateOfBirth)
+        public async Task<IEnumerable<PersonDTO?>> FilterByDOB(DateOnly dateOfBirth)
         {
             var filterResult = await _personRepository.FilterByDOB(dateOfBirth);
             List<PersonDTO?> filterResultDTO = filterResult.Select(p => MapDTO(p)).ToList();
             return filterResultDTO;
         }
 
-        public async Task<List<PersonDTO?>> FilterByGender(bool gender)
+        public async Task<IEnumerable<PersonDTO?>> FilterByGender(bool gender)
         {
             var filterResult = await _personRepository.FilterByGender(gender);
             List<PersonDTO?> filterResultDTO = filterResult.Select(p => MapDTO(p)).ToList();
