@@ -6,6 +6,7 @@ using As_SVS.EF;
 using As_SVS.EF.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace As_SVS.API
 {
@@ -23,6 +24,7 @@ namespace As_SVS.API
             builder.Services.AddTransient(typeof(IPersonRepository), typeof(PersonRepository));
             builder.Services.AddTransient(typeof(IAdminRepository), typeof(AdminRepository));
             builder.Services.AddTransient(typeof(PasswordHasher<>));
+            builder.Services.AddAutoMapper(typeof(Program));
 
             // Add services to the container.
 
