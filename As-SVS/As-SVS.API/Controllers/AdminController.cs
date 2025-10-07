@@ -137,7 +137,7 @@ namespace As_SVS.API.Controllers
             return Ok(peopleList);
         }
 
-        [HttpPut("Assign-Role/{Id}")]
+        [HttpPost("Assign-Role/{Id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -189,8 +189,42 @@ namespace As_SVS.API.Controllers
                     await _adminServices.AssignRoleAsync<Student>(student);
                     break;
             }
-            return Ok(personDTO);
+            return Ok($"{personDTO.FirstName} now has a role");
         }
+
+        [HttpPost("Diactivate-Role/{Id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public async Task<IActionResult> DeactivatePersonRole(int Id)
+        {
+            if (Id < 1)
+                return BadRequest("Invalid ID number");
+            var personDTO = await _personSevices.GetByIdAsync(Id);
+            if (personDTO == null)
+                return NotFound($"No person with ID {Id} was found");
+            switch(personDTO.Permission)
+            {
+                case (PersonDTO.Permissions)Permissions.Admin:
+                    await _adminServices.DeactivatePersonAsync(Id);
+                    //Delete Admin Service
+                    break;
+                case (PersonDTO.Permissions)Permissions.Student:
+                    await _adminServices.DeactivatePersonAsync(Id);
+                    //Delete Student Service
+                    break;
+                case (PersonDTO.Permissions)Permissions.Teacher:
+                    await _adminServices.DeactivatePersonAsync(Id);
+                    //Delete Teacher Service
+                    break;
+                default:
+                    return BadRequest("Person has no Role");
+
+            }
+            return Ok($"person with ID {Id} deactivated succesfuly");
+        }
+
         #endregion
     }
 }

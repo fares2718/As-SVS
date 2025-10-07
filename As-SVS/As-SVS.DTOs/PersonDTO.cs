@@ -12,8 +12,8 @@ namespace As_SVS.DTOs
         {
             None = 0,
             Student = 1 << 1,
-            Teacher = 1 << 1,
-            Admin = 1 << 2
+            Teacher = 1 << 2,
+            Admin = 1 << 3
         }
         public int Id { get; set; }
 
