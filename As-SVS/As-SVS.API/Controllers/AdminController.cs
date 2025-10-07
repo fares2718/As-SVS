@@ -3,6 +3,7 @@ using As_SVS.Business.Services;
 using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
 using As_SVS.DTOs;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,12 +13,14 @@ namespace As_SVS.API.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IPersonSevices _personSevices;
         private readonly IAdminServices _adminServices;
-        public AdminController(IPersonSevices personSevices,IAdminServices adminServices)
+        public AdminController(IPersonSevices personSevices,IAdminServices adminServices,IMapper mapper)
         {
             _personSevices = personSevices;
             _adminServices = adminServices;
+            _mapper = mapper;
         }
 
         #region OnPerson
@@ -28,9 +31,10 @@ namespace As_SVS.API.Controllers
         public async Task<IActionResult> GetAllPeopleAsync()
         {
             var peopleList = await _personSevices.GetAllAsync();
-            if (peopleList.Count() == 0)
+            var peopleListDTO = _mapper.Map<IEnumerable<PersonDTO>>(peopleList);
+            if (peopleListDTO.Count() == 0)
                 return NotFound("No people found");
-            return Ok(peopleList);
+            return Ok(peopleListDTO);
         }
 
         [HttpGet("{Id}", Name = "GetPersonById")]
@@ -42,9 +46,10 @@ namespace As_SVS.API.Controllers
             if (Id < 1)
                 return BadRequest($"ID {Id} is not valid");
             var person = await _personSevices.GetByIdAsync(Id);
-            if (person == null) 
+            var personDTO = _mapper.Map<PersonDTO>(person);
+            if (personDTO == null) 
                 return NotFound($"Person with ID {Id} dose not exist");
-            return Ok(person);
+            return Ok(personDTO);
         }
 
         [HttpPut("Update-Person/{Id}")]
@@ -52,21 +57,22 @@ namespace As_SVS.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdatePersonAsync(int Id, PersonDTO personDTO)
+        public async Task<IActionResult> UpdatePersonAsync(int Id, PersonDTO newInfoDTO)
         {
             if (Id < 1)
                 return BadRequest($"ID {Id} is not valid");
             var person = await _personSevices.GetByIdAsync(Id);
+            var personDTO = _mapper.Map<PersonDTO>(person);
             if (person == null)
                 return NotFound($"Person with ID {Id} dose not exist");
-            personDTO.Id = person.Id;
-            person.FirstName = personDTO.FirstName;
-            person.MiddleName = personDTO.MiddleName;
-            personDTO.LastName = personDTO.LastName;
-            person.Password = personDTO.Password;
-            person.Phone = personDTO.Phone;
-            if(await _personSevices.UpdateAsync(person))
-                return Ok(person);
+            newInfoDTO.Id = personDTO.Id;
+            personDTO.FirstName = newInfoDTO.FirstName;
+            personDTO.MiddleName = newInfoDTO.MiddleName;
+            personDTO.LastName = newInfoDTO.LastName;
+            personDTO.Password = newInfoDTO.Password;
+            personDTO.Phone = newInfoDTO.Phone;
+            if(await _personSevices.UpdateAsync(personDTO))
+                return Ok(personDTO);
             else
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update person");
         }
@@ -98,9 +104,10 @@ namespace As_SVS.API.Controllers
             if (string.IsNullOrEmpty(name))
                 return BadRequest("Name Is requiered");
             var peopleList = await _personSevices.FilterByName(name);
-            if (peopleList.Count() == 0)
+            var peopleListDTO = _mapper.Map<IEnumerable<PersonDTO>>(peopleList);
+            if (peopleListDTO.Count() == 0)
                 return NotFound($"No person with name {name} was found");
-            return Ok(peopleList);
+            return Ok(peopleListDTO);
         }
 
         [HttpGet("Filter-People-By-DOB/{DOB}")]
@@ -109,9 +116,10 @@ namespace As_SVS.API.Controllers
         public async Task<IActionResult> FiltePeopleByDOB(DateOnly DOB)
         {
             var peopleList = await _personSevices.FilterByDOB(DOB);
-            if (peopleList.Count() == 0)
+            var peopleListDTO = _mapper.Map<IEnumerable<PersonDTO>>(peopleList);
+            if (peopleListDTO.Count() == 0)
                 return NotFound($"No person with DOB {DOB.ToString()} was found");
-            return Ok(peopleList);
+            return Ok(peopleListDTO);
         }
 
         [HttpGet("Filter-People-By-Gender/{gender}")]
@@ -122,19 +130,20 @@ namespace As_SVS.API.Controllers
         {
             if (gender != "Male".ToLower() || gender != "Female".ToLower())
                 return BadRequest("gender is either Male or Female");
-            var peopleList = new List<PersonDTO>();
+            var peopleList = new List<Person>();
             switch (gender)
             {
                 case "Male":
-                    peopleList = (List<PersonDTO>)await _personSevices.FilterByGender(false);
+                    peopleList = (List<Person>)await _personSevices.FilterByGender(false);
                     break;
                 case "Female":
-                    peopleList = (List<PersonDTO>)await _personSevices.FilterByGender(true);
+                    peopleList = (List<Person>)await _personSevices.FilterByGender(true);
                     break;
             }
-            if (peopleList.Count == 0)
+            var peopleListDTO = _mapper.Map<IEnumerable<PersonDTO>>(peopleList);
+            if (peopleListDTO.Count() == 0)
                 return NotFound("No person was found");
-            return Ok(peopleList);
+            return Ok(peopleListDTO);
         }
 
         [HttpPost("Assign-Role/{Id}")]
@@ -145,7 +154,8 @@ namespace As_SVS.API.Controllers
         {
             if (Id < 1)
                 return BadRequest($"ID {Id} Is not valid");
-            var personDTO = await _personSevices.GetByIdAsync(Id);
+            var person = await _personSevices.GetByIdAsync(Id);
+            var personDTO = _mapper.Map<PersonDTO>(person);
             if (personDTO == null)
                 return NotFound($"Person with ID {Id} dose not exist");
             switch (Role)
@@ -201,7 +211,8 @@ namespace As_SVS.API.Controllers
         {
             if (Id < 1)
                 return BadRequest("Invalid ID number");
-            var personDTO = await _personSevices.GetByIdAsync(Id);
+            var person = await _personSevices.GetByIdAsync(Id);
+            var personDTO = _mapper.Map<PersonDTO>(person);
             if (personDTO == null)
                 return NotFound($"No person with ID {Id} was found");
             switch(personDTO.Permission)
