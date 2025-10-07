@@ -1,4 +1,5 @@
-﻿using As_SVS.DTOs;
+﻿using As_SVS.Core.Models;
+using As_SVS.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace As_SVS.Business.Interfaces
 {
     public interface ITeacherServices
     {
-        Task<IEnumerable<TeacherDTO>> GetAllAsync();
-        Task<TeacherDTO> GetByIdAsync(int id);
-        Task<TeacherDTO> AddNewAsync(TeacherDTO DTO);
+        Task<IEnumerable<Teacher?>> GetAllAsync();
+        Task<Teacher?> GetByIdAsync(int id);
+        Task<Teacher?> GetByPersonIdAsync(int id);
+        Task<Teacher> AddNewAsync(TeacherDTO DTO);
         Task<bool> UpdateAsync(TeacherDTO entity);
         Task<bool> DeleteAsync(int id);
     }

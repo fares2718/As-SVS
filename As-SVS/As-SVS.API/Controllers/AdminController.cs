@@ -16,10 +16,12 @@ namespace As_SVS.API.Controllers
         private readonly IMapper _mapper;
         private readonly IPersonSevices _personSevices;
         private readonly IAdminServices _adminServices;
-        public AdminController(IPersonSevices personSevices,IAdminServices adminServices,IMapper mapper)
+        private readonly ITeacherServices _teacherServices;
+        public AdminController(IPersonSevices personSevices,IAdminServices adminServices, ITeacherServices teacherServices, IMapper mapper)
         {
             _personSevices = personSevices;
             _adminServices = adminServices;
+            _teacherServices = teacherServices;
             _mapper = mapper;
         }
 
@@ -215,6 +217,7 @@ namespace As_SVS.API.Controllers
             var personDTO = _mapper.Map<PersonDTO>(person);
             if (personDTO == null)
                 return NotFound($"No person with ID {Id} was found");
+            bool isDone = false;
             switch(personDTO.Permission)
             {
                 case (PersonDTO.Permissions)Permissions.Admin:
@@ -227,13 +230,17 @@ namespace As_SVS.API.Controllers
                     break;
                 case (PersonDTO.Permissions)Permissions.Teacher:
                     await _adminServices.DeactivatePersonAsync(Id);
-                    //Delete Teacher Service
+                    Teacher? Teacher= await _teacherServices.GetByPersonIdAsync(Id);
+                    isDone = await _teacherServices.DeleteAsync(Id);
                     break;
                 default:
                     return BadRequest("Person has no Role");
 
             }
-            return Ok($"person with ID {Id} deactivated succesfuly");
+            if(isDone)
+                return Ok($"person with ID {Id} deactivated succesfuly");
+            else
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to deactivate this person");
         }
 
         #endregion

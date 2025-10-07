@@ -2,6 +2,7 @@
 using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
 using As_SVS.DTOs;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,35 +13,47 @@ namespace As_SVS.Business.Services
 {
     public class TeacherServices : ITeacherServices
     {
+        private readonly IMapper _mapper;
         private readonly IBaseRepository<Teacher> _baseRepository;
-
-        public TeacherServices(IBaseRepository<Teacher> baseRepository)
+        public TeacherServices(IBaseRepository<Teacher> baseRepository, IMapper mapper)
         {
             _baseRepository = baseRepository;
+            _mapper = mapper;
         }
-        public Task<TeacherDTO> AddNewAsync(TeacherDTO DTO)
+        public async Task<Teacher> AddNewAsync(TeacherDTO DTO)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
+            Teacher teacher = _mapper.Map<Teacher>(DTO);
+            return await _baseRepository.AddNewAsync(teacher);
         }
 
-        public Task<IEnumerable<TeacherDTO>> GetAllAsync()
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _baseRepository.DeleteAsync(id);
         }
 
-        public Task<TeacherDTO> GetByIdAsync(int id)
+        public async Task<IEnumerable<Teacher?>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var teachersList = await _baseRepository.GetAllAsync();
+            return teachersList;
         }
 
-        public Task<bool> UpdateAsync(TeacherDTO entity)
+        public async Task<Teacher?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await _baseRepository.GetByIdAsync(id);
+            return teacher;
+        }
+
+        public async Task<Teacher?> GetByPersonIdAsync(int id)
+        {
+            var teachersList = await _baseRepository.GetAllAsync();
+            Teacher? teacher = teachersList.FirstOrDefault(t => t.Id == id);
+            return teacher;
+        }
+
+        public async Task<bool> UpdateAsync(TeacherDTO entity)
+        {
+            Teacher teacher = _mapper.Map<Teacher>(entity);
+            return await _baseRepository.UpdateAsync(teacher);
         }
     }
 }

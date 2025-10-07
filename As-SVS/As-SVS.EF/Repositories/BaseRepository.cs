@@ -38,7 +38,7 @@ namespace As_SVS.EF.Repositories
             }
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T?>> GetAllAsync()
         {
             List<T> entityList = await _context.Set<T>().ToListAsync();
             return entityList;
