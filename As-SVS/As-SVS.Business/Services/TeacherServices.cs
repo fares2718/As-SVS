@@ -15,9 +15,11 @@ namespace As_SVS.Business.Services
     {
         private readonly IMapper _mapper;
         private readonly IBaseRepository<Teacher> _baseRepository;
-        public TeacherServices(IBaseRepository<Teacher> baseRepository, IMapper mapper)
+        private readonly ITeacherRepository _teacherRepository;
+        public TeacherServices(IBaseRepository<Teacher> baseRepository, ITeacherRepository teacherRepository , IMapper mapper)
         {
             _baseRepository = baseRepository;
+            _teacherRepository = teacherRepository;
             _mapper = mapper;
         }
         public async Task<Teacher> AddNewAsync(TeacherDTO DTO)
@@ -50,10 +52,26 @@ namespace As_SVS.Business.Services
             return teacher;
         }
 
+        public async Task<Teacher?> GetByTeacherCode(string code)
+        {
+            var teachersList = await _baseRepository.GetAllAsync();
+            Teacher? teacher = teachersList.FirstOrDefault(t => t.TeacherCode == code);
+            return teacher;
+        }
+
+        public async Task<bool> IsExist(int id)
+        {
+            return await _teacherRepository.IsExist(id);
+        }
+
         public async Task<bool> UpdateAsync(TeacherDTO entity)
         {
             Teacher teacher = _mapper.Map<Teacher>(entity);
             return await _baseRepository.UpdateAsync(teacher);
+        }
+        public async Task<bool> UpdateSalaryAsync(int Id, decimal salary)
+        {
+            return await _teacherRepository.UpdateTeacherSalary(Id, salary);
         }
     }
 }
