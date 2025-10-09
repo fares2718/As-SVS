@@ -1,5 +1,6 @@
 ﻿using As_SVS.Business.Interfaces;
 using As_SVS.Core.Models;
+using As_SVS.API.Helpers;
 using As_SVS.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -38,7 +39,7 @@ namespace As_SVS.API.Controllers
                 MiddleName = personDTO.MiddleName,
                 LastName = personDTO.LastName,
                 Gender = personDTO.Gender,
-                Password = BCrypt.Net.BCrypt.HashPassword(personDTO.Password),
+                Password = As_SVS.API.Helpers.Cryptography.ComputeHash(personDTO.Password),
                 DateOfBirth = personDTO.DateOfBirth,
                 Id = personDTO.Id,
                 ImageUrl = personDTO.ImageUrl,
@@ -60,7 +61,7 @@ namespace As_SVS.API.Controllers
             var personDTO = _mapper.Map<PersonDTO>(person);
             if (personDTO == null)
                 return Unauthorized("Invalid email.");
-            bool valid = BCrypt.Net.BCrypt.Verify(logInDTO.Password, personDTO.Password);
+            bool valid = As_SVS.API.Helpers.Cryptography.Verify(logInDTO.Password,personDTO.Password);
             if (!valid)
                 return Unauthorized("Invalid password.");
             return Ok(personDTO);
