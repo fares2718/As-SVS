@@ -14,6 +14,7 @@ namespace As_SVS.Business.Interfaces
         Task<Person?> GetByIdAsync(int id);
         Task<Person> AddNewAsync(PersonDTO DTO);
         Task<bool> UpdateAsync(PersonDTO entity);
+        Task<bool> UpdatePasswordAsync(int Id,string Password);
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<Person?>> FilterByName(string name);
         Task<IEnumerable<Person?>> FilterByDOB(DateOnly dateOfBirth);

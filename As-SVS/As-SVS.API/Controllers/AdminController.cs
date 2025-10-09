@@ -54,27 +54,20 @@ namespace As_SVS.API.Controllers
             return Ok(personDTO);
         }
 
-        [HttpPut("Update-Person/{Id}")]
+        [HttpPatch("Update-Person/{Id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdatePersonAsync(int Id, PersonDTO newInfoDTO)
+        public async Task<IActionResult> UpdatePasswordAsync(int Id, string Password)
         {
             if (Id < 1)
                 return BadRequest($"ID {Id} is not valid");
             var person = await _personSevices.GetByIdAsync(Id);
-            var personDTO = _mapper.Map<PersonDTO>(person);
             if (person == null)
                 return NotFound($"Person with ID {Id} dose not exist");
-            newInfoDTO.Id = personDTO.Id;
-            personDTO.FirstName = newInfoDTO.FirstName;
-            personDTO.MiddleName = newInfoDTO.MiddleName;
-            personDTO.LastName = newInfoDTO.LastName;
-            personDTO.Password = newInfoDTO.Password;
-            personDTO.Phone = newInfoDTO.Phone;
-            if (await _personSevices.UpdateAsync(personDTO))
-                return Ok(personDTO);
+            if (await _personSevices.UpdatePasswordAsync(Id,Password))
+                return Ok("Password updated succesfully");
             else
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update person");
         }

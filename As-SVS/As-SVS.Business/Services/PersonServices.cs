@@ -77,5 +77,10 @@ namespace As_SVS.Business.Services
             Person? person = await _personRepository.GetPersonByEmailAsync(email);
             return person;
         }
+
+        public async Task<bool> UpdatePasswordAsync(int Id, string Password)
+        {
+            return await _personRepository.UpdatePasswordAsync(Id, Password);
+        }
     }
 }

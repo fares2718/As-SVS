@@ -14,5 +14,6 @@ namespace As_SVS.Core.Interfaces
         Task<List<Person>> FilterByDOB(DateOnly dateOfBirth);
         Task<List<Person>> FilterByGender(bool gender);
         Task<Person?> GetPersonByEmailAsync(string email);
+        Task<bool> UpdatePasswordAsync(int Id,string Password);
     }
 }

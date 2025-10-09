@@ -40,5 +40,21 @@ namespace As_SVS.EF.Repositories
             var person = _context.People.FirstOrDefaultAsync(p => p.Email == email);
             return await person;
         }
+
+        public async Task<bool> UpdatePasswordAsync(int Id, string Password)
+        {
+            Person? person = _context.People.FirstOrDefault(p => p.Id == Id);
+            if(person != null)
+                person.Password = Password;
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }
