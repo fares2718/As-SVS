@@ -6,6 +6,7 @@ using As_SVS.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace As_SVS.API.Controllers
 {
@@ -17,11 +18,14 @@ namespace As_SVS.API.Controllers
         private readonly IPersonSevices _personSevices;
         private readonly IAdminServices _adminServices;
         private readonly ITeacherServices _teacherServices;
-        public AdminController(IPersonSevices personSevices, IAdminServices adminServices, ITeacherServices teacherServices, IMapper mapper)
+        private readonly IStudentServices _studentServices;
+        public AdminController(IPersonSevices personSevices, IAdminServices adminServices,
+            ITeacherServices teacherServices, IMapper mapper, IStudentServices studentServices)
         {
             _personSevices = personSevices;
             _adminServices = adminServices;
             _teacherServices = teacherServices;
+            _studentServices = studentServices;
             _mapper = mapper;
         }
 
@@ -145,52 +149,37 @@ namespace As_SVS.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AssignRoleToPerson(int Id, string Role)
+        public async Task<IActionResult> AssignRoleToPerson(int Id,string Role , [FromBody] JsonElement data)
         {
             if (Id < 1)
                 return BadRequest($"ID {Id} Is not valid");
+            if (data.ValueKind == JsonValueKind.Undefined ||
+                data.ValueKind == JsonValueKind.Null ||
+                data.ValueKind == JsonValueKind.Object &&
+                data.EnumerateObject().Count() == 0)
+                return BadRequest("Body cannot be empty. Please provide valid JSON data.");
             var person = await _personSevices.GetByIdAsync(Id);
             var personDTO = _mapper.Map<PersonDTO>(person);
             if (personDTO == null)
                 return NotFound($"Person with ID {Id} dose not exist");
-            switch (Role)
+            switch (Role.ToLower())
             {
-                case "Admin":
+                case "admin":
                     personDTO.Permission = PersonDTO.Permissions.Admin;
-                    Admin admin = new Admin
-                    {
-                        PersonId = personDTO.Id,
-                        Username = $"{personDTO.FirstName} + {Guid.NewGuid}",
-                        Password = $"1234",
-                        Salary = 4000,
-                    };
+                    Admin admin = JsonSerializer.Deserialize<Admin>(data)!;
+                    admin.PersonId = Id;
                     await _adminServices.AssignRoleAsync<Admin>(admin);
                     break;
-                case "Teacher":
+                case "teacher":
                     personDTO.Permission = PersonDTO.Permissions.Teacher;
-                    Teacher teacher = new Teacher
-                    {
-                        PersonId = personDTO.Id,
-                        TeacherCode = $"T{personDTO.FirstName}e{Guid.NewGuid}",
-                        Salary = 3500,
-                        GradesId = 1,
-                        Feedbacks = "none",
-                        Specialization = "none",
-                        NationalNumber = "none",
-                        Qualifications = "none",
-                    };
+                    Teacher teacher = JsonSerializer.Deserialize<Teacher>(data)!;
+                    teacher.PersonId = Id;
                     await _adminServices.AssignRoleAsync<Teacher>(teacher);
                     break;
                 case "Student":
                     personDTO.Permission = PersonDTO.Permissions.Student;
-                    Student student = new Student
-                    {
-                        PersonId = personDTO.Id,
-                        StudentCode = $"S{personDTO.FirstName}t{Guid.NewGuid}",
-                        Average = 0,
-                        GradeId = 1,
-                        MotherName = "Mother",
-                    };
+                    Student student = JsonSerializer.Deserialize<Student>(data)!;
+                    student.PersonId = Id;
                     await _adminServices.AssignRoleAsync<Student>(student);
                     break;
             }
@@ -215,11 +204,11 @@ namespace As_SVS.API.Controllers
             {
                 case (PersonDTO.Permissions)Permissions.Admin:
                     await _adminServices.DeactivatePersonAsync(Id);
-                    //Delete Admin Service
+                    isDone = await _adminServices.DeleteAsync(Id);
                     break;
                 case (PersonDTO.Permissions)Permissions.Student:
                     await _adminServices.DeactivatePersonAsync(Id);
-                    //Delete Student Service
+                    isDone = await _studentServices.DeleteAsync(Id);
                     break;
                 case (PersonDTO.Permissions)Permissions.Teacher:
                     await _adminServices.DeactivatePersonAsync(Id);

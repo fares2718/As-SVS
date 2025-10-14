@@ -11,6 +11,6 @@ namespace As_SVS.Business.Interfaces
     {
         public Task AssignRoleAsync<T>(T entity);
         public Task DeactivatePersonAsync(int Id);
-
+        public Task<bool> DeleteAsync(int id);
     }
 }
