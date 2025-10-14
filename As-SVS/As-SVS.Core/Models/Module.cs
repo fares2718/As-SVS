@@ -13,7 +13,7 @@ public partial class Module
 
     public int Number { get; set; }
 
-    public virtual Course Course { get; set; } = null!;
+    public virtual Course Course { get; set; } = default!;
 
     public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
 

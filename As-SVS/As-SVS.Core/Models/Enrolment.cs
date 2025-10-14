@@ -15,9 +15,9 @@ public partial class Enrolment
 
     public DateOnly? CompletionDate { get; set; }
 
-    public virtual Course Course { get; set; } = null!;
+    public virtual Course Course { get; set; } = default!;
 
-    public virtual Student Student { get; set; } = null!;
+    public virtual Student Student { get; set; } = default!;
 
-    public virtual Teacher Teacher { get; set; } = null!;
+    public virtual Teacher Teacher { get; set; } = default!;
 }

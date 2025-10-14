@@ -13,7 +13,7 @@ public partial class StudentLesson
 
     public DateOnly? CompletionDate { get; set; }
 
-    public virtual Lesson Lesson { get; set; } = null!;
+    public virtual Lesson Lesson { get; set; } = default!;
 
-    public virtual Student Student { get; set; } = null!;
+    public virtual Student Student { get; set; } = default!;
 }

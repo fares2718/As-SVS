@@ -21,7 +21,7 @@ public partial class Student
 
     public virtual ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
 
-    public virtual Grade Grade { get; set; } = null!;
+    public virtual Grade Grade { get; set; } = default!;
 
-    public virtual Person Person { get; set; } = null!;
+    public virtual Person Person { get; set; } = default!;
 }

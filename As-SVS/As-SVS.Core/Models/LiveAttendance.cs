@@ -13,7 +13,7 @@ public partial class LiveAttendance
 
     public TimeOnly? LeftAt { get; set; }
 
-    public virtual LiveSession Session { get; set; } = null!;
+    public virtual LiveSession Session { get; set; } = default!;
 
-    public virtual Student Student { get; set; } = null!;
+    public virtual Student Student { get; set; } = default!;
 }

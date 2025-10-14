@@ -19,5 +19,5 @@ public partial class Lesson
 
     public int CourseOrder { get; set; }
 
-    public virtual Module Module { get; set; } = null!;
+    public virtual Module Module { get; set; } = default!;
 }

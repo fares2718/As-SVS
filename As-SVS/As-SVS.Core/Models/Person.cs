@@ -39,11 +39,11 @@ public partial class Person
 
     public  Permissions Permission { get; set; }
 
-    public virtual ICollection<Admin> Admins { get; set; } = new List<Admin>();
+    public virtual Admin? Admin { get; set; } 
 
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
-    public virtual ICollection<Student> Students { get; set; } = new List<Student>();
+    public virtual Student? Student { get; set; }
 
-    public virtual ICollection<Teacher> Teachers { get; set; } = new List<Teacher>();
+    public virtual Teacher? Teacher { get; set; }
 }

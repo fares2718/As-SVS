@@ -15,5 +15,5 @@ public partial class QuizQuestion
 
     public virtual ICollection<QuestionOption> QuestionOptions { get; set; } = new List<QuestionOption>();
 
-    public virtual Quize Quiz { get; set; } = null!;
+    public virtual Quize Quiz { get; set; } = default!;
 }

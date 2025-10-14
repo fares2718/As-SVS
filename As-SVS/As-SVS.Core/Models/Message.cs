@@ -19,7 +19,7 @@ public partial class Message
 
     public DateOnly? EditedAt { get; set; }
 
-    public virtual Person Person { get; set; } = null!;
+    public virtual Person Person { get; set; } = default!;
 
-    public virtual Room Room { get; set; } = null!;
+    public virtual Room Room { get; set; } = default!;
 }

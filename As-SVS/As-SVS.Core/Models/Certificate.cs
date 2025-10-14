@@ -17,7 +17,7 @@ public partial class Certificate
 
     public string FileUrl { get; set; } = null!;
 
-    public virtual Grade Grade { get; set; } = null!;
+    public virtual Grade Grade { get; set; } = default!;
 
-    public virtual Student Student { get; set; } = null!;
+    public virtual Student Student { get; set; } = default!;
 }

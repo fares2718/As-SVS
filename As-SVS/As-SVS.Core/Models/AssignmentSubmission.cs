@@ -15,7 +15,7 @@ public partial class AssignmentSubmission
 
     public string? Feedback { get; set; }
 
-    public virtual Assignment Assignment { get; set; } = null!;
+    public virtual Assignment Assignment { get; set; } = default!;
 
-    public virtual Student Student { get; set; } = null!;
+    public virtual Student Student { get; set; } = default!;
 }

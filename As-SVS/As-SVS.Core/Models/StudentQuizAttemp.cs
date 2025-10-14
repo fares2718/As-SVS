@@ -13,7 +13,7 @@ public partial class StudentQuizAttemp
 
     public double ScoreAchived { get; set; }
 
-    public virtual Quize Quiz { get; set; } = null!;
+    public virtual Quize Quiz { get; set; } = default!;
 
-    public virtual Student Student { get; set; } = null!;
+    public virtual Student Student { get; set; } = default!;
 }

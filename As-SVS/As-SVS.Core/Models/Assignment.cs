@@ -23,7 +23,7 @@ public partial class Assignment
 
     public virtual ICollection<AssignmentSubmission> AssignmentSubmissions { get; set; } = new List<AssignmentSubmission>();
 
-    public virtual Course Course { get; set; } = null!;
+    public virtual Course Course { get; set; } = default!;
 
-    public virtual Teacher Teacher { get; set; } = null!;
+    public virtual Teacher Teacher { get; set; } = default!;
 }

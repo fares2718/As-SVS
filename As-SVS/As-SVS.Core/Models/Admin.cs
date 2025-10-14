@@ -15,5 +15,5 @@ public partial class Admin
 
     public decimal Salary { get; set; }
 
-    public virtual Person Person { get; set; } = null!;
+    public virtual Person Person { get; set; } = default!;
 }

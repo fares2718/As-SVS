@@ -11,5 +11,5 @@ public partial class StudentRoom
 
     public DateOnly JoinDate { get; set; }
 
-    public virtual Room Room { get; set; } = null!;
+    public virtual Room Room { get; set; } = default!;
 }

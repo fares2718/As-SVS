@@ -4,6 +4,7 @@ using As_SVS.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AsSVS.EF.Migrations
 {
     [DbContext(typeof(As_SVSContext))]
-    partial class As_SVSContextModelSnapshot : ModelSnapshot
+    [Migration("20251014135335_UpdateKeysAndInitials")]
+    partial class UpdateKeysAndInitials
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

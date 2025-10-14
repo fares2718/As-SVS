@@ -19,7 +19,7 @@ public partial class Quize
 
     public bool IsPassRequiered { get; set; }
 
-    public virtual Module Module { get; set; } = null!;
+    public virtual Module Module { get; set; } = default!;
 
     public virtual ICollection<QuizQuestion> QuizQuestions { get; set; } = new List<QuizQuestion>();
 }

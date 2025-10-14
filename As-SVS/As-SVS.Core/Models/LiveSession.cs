@@ -19,7 +19,7 @@ public partial class LiveSession
 
     public string MeetingUrl { get; set; } = null!;
 
-    public virtual Room Room { get; set; } = null!;
+    public virtual Room Room { get; set; } = default!;
 
-    public virtual Teacher Teacher { get; set; } = null!;
+    public virtual Teacher Teacher { get; set; } = default!;
 }

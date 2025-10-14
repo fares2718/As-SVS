@@ -17,7 +17,7 @@ public partial class Annoucement
 
     public DateOnly CreatedAt { get; set; }
 
-    public virtual Course Course { get; set; } = null!;
+    public virtual Course Course { get; set; } = default!;
 
-    public virtual Teacher Teacher { get; set; } = null!;
+    public virtual Teacher Teacher { get; set; } = default!;
 }

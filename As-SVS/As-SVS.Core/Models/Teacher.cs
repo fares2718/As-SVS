@@ -27,9 +27,9 @@ public partial class Teacher
 
     public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
 
-    public virtual Grade Grades { get; set; } = null!;
+    public virtual Grade Grades { get; set; } = default!;
 
     public virtual ICollection<LiveSession> LiveSessions { get; set; } = new List<LiveSession>();
 
-    public virtual Person Person { get; set; } = null!;
+    public virtual Person Person { get; set; } = default!;
 }

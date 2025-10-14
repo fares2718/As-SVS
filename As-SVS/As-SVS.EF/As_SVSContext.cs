@@ -85,8 +85,8 @@ public partial class As_SVSContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("username");
 
-            entity.HasOne(d => d.Person).WithMany(p => p.Admins)
-                .HasForeignKey(d => d.PersonId)
+            entity.HasOne(d => d.Person).WithOne(p => p.Admin)
+                .HasForeignKey<Admin>(d => d.PersonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Admins_People");
         });
@@ -203,9 +203,8 @@ public partial class As_SVSContext : DbContext
         modelBuilder.Entity<Enrolment>(entity =>
         {
             entity
-                .HasNoKey()
                 .ToTable("Enrolment");
-
+            entity.HasKey(e => new { e.StudentId, e.CourseId });
             entity.Property(e => e.CompletionDate).HasColumnName("completion_date");
             entity.Property(e => e.CourseId).HasColumnName("course_id");
             entity.Property(e => e.EnrolmentDate).HasColumnName("enrolment_date");
@@ -268,9 +267,8 @@ public partial class As_SVSContext : DbContext
         modelBuilder.Entity<LiveAttendance>(entity =>
         {
             entity
-                .HasNoKey()
-                .ToTable("LiveAttendance");
-
+                .HasKey(e => new { e.SessionId, e.StudentId });
+            entity.ToTable("Live_Attendance");
             entity.Property(e => e.JoinedAt).HasColumnName("joined_at");
             entity.Property(e => e.LeftAt).HasColumnName("left_at");
             entity.Property(e => e.SessionId).HasColumnName("session_id");
@@ -406,7 +404,6 @@ public partial class As_SVSContext : DbContext
         modelBuilder.Entity<QuizQuestion>(entity =>
         {
             entity.ToTable("Quiz_Questions");
-
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Number).HasColumnName("number");
             entity.Property(e => e.Question)
@@ -468,8 +465,8 @@ public partial class As_SVSContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Students_Grades");
 
-            entity.HasOne(d => d.Person).WithMany(p => p.Students)
-                .HasForeignKey(d => d.PersonId)
+            entity.HasOne(d => d.Person).WithOne(p => p.Student)
+                .HasForeignKey<Student>(d => d.PersonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Students_People");
         });
@@ -477,9 +474,8 @@ public partial class As_SVSContext : DbContext
         modelBuilder.Entity<StudentLesson>(entity =>
         {
             entity
-                .HasNoKey()
-                .ToTable("Student_Lesson");
-
+                .HasKey(e => new {e.LessonId,e.StudentId});
+            entity.ToTable("Student_Lessons");
             entity.Property(e => e.CompletionDate).HasColumnName("completion_date");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
             entity.Property(e => e.LessonId).HasColumnName("lesson_id");
@@ -499,8 +495,8 @@ public partial class As_SVSContext : DbContext
         modelBuilder.Entity<StudentQuizAttemp>(entity =>
         {
             entity
-                .HasNoKey()
-                .ToTable("Student_Quiz_Attemp");
+                .HasKey(e => new {e.QuizId,e.StudentId});
+            entity.ToTable("Student_Quiz_Attemp");
 
             entity.Property(e => e.AttempDate).HasColumnName("attemp_date");
             entity.Property(e => e.QuizId).HasColumnName("quiz_id");
@@ -521,8 +517,8 @@ public partial class As_SVSContext : DbContext
         modelBuilder.Entity<StudentRoom>(entity =>
         {
             entity
-                .HasNoKey()
                 .ToTable("Student_Room");
+            entity.HasKey(e => new {e.RoomId,e.StudentId});
 
             entity.Property(e => e.JoinDate).HasColumnName("join_date");
             entity.Property(e => e.RoomId).HasColumnName("room_id");
@@ -563,8 +559,8 @@ public partial class As_SVSContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Teachers_Grades");
 
-            entity.HasOne(d => d.Person).WithMany(p => p.Teachers)
-                .HasForeignKey(d => d.PersonId)
+            entity.HasOne(d => d.Person).WithOne(p => p.Teacher)
+                .HasForeignKey<Teacher>(d => d.PersonId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Teachers_People");
         });
