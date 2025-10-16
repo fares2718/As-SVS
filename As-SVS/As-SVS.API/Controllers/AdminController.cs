@@ -173,6 +173,7 @@ namespace As_SVS.API.Controllers
                 case "teacher":
                     personDTO.Permission = PersonDTO.Permissions.Teacher;
                     Teacher teacher = JsonSerializer.Deserialize<Teacher>(data)!;
+                    teacher.TeacherCode = $"T{Guid.NewGuid().ToString()}";
                     teacher.PersonId = Id;
                     await _adminServices.AssignRoleAsync<Teacher>(teacher);
                     break;
@@ -180,6 +181,7 @@ namespace As_SVS.API.Controllers
                     personDTO.Permission = PersonDTO.Permissions.Student;
                     Student student = JsonSerializer.Deserialize<Student>(data)!;
                     student.PersonId = Id;
+                    student.StudentCode = $"T{Guid.NewGuid().ToString()}";
                     await _adminServices.AssignRoleAsync<Student>(student);
                     break;
             }
@@ -228,7 +230,7 @@ namespace As_SVS.API.Controllers
         #endregion
 
         #region OnTeacher
-        [HttpGet("All", Name = "Get-All-Teachers")]
+        [HttpGet("All-Teachers", Name = "Get-All-Teachers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllTeachersAsync()
@@ -289,8 +291,52 @@ namespace As_SVS.API.Controllers
             return Ok("Salary updated succesfuly");
         }
 
-        
 
+
+        #endregion
+
+        #region OnStudent
+        [HttpGet("All-Students", Name = "Get-All-Students")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAllStudentsAsync()
+        {
+            var studentsList = await _studentServices.GetAllAsync();
+            var studentsListDTO = _mapper.Map<IEnumerable<StudentDTO>>(studentsList);
+            if (studentsListDTO.Count() == 0)
+                return NotFound("No teacher was found");
+            return Ok(studentsListDTO);
+        }
+
+        [HttpGet("Get-Student-By-ID/{Id}", Name = "Get-Student-By-ID")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetStudentByIdAsync(int Id)
+        {
+            if (Id < 1)
+                return BadRequest($"ID {Id} is not valid");
+            var student = await _studentServices.GetByIdAsync(Id);
+            StudentDTO? studentDTO = _mapper.Map<StudentDTO>(student);
+            if (student == null)
+                return NotFound($"Student with ID {Id} was not found");
+            return Ok(studentDTO);
+        }
+
+        [HttpGet("Get-Student-By-Code/{code}", Name = "Get-Student-By-Code")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetByStudentCodeAsync(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+                return BadRequest($"{code} is not valid");
+            var student = await _studentServices.GetByStudentCode(code);
+            StudentDTO? studentDTO = _mapper.Map<StudentDTO>(student);
+            if (student == null)
+                return NotFound($"Teacher with Code {code} was not found");
+            return Ok(studentDTO);
+        }
         #endregion
     }
 }

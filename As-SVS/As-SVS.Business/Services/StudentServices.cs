@@ -15,35 +15,47 @@ namespace As_SVS.Business.Services
     {
         private readonly IMapper _mapper;
         private readonly IBaseRepository<Student> _baseRepository;
+        private readonly IStudentRepository _studentRepository;
 
-        public StudentServices(IBaseRepository<Student> baseRepository, IMapper mapper)
+        public StudentServices(IBaseRepository<Student> baseRepository, IMapper mapper, IStudentRepository studentRepository)
         {
             _baseRepository = baseRepository;
+            _studentRepository = studentRepository;
             _mapper = mapper;
         }
-        public Task<Student> AddNewAsync(StudentDTO DTO)
-        {
-            throw new NotImplementedException();
-        }
 
+        public async Task<Student> AddNewAsyn(Student entity)
+        {
+            return await _baseRepository.AddNewAsync(entity);
+        }
         public async Task<bool> DeleteAsync(int id)
         {
             return await _baseRepository.DeleteAsync(id);
         }
 
-        public Task<IEnumerable<Student>> GetAllAsync()
+        public async Task<IEnumerable<Student>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _baseRepository.GetAllAsync();
         }
 
-        public Task<Student> GetByIdAsync(int id)
+        public async Task<IEnumerable<Student>> GetAllInGrade(int GradeId)
         {
-            throw new NotImplementedException();
+            return await _studentRepository.GetAllInGrade(GradeId);
         }
 
-        public Task<bool> UpdateAsync(StudentDTO entity)
+        public async Task<Student> GetByIdAsync(int Id)
         {
-            throw new NotImplementedException();
+            return await _baseRepository.GetByIdAsync(Id);
+        }
+
+        public async Task<Student> GetByStudentCode(string code)
+        {
+            return await _studentRepository.GetByStudentCode(code);
+        }
+
+        public async Task<bool> UpdateAsync(Student entity)
+        {
+            return await _baseRepository.UpdateAsync(entity);
         }
     }
 }

@@ -1,14 +1,13 @@
 ﻿using As_SVS.Core.Models;
-using As_SVS.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace As_SVS.Business.Interfaces
+namespace As_SVS.Core.Interfaces
 {
-    public interface IStudentServices : IBaseServices<Student>
+    public interface IStudentRepository
     {
         Task<Student> GetByStudentCode(string code);
         Task<IEnumerable<Student>> GetAllInGrade(int GradeId);

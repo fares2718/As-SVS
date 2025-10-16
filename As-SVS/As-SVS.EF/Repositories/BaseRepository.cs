@@ -38,16 +38,21 @@ namespace As_SVS.EF.Repositories
             }
         }
 
-        public async Task<IEnumerable<T?>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             List<T> entityList = await _context.Set<T>().ToListAsync();
-            return entityList;
+            if(entityList.Count != 0)
+                return entityList;
+            return default!;
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id)
         {
-            T? entity = await _context.Set<T>().FindAsync(id);
-            return entity;
+            T? entity = await _context.Set<T>()
+                                     .FindAsync(id);
+            if(entity != null)
+                return entity;
+            return default!;
         }
 
         public async Task<bool> UpdateAsync(T entity)
