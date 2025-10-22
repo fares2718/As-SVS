@@ -16,32 +16,20 @@ namespace As_SVS.EF.Repositories
             _context = context;
         }
 
+        #region Creat
         public async Task<T> AddNewAsync(T entity)
         {
             await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
+        #endregion
 
-        public async Task<bool> DeleteAsync(int id)
-        {
-            T? entity = _context.Set<T>().Find(id);
-            try
-            {
-                _context.Set<T>().Remove(entity);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
+        #region Read
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             List<T> entityList = await _context.Set<T>().ToListAsync();
-            if(entityList.Count != 0)
+            if (entityList.Count != 0)
                 return entityList;
             return default!;
         }
@@ -50,11 +38,13 @@ namespace As_SVS.EF.Repositories
         {
             T? entity = await _context.Set<T>()
                                      .FindAsync(id);
-            if(entity != null)
+            if (entity != null)
                 return entity;
             return default!;
         }
+        #endregion
 
+        #region Update
         public async Task<bool> UpdateAsync(T entity)
         {
             try
@@ -68,5 +58,27 @@ namespace As_SVS.EF.Repositories
                 return false;
             }
         }
+        #endregion
+
+        #region Delete
+        public async Task<bool> DeleteAsync(int id)
+        {
+            T? entity = _context.Set<T>().Find(id);
+            try
+            {
+                if (entity is not null)
+                {
+                    _context.Set<T>().Remove(entity);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        #endregion
     }
 }

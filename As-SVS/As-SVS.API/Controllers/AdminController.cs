@@ -31,7 +31,8 @@ namespace As_SVS.API.Controllers
 
         #region OnPerson
 
-        [HttpGet("GetAll", Name = "GetAllPeople")]
+            #region GET
+        [HttpGet(Name = "GetAllPeople")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllPeopleAsync()
@@ -56,42 +57,6 @@ namespace As_SVS.API.Controllers
             if (personDTO == null)
                 return NotFound($"Person with ID {Id} dose not exist");
             return Ok(personDTO);
-        }
-
-        [HttpPatch("Update-Person/{Id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdatePasswordAsync(int Id, string Password)
-        {
-            if (Id < 1)
-                return BadRequest($"ID {Id} is not valid");
-            var person = await _personSevices.GetByIdAsync(Id);
-            if (person == null)
-                return NotFound($"Person with ID {Id} dose not exist");
-            if (await _personSevices.UpdatePasswordAsync(Id,Password))
-                return Ok("Password updated succesfully");
-            else
-                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update person");
-        }
-
-        [HttpDelete("Delete-Person/{Id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeletePersonAsync(int Id)
-        {
-            if (Id < 1)
-                return BadRequest($"ID {Id} is not valid");
-            var person = await _personSevices.GetByIdAsync(Id);
-            if (person == null)
-                return NotFound($"Person with ID {Id} dose not exist");
-            if (await _personSevices.DeleteAsync(Id))
-                return Ok(person);
-            else
-                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete person");
         }
 
         [HttpGet("Filter-People-By-Name/{name}")]
@@ -144,12 +109,14 @@ namespace As_SVS.API.Controllers
                 return NotFound("No person was found");
             return Ok(peopleListDTO);
         }
+        #endregion
 
+            #region POST
         [HttpPost("Assign-Role/{Id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> AssignRoleToPerson(int Id,string Role , [FromBody] JsonElement data)
+        public async Task<IActionResult> AssignRoleToPerson(int Id, string Role, [FromBody] JsonElement data)
         {
             if (Id < 1)
                 return BadRequest($"ID {Id} Is not valid");
@@ -186,6 +153,46 @@ namespace As_SVS.API.Controllers
                     break;
             }
             return Ok($"{personDTO.FirstName} now has a role");
+        }
+        #endregion
+
+            #region PATCH
+        [HttpPatch("Update-Person/{Id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdatePasswordAsync(int Id, string Password)
+        {
+            if (Id < 1)
+                return BadRequest($"ID {Id} is not valid");
+            var person = await _personSevices.GetByIdAsync(Id);
+            if (person == null)
+                return NotFound($"Person with ID {Id} dose not exist");
+            if (await _personSevices.UpdatePasswordAsync(Id,Password))
+                return Ok("Password updated succesfully");
+            else
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to update person");
+        }
+        #endregion
+
+            #region DELETE
+        [HttpDelete("Delete-Person/{Id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeletePersonAsync(int Id)
+        {
+            if (Id < 1)
+                return BadRequest($"ID {Id} is not valid");
+            var person = await _personSevices.GetByIdAsync(Id);
+            if (person == null)
+                return NotFound($"Person with ID {Id} dose not exist");
+            if (await _personSevices.DeleteAsync(Id))
+                return Ok(person);
+            else
+                return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete person");
         }
 
         [HttpDelete("Diactivate-Role/{Id}")]
@@ -226,10 +233,13 @@ namespace As_SVS.API.Controllers
             else
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to deactivate this person");
         }
+        #endregion
 
         #endregion
 
         #region OnTeacher
+
+            #region GET
         [HttpGet("All-Teachers", Name = "Get-All-Teachers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -272,6 +282,9 @@ namespace As_SVS.API.Controllers
             return Ok(teacherDTO);
         }
 
+        #endregion
+
+            #region PATCH
         [HttpPatch("Update-Teacher-Salary/{Id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -290,12 +303,12 @@ namespace As_SVS.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,"An error accourd");
             return Ok("Salary updated succesfuly");
         }
-
-
+        #endregion
 
         #endregion
 
         #region OnStudent
+            #region GET
         [HttpGet("All-Students", Name = "Get-All-Students")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -337,6 +350,7 @@ namespace As_SVS.API.Controllers
                 return NotFound($"Teacher with Code {code} was not found");
             return Ok(studentDTO);
         }
+        #endregion
         #endregion
     }
 }

@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace As_SVS.Business.Interfaces
 {
-    public interface IAdminServices
+    public interface IAdminServices : IBaseServices<Admin>
     {
         public Task AssignRoleAsync<T>(T entity);
         public Task DeactivatePersonAsync(int Id);
-        public Task<bool> DeleteAsync(int id);
     }
 }

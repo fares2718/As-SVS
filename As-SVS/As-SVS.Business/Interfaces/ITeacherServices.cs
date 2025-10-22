@@ -8,16 +8,11 @@ using System.Threading.Tasks;
 
 namespace As_SVS.Business.Interfaces
 {
-    public interface ITeacherServices
+    public interface ITeacherServices : IBaseServices<Teacher>
     {
-        Task<IEnumerable<Teacher?>> GetAllAsync();
-        Task<Teacher?> GetByIdAsync(int id);
         Task<Teacher?> GetByPersonIdAsync(int id);
         Task<Teacher?> GetByTeacherCode(string code);
-        Task<Teacher> AddNewAsync(TeacherDTO DTO);
-        Task<bool> UpdateAsync(TeacherDTO entity);
         Task<bool> UpdateSalaryAsync(int Id,decimal salary);
-        Task<bool> DeleteAsync(int id);
         Task<bool> IsExist(int id);
     }
 }

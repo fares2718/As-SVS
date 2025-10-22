@@ -10,9 +10,9 @@ namespace As_SVS.Business.Interfaces
 {
     public interface IBaseServices<T> where T : class
     {
+        Task<int> AddNewAsync(T entity);
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
-        Task<T> AddNewAsyn(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(int id);
     }

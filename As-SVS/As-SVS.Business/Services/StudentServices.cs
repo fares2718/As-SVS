@@ -24,15 +24,15 @@ namespace As_SVS.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<Student> AddNewAsyn(Student entity)
+        #region Creat
+        public async Task<int> AddNewAsync(Student entity)
         {
-            return await _baseRepository.AddNewAsync(entity);
+            await _baseRepository.AddNewAsync(entity);
+            return entity.Id;
         }
-        public async Task<bool> DeleteAsync(int id)
-        {
-            return await _baseRepository.DeleteAsync(id);
-        }
+        #endregion
 
+        #region Read
         public async Task<IEnumerable<Student>> GetAllAsync()
         {
             return await _baseRepository.GetAllAsync();
@@ -53,9 +53,20 @@ namespace As_SVS.Business.Services
             return await _studentRepository.GetByStudentCode(code);
         }
 
+        #endregion
+
+        #region Update
         public async Task<bool> UpdateAsync(Student entity)
         {
             return await _baseRepository.UpdateAsync(entity);
         }
+        #endregion
+
+        #region Delete
+        public async Task<bool> DeleteAsync(int id)
+        {
+            return await _baseRepository.DeleteAsync(id);
+        }
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using As_SVS.Business.Interfaces;
+﻿using As_SVS.API.Helpers;
+using As_SVS.Business.Interfaces;
 using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
 using As_SVS.DTOs;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace As_SVS.Business.Services
 {
-    public class PersonServices : IPersonSevices
+    public class PersonServices : IPersonSevices 
     {
         private readonly IMapper _mapper;
         private readonly IBaseRepository<Person> _baseRepository;
@@ -24,34 +25,28 @@ namespace As_SVS.Business.Services
             _personRepository = personRepository;
             _mapper = mapper;
         }
-
-        public async Task<Person> AddNewAsync(PersonDTO personDTO)
+       
+        #region Creat
+        public async Task<int> AddNewAsync(Person newPerson)
         {
-            Person newPerson = _mapper.Map<Person>(personDTO);
-            return await _baseRepository.AddNewAsync(newPerson);
+            newPerson.Permission = Permissions.None;
+            newPerson.Password = Cryptography.ComputeHash(newPerson.Password);
+            await _baseRepository.AddNewAsync(newPerson);
+            return newPerson.Id;
         }
+        #endregion
 
-        public async Task<bool> DeleteAsync(int id)
-        {
-           return await _baseRepository.DeleteAsync(id);
-        }
-
+        #region Read
         public async Task<IEnumerable<Person>> GetAllAsync()
         {
             var people = await _baseRepository.GetAllAsync();
             return people;
         }
 
-        public async Task<Person?> GetByIdAsync(int id)
+        public async Task<Person> GetByIdAsync(int id)
         {
-            var person = await _baseRepository.GetByIdAsync(id);
+            Person? person = await _baseRepository.GetByIdAsync(id);
             return person;
-        }
-
-        public async Task<bool> UpdateAsync(PersonDTO entity)
-        {
-            Person updatedEntity = _mapper.Map<Person>(entity);
-            return await  _baseRepository.UpdateAsync(updatedEntity);
         }
 
         public async Task<IEnumerable<Person?>> FilterByName(string name)
@@ -77,10 +72,26 @@ namespace As_SVS.Business.Services
             Person? person = await _personRepository.GetPersonByEmailAsync(email);
             return person;
         }
+        #endregion
 
+        #region Update
+        public async Task<bool> UpdateAsync(Person person)
+        {
+            return await _baseRepository.UpdateAsync(person);
+        }
         public async Task<bool> UpdatePasswordAsync(int Id, string Password)
         {
+            Password = Cryptography.ComputeHash(Password);
             return await _personRepository.UpdatePasswordAsync(Id, Password);
         }
+        #endregion
+
+        #region Delete
+        public async Task<bool> DeleteAsync(int id)
+        {
+           return await _baseRepository.DeleteAsync(id);
+        }
+        #endregion
+
     }
 }

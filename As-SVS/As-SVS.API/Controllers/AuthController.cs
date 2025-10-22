@@ -31,24 +31,9 @@ namespace As_SVS.API.Controllers
             var existing = await _services.GetPersonByEmailAsync(personDTO.Email);
             if (existing != null)
                 return BadRequest("Person alredy exists");
-
-            var person = new PersonDTO
-            {
-                Email = personDTO.Email,
-                FirstName = personDTO.FirstName,
-                MiddleName = personDTO.MiddleName,
-                LastName = personDTO.LastName,
-                Gender = personDTO.Gender,
-                Password = As_SVS.API.Helpers.Cryptography.ComputeHash(personDTO.Password),
-                DateOfBirth = personDTO.DateOfBirth,
-                Id = personDTO.Id,
-                ImageUrl = personDTO.ImageUrl,
-                Permission = PersonDTO.Permissions.None,
-                Phone = personDTO.Phone,
-            };
-
-            await _services.AddNewAsync(personDTO);
-            return Ok(person);
+             Person person = _mapper.Map<Person>(personDTO);
+            int Id = await _services.AddNewAsync(person);
+            return Ok(Id);
         }
 
         [HttpPost("LogIn")]

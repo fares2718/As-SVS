@@ -22,24 +22,23 @@ namespace As_SVS.Business.Services
             _teacherRepository = teacherRepository;
             _mapper = mapper;
         }
-        public async Task<Teacher> AddNewAsync(TeacherDTO DTO)
-        {
-            Teacher teacher = _mapper.Map<Teacher>(DTO);
-            return await _baseRepository.AddNewAsync(teacher);
-        }
 
-        public async Task<bool> DeleteAsync(int id)
+        #region Creat
+        public async Task<int> AddNewAsync(Teacher teacher)
         {
-            return await _baseRepository.DeleteAsync(id);
+            await _baseRepository.AddNewAsync(teacher);
+            return teacher.Id;
         }
+        #endregion
 
-        public async Task<IEnumerable<Teacher?>> GetAllAsync()
+        #region Read
+        public async Task<IEnumerable<Teacher>> GetAllAsync()
         {
             var teachersList = await _baseRepository.GetAllAsync();
             return teachersList;
         }
 
-        public async Task<Teacher?> GetByIdAsync(int id)
+        public async Task<Teacher> GetByIdAsync(int id)
         {
             Teacher? teacher = await _baseRepository.GetByIdAsync(id);
             return teacher;
@@ -63,8 +62,10 @@ namespace As_SVS.Business.Services
         {
             return await _teacherRepository.IsExist(id);
         }
+        #endregion
 
-        public async Task<bool> UpdateAsync(TeacherDTO entity)
+        #region Update
+        public async Task<bool> UpdateAsync(Teacher entity)
         {
             Teacher teacher = _mapper.Map<Teacher>(entity);
             return await _baseRepository.UpdateAsync(teacher);
@@ -73,5 +74,13 @@ namespace As_SVS.Business.Services
         {
             return await _teacherRepository.UpdateTeacherSalary(Id, salary);
         }
+        #endregion
+
+        #region Delete
+        public async Task<bool> DeleteAsync(int id)
+        {
+            return await _baseRepository.DeleteAsync(id);
+        }
+        #endregion
     }
 }
