@@ -3,14 +3,6 @@ using System.Collections.Generic;
 
 namespace As_SVS.Core.Models;
 
-[Flags]
-public enum Permissions
-{
-    None = 0,
-    Student = 1 << 1,
-    Teacher = 1 << 2,
-    Admin = 1 << 3
-}
 public partial class Person
 {
     public int Id { get; set; }
@@ -36,8 +28,6 @@ public partial class Person
     public string? ImageUrl { get; set; }
 
     public bool Gender { get; set; }
-
-    public  Permissions Permission { get; set; }
 
     public virtual Admin? Admin { get; set; } 
 

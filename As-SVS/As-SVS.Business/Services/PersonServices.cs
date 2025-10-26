@@ -29,7 +29,7 @@ namespace As_SVS.Business.Services
         #region Creat
         public async Task<int> AddNewAsync(Person newPerson)
         {
-            newPerson.Permission = Permissions.None;
+            //newPerson.Permission = Permissions.None;
             newPerson.Password = Cryptography.ComputeHash(newPerson.Password);
             await _baseRepository.AddNewAsync(newPerson);
             return newPerson.Id;

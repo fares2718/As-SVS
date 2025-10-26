@@ -8,13 +8,6 @@ namespace As_SVS.DTOs
 {
     public class PersonDTO
     {
-        public enum Permissions
-        {
-            None = 0,
-            Student = 1 << 1,
-            Teacher = 1 << 2,
-            Admin = 1 << 3
-        }
         public int Id { get; set; }
 
         public string FirstName { get; set; } = null!;
@@ -38,7 +31,5 @@ namespace As_SVS.DTOs
         public string? ImageUrl { get; set; }
 
         public bool Gender { get; set; }
-
-        public Permissions Permission { get; set; }
     }
 }

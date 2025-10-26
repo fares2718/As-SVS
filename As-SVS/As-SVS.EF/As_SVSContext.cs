@@ -374,9 +374,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Password)
                 .HasMaxLength(60)
                 .HasColumnName("password");
-            entity.Property(e => e.Permission)
-                  .HasConversion<int>()
-                  .HasColumnName("permissions");
             entity.Property(e => e.Phone)
                 .HasMaxLength(20)
                 .HasColumnName("phone");

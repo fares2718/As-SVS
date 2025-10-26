@@ -26,7 +26,7 @@ namespace As_SVS.EF.Repositories
             var person = await _context.People.FindAsync(Id);
             if (person != null)
             {
-                person.Permission = Permissions.None;
+                //person.Permission = Permissions.None;
                 await _context.SaveChangesAsync();
             }
         }

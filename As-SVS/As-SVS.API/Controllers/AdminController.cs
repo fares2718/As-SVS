@@ -112,7 +112,7 @@ namespace As_SVS.API.Controllers
         #endregion
 
             #region POST
-        [HttpPost("Assign-Role/{Id}")]
+       /* [HttpPost("Assign-Role/{Id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -153,7 +153,7 @@ namespace As_SVS.API.Controllers
                     break;
             }
             return Ok($"{personDTO.FirstName} now has a role");
-        }
+        }*/
         #endregion
 
             #region PATCH
@@ -195,7 +195,7 @@ namespace As_SVS.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to delete person");
         }
 
-        [HttpDelete("Diactivate-Role/{Id}")]
+        /*[HttpDelete("Diactivate-Role/{Id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -232,7 +232,7 @@ namespace As_SVS.API.Controllers
                 return Ok($"person with ID {Id} deactivated succesfuly");
             else
                 return StatusCode(StatusCodes.Status500InternalServerError, "Failed to deactivate this person");
-        }
+        }*/
         #endregion
 
         #endregion

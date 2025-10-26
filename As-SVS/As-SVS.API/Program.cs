@@ -2,11 +2,13 @@ using As_SVS.API.Helpers;
 using As_SVS.Business.Interfaces;
 using As_SVS.Business.Services;
 using As_SVS.Core.Interfaces;
+using As_SVS.Core.Models;
 using As_SVS.DTOs;
 using As_SVS.EF;
 using As_SVS.EF.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace As_SVS.API
@@ -16,9 +18,11 @@ namespace As_SVS.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<As_SVSContext>();
             builder.Services.AddDbContext<As_SVSContext>(options =>
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
             builder.Services.AddTransient(typeof(IPersonSevices), typeof(PersonServices));
             builder.Services.AddTransient(typeof(IAdminServices), typeof(AdminServices));
             builder.Services.AddTransient(typeof(ITeacherServices), typeof(TeacherServices));
