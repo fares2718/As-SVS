@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using As_SVS.Core.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace As_SVS.EF;
 
-public partial class As_SVSContext : DbContext
+public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
 {
     public As_SVSContext()
     {
@@ -566,6 +567,7 @@ public partial class As_SVSContext : DbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+        base.OnModelCreating(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
