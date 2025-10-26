@@ -6,10 +6,13 @@ using As_SVS.Core.Models;
 using As_SVS.DTOs;
 using As_SVS.EF;
 using As_SVS.EF.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace As_SVS.API
 {
@@ -23,6 +26,27 @@ namespace As_SVS.API
                 .AddEntityFrameworkStores<As_SVSContext>();
             builder.Services.AddDbContext<As_SVSContext>(options =>
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(o =>
+                {
+                    o.RequireHttpsMetadata = false;
+                    o.SaveToken = false;
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = builder.Configuration["JWT:Issuer"],
+                        ValidAudience = builder.Configuration["JWT:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+                    };
+                });
+            builder.Services.AddScoped<IAuthServices,AuthServices>();
             builder.Services.AddTransient(typeof(IPersonSevices), typeof(PersonServices));
             builder.Services.AddTransient(typeof(IAdminServices), typeof(AdminServices));
             builder.Services.AddTransient(typeof(ITeacherServices), typeof(TeacherServices));
@@ -54,6 +78,7 @@ namespace As_SVS.API
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
