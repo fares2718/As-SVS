@@ -7,7 +7,7 @@ public partial class Teacher
 {
     public int Id { get; set; }
 
-    public int PersonId { get; set; }
+    public string applicationUserId { get; set; } = null!;
 
     public string Specialization { get; set; } = null!;
 
@@ -31,5 +31,5 @@ public partial class Teacher
 
     public virtual ICollection<LiveSession> LiveSessions { get; set; } = new List<LiveSession>();
 
-    public virtual Person Person { get; set; } = default!;
+    public virtual ApplicationUser applicationUser { get; set; } = default!;
 }

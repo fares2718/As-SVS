@@ -9,7 +9,7 @@ public partial class Message
 
     public int RoomId { get; set; }
 
-    public int PersonId { get; set; }
+    public string applicationUserId { get; set; } = null!;
 
     public string MessageContent { get; set; } = null!;
 
@@ -19,7 +19,7 @@ public partial class Message
 
     public DateOnly? EditedAt { get; set; }
 
-    public virtual Person Person { get; set; } = default!;
+    public virtual ApplicationUser applicationUser { get; set; } = default!;
 
     public virtual Room Room { get; set; } = default!;
 }

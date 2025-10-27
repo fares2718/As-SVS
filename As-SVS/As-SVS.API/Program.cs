@@ -1,16 +1,11 @@
-using As_SVS.API.Helpers;
+using As_SVS.Business.Helpers;
 using As_SVS.Business.Interfaces;
 using As_SVS.Business.Services;
-using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
-using As_SVS.DTOs;
 using As_SVS.EF;
-using As_SVS.EF.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -47,14 +42,7 @@ namespace As_SVS.API
                     };
                 });
             builder.Services.AddScoped<IAuthServices,AuthServices>();
-            builder.Services.AddTransient(typeof(IPersonSevices), typeof(PersonServices));
-            builder.Services.AddTransient(typeof(IAdminServices), typeof(AdminServices));
-            builder.Services.AddTransient(typeof(ITeacherServices), typeof(TeacherServices));
-            builder.Services.AddTransient(typeof(IStudentServices), typeof(StudentServices));
-            builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            builder.Services.AddTransient(typeof(IPersonRepository), typeof(PersonRepository));
-            builder.Services.AddTransient(typeof(IAdminRepository), typeof(AdminRepository));
-            builder.Services.AddTransient(typeof(ITeacherRepository), typeof(TeacherRepository));
+            builder.Services.AddTransient(typeof(IAuthServices), typeof(AuthServices));
             builder.Services.AddTransient(typeof(PasswordHasher<>));
             builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 

@@ -1,13 +1,94 @@
 ﻿using As_SVS.Business.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using As_SVS.Core.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using As_SVS.Business.Helpers;
 
 namespace As_SVS.Business.Services
 {
     public class AuthServices : IAuthServices
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
+        private readonly JWT _jwt;
+
+        public AuthServices(UserManager<ApplicationUser> userManager, IMapper mapper, IOptions<JWT> jwt)
+        {
+            _userManager = userManager;
+            _mapper = mapper;
+            _jwt = jwt.Value;
+        }
+
+        public async Task<AuthModel> RegisterAsync(RegisterModel model)
+        {
+            if (await _userManager.FindByEmailAsync(model.Email) is not null)
+                return new AuthModel { Message = $"{model.Email} alredy exists" };
+
+            if (await _userManager.FindByNameAsync(model.Username) is not null)
+                return new AuthModel { Message = $"{model.Username} alredy exists" };
+
+            var user = _mapper.Map<ApplicationUser>(model);
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if(!result.Succeeded)
+            {
+                string errors = string.Empty;
+                foreach(var error in result.Errors)
+                {
+                    errors += $"{error.Description},";
+                }
+                errors.TrimEnd(',');
+                return new AuthModel { Message = errors };
+            }
+            await _userManager.AddToRoleAsync(user, "None");
+
+            var JWTSecurityToken = await CreatJWTToken(user);
+
+            return new AuthModel
+            {
+                Email = user.Email,
+                ExpiresOn = JWTSecurityToken.ValidTo,
+                IsAuthenticated = true,
+                Roles = new List<string> { "None" },
+                Token = new JwtSecurityTokenHandler().WriteToken(JWTSecurityToken),
+                Username = user.UserName
+            };
+
+        }
+
+        private async Task<JwtSecurityToken> CreatJWTToken(ApplicationUser user)
+        {
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var roleClaims = new List<Claim>();
+
+            foreach (var role in roles)
+                roleClaims.Add(new Claim("roles", role));
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub,user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email,user.Email)
+            }
+            .Union(userClaims)
+            .Union(roleClaims);
+
+            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
+            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer: _jwt.Issuer,
+                audience: _jwt.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddDays(_jwt.DurationInDays),
+                signingCredentials: signingCredentials);
+
+            return jwtSecurityToken;
+        }
     }
 }

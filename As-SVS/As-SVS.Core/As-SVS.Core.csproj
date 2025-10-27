@@ -18,4 +18,8 @@
     <ProjectReference Include="..\As-SVS.DTOs\As-SVS.DTOs.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

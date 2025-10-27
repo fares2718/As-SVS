@@ -7,7 +7,7 @@ public partial class Student
 {
     public int Id { get; set; }
 
-    public int PersonId { get; set; }
+    public string applicationUserId { get; set; } = null!;
 
     public int GradeId { get; set; }
 
@@ -23,5 +23,5 @@ public partial class Student
 
     public virtual Grade Grade { get; set; } = default!;
 
-    public virtual Person Person { get; set; } = default!;
+    public virtual ApplicationUser applicationUser { get; set; } = default!;
 }

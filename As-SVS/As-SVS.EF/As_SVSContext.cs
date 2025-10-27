@@ -43,8 +43,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
 
     public virtual DbSet<Module> Modules { get; set; }
 
-    public virtual DbSet<Person> People { get; set; }
-
     public virtual DbSet<QuestionOption> QuestionOptions { get; set; }
 
     public virtual DbSet<QuizQuestion> QuizQuestions { get; set; }
@@ -72,22 +70,18 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
     {
         modelBuilder.Entity<Admin>(entity =>
         {
-            entity.HasIndex(e => e.Username, "UQ_Admins_Username").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Password)
                 .HasMaxLength(50)
                 .HasColumnName("password");
-            entity.Property(e => e.PersonId).HasColumnName("person_id");
+            entity.Property(e => e.applicationUserId).HasColumnName("applicationUser_id");
             entity.Property(e => e.Salary)
                 .HasColumnType("money")
                 .HasColumnName("salary");
-            entity.Property(e => e.Username)
-                .HasMaxLength(50)
-                .HasColumnName("username");
 
-            entity.HasOne(d => d.Person).WithOne(p => p.Admin)
-                .HasForeignKey<Admin>(d => d.PersonId)
+            entity.HasOne(d => d.applicationUser).WithOne(p => p.Admin)
+                .HasForeignKey<Admin>(d => d.applicationUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Admins_People");
         });
@@ -318,11 +312,11 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.MessageContent)
                 .HasMaxLength(200)
                 .HasColumnName("message_content");
-            entity.Property(e => e.PersonId).HasColumnName("person_id");
+            entity.Property(e => e.applicationUserId).HasColumnName("applicationUser_id");
             entity.Property(e => e.RoomId).HasColumnName("room_id");
 
-            entity.HasOne(d => d.Person).WithMany(p => p.Messages)
-                .HasForeignKey(d => d.PersonId)
+            entity.HasOne(d => d.applicationUser).WithMany(p => p.Messages)
+                .HasForeignKey(d => d.applicationUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Messages_People");
 
@@ -347,36 +341,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
                 .HasForeignKey(d => d.CourseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Module_Courses");
-        });
-
-        modelBuilder.Entity<Person>(entity =>
-        {
-            entity.HasIndex(e => e.Email, "UQ_Pesron_Email").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.DateOfBirth).HasColumnName("date_of_birth");
-            entity.Property(e => e.Email)
-                .HasMaxLength(200)
-                .HasColumnName("email");
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(50)
-                .HasColumnName("first_name");
-            entity.Property(e => e.Gender).HasColumnName("gender");
-            entity.Property(e => e.ImageUrl)
-                .HasMaxLength(200)
-                .HasColumnName("image_url");
-            entity.Property(e => e.LastName)
-                .HasMaxLength(50)
-                .HasColumnName("last_name");
-            entity.Property(e => e.MiddleName)
-                .HasMaxLength(50)
-                .HasColumnName("middle_name");
-            entity.Property(e => e.Password)
-                .HasMaxLength(60)
-                .HasColumnName("password");
-            entity.Property(e => e.Phone)
-                .HasMaxLength(20)
-                .HasColumnName("phone");
         });
 
         modelBuilder.Entity<QuestionOption>(entity =>
@@ -453,7 +417,7 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.MotherName)
                 .HasMaxLength(100)
                 .HasColumnName("mother_name");
-            entity.Property(e => e.PersonId).HasColumnName("person_id");
+            entity.Property(e => e.applicationUserId).HasColumnName("applicationUser_id");
             entity.Property(e => e.StudentCode)
                 .HasMaxLength(50)
                 .HasColumnName("student_code");
@@ -463,8 +427,8 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Students_Grades");
 
-            entity.HasOne(d => d.Person).WithOne(p => p.Student)
-                .HasForeignKey<Student>(d => d.PersonId)
+            entity.HasOne(d => d.applicationUser).WithOne(p => p.Student)
+                .HasForeignKey<Student>(d => d.applicationUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Students_People");
         });
@@ -538,7 +502,7 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.NationalNumber)
                 .HasMaxLength(20)
                 .HasColumnName("national_number");
-            entity.Property(e => e.PersonId).HasColumnName("person_id");
+            entity.Property(e => e.applicationUserId).HasColumnName("applicationUser_id");
             entity.Property(e => e.Qualifications)
                 .HasMaxLength(200)
                 .HasColumnName("qualifications");
@@ -557,8 +521,8 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Teachers_Grades");
 
-            entity.HasOne(d => d.Person).WithOne(p => p.Teacher)
-                .HasForeignKey<Teacher>(d => d.PersonId)
+            entity.HasOne(d => d.applicationUser).WithOne(p => p.Teacher)
+                .HasForeignKey<Teacher>(d => d.applicationUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Teachers_People");
         });

@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-namespace As_SVS.API.Helpers
+namespace As_SVS.Business.Helpers
 {
     public class Cryptography
     {
