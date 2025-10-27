@@ -60,6 +60,30 @@ namespace As_SVS.Business.Services
 
         }
 
+        public async Task<AuthModel> GetTokenAsync(TokenRequestModel model)
+        {
+            var authModel = new AuthModel { };
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                authModel.Message = "Email or Password is not correct";
+                return authModel;
+            }
+
+            var JWTSecurityToken = await CreatJWTToken(user);
+            var roleList = await _userManager.GetRolesAsync(user);
+
+            authModel.IsAuthenticated = true;
+            authModel.Token = new JwtSecurityTokenHandler().WriteToken(JWTSecurityToken);
+            authModel.Email = user.Email;
+            authModel.Username = user.UserName;
+            authModel.ExpiresOn = JWTSecurityToken.ValidTo;
+            authModel.Roles = roleList.ToList();
+
+            return authModel;
+        }
+
         private async Task<JwtSecurityToken> CreatJWTToken(ApplicationUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);

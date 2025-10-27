@@ -12,7 +12,7 @@ namespace As_SVS.Core.Models
         [Required,StringLength(100)]
         public string FirstName { get; set; } = null!;
         [Required, StringLength(100)]
-        public string MidName { get; set; } = null!;
+        public string MiddleName { get; set; } = null!;
         [Required, StringLength(100)]
         public string LastName { get; set; } = null!;
         [Required, StringLength(50)]
