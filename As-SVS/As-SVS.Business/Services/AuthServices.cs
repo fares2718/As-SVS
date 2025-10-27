@@ -14,12 +14,14 @@ namespace As_SVS.Business.Services
     public class AuthServices : IAuthServices
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly JWT _jwt;
 
-        public AuthServices(UserManager<ApplicationUser> userManager, IMapper mapper, IOptions<JWT> jwt)
+        public AuthServices(UserManager<ApplicationUser> userManager, IMapper mapper, IOptions<JWT> jwt, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _mapper = mapper;
             _jwt = jwt.Value;
         }
@@ -82,6 +84,24 @@ namespace As_SVS.Business.Services
             authModel.Roles = roleList.ToList();
 
             return authModel;
+        }
+
+        public async Task<string> AssignRoleAsync(AssignRoleModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
+            if(user is null || !await _roleManager.RoleExistsAsync(model.Role))
+                return "Invalid User Id or Role";
+
+            if (await _userManager.IsInRoleAsync(user, model.Role))
+                return $"User {user.UserName} is already in role {model.Role}";
+
+            if(await _userManager.IsInRoleAsync(user,"None"))
+                await _userManager.RemoveFromRoleAsync(user, "None");
+
+            var result = await _userManager.AddToRoleAsync(user, model.Role);
+
+            return result.Succeeded? string.Empty:"Something went wrong";
         }
 
         private async Task<JwtSecurityToken> CreatJWTToken(ApplicationUser user)
