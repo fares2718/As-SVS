@@ -8,6 +8,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using As_SVS.Business.Helpers;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
 
 namespace As_SVS.Business.Services
 {
@@ -83,7 +85,22 @@ namespace As_SVS.Business.Services
             //authModel.ExpiresOn = JWTSecurityToken.ValidTo;
             authModel.Roles = roleList.ToList();
 
-            return authModel;
+            if(user.RefreshTokens.Any(t => t.IsActive))
+            {
+                var activeRefreshToke = user.RefreshTokens.FirstOrDefault(t => t.IsActive);
+                authModel.RefreshToken = activeRefreshToke.Token;
+                authModel.RefreshTokenExpiration = activeRefreshToke.ExpiresOn;
+            }
+            else
+            {
+                var refreshToken = GenerateRefreshToken();
+                authModel.RefreshToken = refreshToken.Token;
+                authModel.RefreshTokenExpiration = refreshToken.ExpiresOn;
+                user.RefreshTokens.Add(refreshToken);
+                await _userManager.UpdateAsync(user);
+            }
+
+                return authModel;
         }
 
         public async Task<string> AssignRoleAsync(AssignRoleModel model)
@@ -133,6 +150,22 @@ namespace As_SVS.Business.Services
                 signingCredentials: signingCredentials);
 
             return jwtSecurityToken;
+        }
+
+        private RefreshToken GenerateRefreshToken()
+        { 
+            var randomNumber = new byte[32];
+
+            using var generator = new RNGCryptoServiceProvider();
+
+            generator.GetBytes(randomNumber);
+
+            return new RefreshToken
+            {
+                Token = Convert.ToBase64String(randomNumber),
+                ExpiresOn = DateTime.UtcNow.AddDays(10),
+                CreatedOn = DateTime.UtcNow,
+            };
         }
     }
 }
