@@ -1,4 +1,4 @@
-﻿namespace As_SVS.API.Helpers
+﻿namespace As_SVS.Core.Consts
 {
     public class Roles
     {

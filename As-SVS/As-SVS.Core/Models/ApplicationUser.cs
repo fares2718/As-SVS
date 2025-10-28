@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace As_SVS.Core.Models
@@ -15,7 +16,7 @@ namespace As_SVS.Core.Models
         public string LastName { get; set; } = null!;
         public string FullName => $"{FirstName} {MiddleName} {LastName}";
         public DateTime DateOfBirth { get; set; }
-        public string? ImageUrl { get; set; }
+        public IFormFile? ImageUrl { get; set; }
         public bool Gender { get; set; }
 
         public List<RefreshToken>? RefreshTokens { get; set; }

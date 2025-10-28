@@ -20,13 +20,16 @@ namespace As_SVS.Business.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly JWT _jwt;
+        private readonly string _imagePath;
 
-        public AuthServices(UserManager<ApplicationUser> userManager, IMapper mapper, IOptions<JWT> jwt, RoleManager<IdentityRole> roleManager)
+        public AuthServices(UserManager<ApplicationUser> userManager, IMapper mapper, IOptions<JWT> jwt,
+            RoleManager<IdentityRole> roleManager, string imagePath)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
             _jwt = jwt.Value;
+            _imagePath = imagePath;
         }
 
         public async Task<AuthModel> RegisterAsync(RegisterModel model)
@@ -38,6 +41,13 @@ namespace As_SVS.Business.Services
                 return new AuthModel { Message = $"{model.Username} alredy exists" };
 
             var user = _mapper.Map<ApplicationUser>(model);
+            if(user.ImageUrl is not null)
+            {
+                string imageName = $"{Guid.NewGuid().ToString()}{Path.GetExtension(model.ImageUrl.FileName)}";
+                var path = Path.Combine(_imagePath, imageName);
+                using var stream = File.Create(path);
+                await user.ImageUrl.CopyToAsync(stream);
+            }
             var result = await _userManager.CreateAsync(user, model.Password);
             if(!result.Succeeded)
             {

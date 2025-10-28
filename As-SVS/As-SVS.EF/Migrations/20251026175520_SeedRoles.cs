@@ -1,4 +1,4 @@
-﻿using As_SVS.API.Helpers;
+﻿using As_SVS.Core.Consts;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System.Runtime.CompilerServices;
 
