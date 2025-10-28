@@ -14,7 +14,7 @@ namespace As_SVS.Core.Models
         public string MiddleName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string FullName => $"{FirstName} {MiddleName} {LastName}";
-        public DateOnly DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string? ImageUrl { get; set; }
         public bool Gender { get; set; }
 

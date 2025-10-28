@@ -9,17 +9,15 @@ namespace As_SVS.Core.Models
 {
     public class RegisterModel
     {
-        [Required,StringLength(100)]
         public string FirstName { get; set; } = null!;
-        [Required, StringLength(100)]
         public string MiddleName { get; set; } = null!;
-        [Required, StringLength(100)]
         public string LastName { get; set; } = null!;
-        [Required, StringLength(50)]
         public string Username { get; set; } = null!;
-        [Required, StringLength(150)]
         public string Email { get; set; } = null!;
-        [Required, StringLength(100)]
         public string Password { get; set; } = null!;
+        public DateTime DateOfBirth { get; set; }
+        public string? ImageUrl { get; set; }
+        public string PhoneNumber { get; set; } = null!;
+        public bool Gender { get; set; }
     }
 }
