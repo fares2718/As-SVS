@@ -10,6 +10,7 @@ using System.Text;
 using As_SVS.Business.Helpers;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 
 namespace As_SVS.Business.Services
 {
@@ -119,6 +120,44 @@ namespace As_SVS.Business.Services
             var result = await _userManager.AddToRoleAsync(user, model.Role);
 
             return result.Succeeded? string.Empty:"Something went wrong";
+        }
+
+        public async Task<AuthModel> RefreshTokenAsync(string token)
+        {
+            var authModel = new AuthModel { };
+
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token==token));
+
+            if (user is null)
+            {
+                authModel.Message = "Invalid Toke";
+                return authModel;
+            }
+
+            var refreshToken = user.RefreshTokens.Single(t => t.Token == token);
+            if(!refreshToken.IsActive)
+            {
+                authModel.Message = "Invalid Toke";
+                return authModel;
+            }
+
+            refreshToken.RevokedOn = DateTime.UtcNow;
+
+            var newRefreshToken = GenerateRefreshToken();
+            user.RefreshTokens.Add(newRefreshToken);
+            await _userManager.UpdateAsync(user);
+
+            var JwtToken = await CreatJWTToken(user);
+            authModel.IsAuthenticated = true;
+            authModel.Token = new JwtSecurityTokenHandler().WriteToken(JwtToken);
+            authModel.Email = user.Email;
+            authModel.Username = user.UserName;
+            var roles = await _userManager.GetRolesAsync(user);
+            authModel.Roles = roles.ToList();
+            authModel.RefreshToken = newRefreshToken.Token;
+            authModel.RefreshTokenExpiration = newRefreshToken.ExpiresOn;
+
+            return authModel;
         }
 
         private async Task<JwtSecurityToken> CreatJWTToken(ApplicationUser user)

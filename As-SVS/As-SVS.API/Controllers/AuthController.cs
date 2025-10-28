@@ -74,6 +74,27 @@ namespace As_SVS.API.Controllers
         }
         #endregion
 
+        #region GET
+
+        [HttpGet("refreshToken")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> RefreshTokenAsync()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            var result = await _authService.RefreshTokenAsync(refreshToken);
+
+            if (!result.IsAuthenticated)
+                return BadRequest(result);
+
+            AppendRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiration);
+            return Ok(result);
+        }
+
+        #endregion
+
         private void AppendRefreshTokenToCookie(string RefreshToken,DateTime expires)
         {
             var cookieOptions = new CookieOptions

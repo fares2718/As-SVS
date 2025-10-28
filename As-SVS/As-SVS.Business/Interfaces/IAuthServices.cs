@@ -12,5 +12,6 @@ namespace As_SVS.Business.Interfaces
         Task<AuthModel> RegisterAsync(RegisterModel model);
         Task<AuthModel> GetTokenAsync(TokenRequestModel model);
         Task<string> AssignRoleAsync(AssignRoleModel model);
+        Task<AuthModel> RefreshTokenAsync(string token);
     }
 }
