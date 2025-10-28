@@ -56,7 +56,7 @@ namespace As_SVS.Business.Services
             return new AuthModel
             {
                 Email = user.Email,
-                //ExpiresOn = JWTSecurityToken.ValidTo,
+                ExpiresOn = JWTSecurityToken.ValidTo,
                 IsAuthenticated = true,
                 Roles = new List<string> { "None" },
                 Token = new JwtSecurityTokenHandler().WriteToken(JWTSecurityToken),
@@ -83,7 +83,7 @@ namespace As_SVS.Business.Services
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(JWTSecurityToken);
             authModel.Email = user.Email;
             authModel.Username = user.UserName;
-            //authModel.ExpiresOn = JWTSecurityToken.ValidTo;
+            authModel.ExpiresOn = JWTSecurityToken.ValidTo;
             authModel.Roles = roleList.ToList();
 
             if(user.RefreshTokens.Any(t => t.IsActive))
@@ -130,14 +130,14 @@ namespace As_SVS.Business.Services
 
             if (user is null)
             {
-                authModel.Message = "Invalid Toke";
+                authModel.Message = "Invalid Token";
                 return authModel;
             }
 
             var refreshToken = user.RefreshTokens.Single(t => t.Token == token);
             if(!refreshToken.IsActive)
             {
-                authModel.Message = "Invalid Toke";
+                authModel.Message = "Invalid Token";
                 return authModel;
             }
 
@@ -158,6 +158,26 @@ namespace As_SVS.Business.Services
             authModel.RefreshTokenExpiration = newRefreshToken.ExpiresOn;
 
             return authModel;
+        }
+
+        public async Task<bool> RevokeTokenAsync(string token)
+        {
+            var authModel = new AuthModel { };
+
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
+
+            if (user is null)
+                return false;
+
+            var refreshToken = user.RefreshTokens.Single(t => t.Token == token);
+            if (!refreshToken.IsActive)
+                return false;
+
+            refreshToken.RevokedOn = DateTime.UtcNow;
+
+            await _userManager.UpdateAsync(user);
+
+            return true;
         }
 
         private async Task<JwtSecurityToken> CreatJWTToken(ApplicationUser user)

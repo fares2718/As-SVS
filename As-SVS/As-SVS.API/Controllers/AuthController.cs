@@ -1,6 +1,7 @@
 ﻿using As_SVS.Business.Interfaces;
 using As_SVS.Business.Services;
 using As_SVS.Core.Models;
+using As_SVS.DTOs.ModelsDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,8 @@ namespace As_SVS.API.Controllers
 
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);
+
+            AppendRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiration);
 
             return Ok(result);
         }
@@ -72,6 +75,26 @@ namespace As_SVS.API.Controllers
 
             return Ok(model);
         }
+
+        [HttpPost("revokeToken")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> RevokeToken([FromBody] RevokeToken dto)
+        {
+            var token = dto.Token ?? Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(token))
+                return BadRequest("Token is requiered");
+
+            var result = await _authService.RevokeTokenAsync(token);
+
+            if (!result)
+                return BadRequest("Token is Invalid");
+
+            return Ok("Great");
+        }
+
         #endregion
 
         #region GET
