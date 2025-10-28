@@ -48,6 +48,9 @@ namespace As_SVS.API.Controllers
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);
 
+            if (!string.IsNullOrEmpty(result.RefreshToken))
+                AppendRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiration);
+
             return Ok(result);
         }
 
@@ -70,5 +73,15 @@ namespace As_SVS.API.Controllers
             return Ok(model);
         }
         #endregion
+
+        private void AppendRefreshTokenToCookie(string RefreshToken,DateTime expires)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = expires.ToLocalTime()
+            };
+            Response.Cookies.Append("refreshToken", RefreshToken, cookieOptions);
+        }
     }
 }
