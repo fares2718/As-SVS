@@ -53,7 +53,7 @@ namespace As_SVS.Business.Services
             return new AuthModel
             {
                 Email = user.Email,
-                ExpiresOn = JWTSecurityToken.ValidTo,
+                //ExpiresOn = JWTSecurityToken.ValidTo,
                 IsAuthenticated = true,
                 Roles = new List<string> { "None" },
                 Token = new JwtSecurityTokenHandler().WriteToken(JWTSecurityToken),
@@ -80,7 +80,7 @@ namespace As_SVS.Business.Services
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(JWTSecurityToken);
             authModel.Email = user.Email;
             authModel.Username = user.UserName;
-            authModel.ExpiresOn = JWTSecurityToken.ValidTo;
+            //authModel.ExpiresOn = JWTSecurityToken.ValidTo;
             authModel.Roles = roleList.ToList();
 
             return authModel;

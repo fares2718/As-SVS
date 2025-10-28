@@ -17,6 +17,8 @@ namespace As_SVS.Core.Models
         public DateOnly DateOfBirth { get; set; }
         public string? ImageUrl { get; set; }
         public bool Gender { get; set; }
+
+        public List<RefreshToken>? RefreshTokens { get; set; }
         public virtual Admin? Admin { get; set; }
         public virtual Teacher? Teacher { get; set; }
         public virtual Student? Student { get; set; }
