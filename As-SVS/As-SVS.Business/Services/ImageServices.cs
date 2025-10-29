@@ -1,7 +1,9 @@
 ﻿using As_SVS.Business.Interfaces;
 using As_SVS.Core.Consts;
 using As_SVS.Core.Interfaces;
+using As_SVS.DTOs.ImageDTO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,22 @@ namespace As_SVS.Business.Services
         public ImageServices(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+        }
+
+        public ImageFile GetImage(string imageFile)
+        {
+            var filePath = Path.Combine(ImageSettings.ImagesPath, imageFile);
+
+            if (!System.IO.File.Exists(filePath))
+                return null;
+            var image = System.IO.File.OpenRead(filePath);
+            var MimeType = GetMimeType(filePath);
+
+            return new ImageFile 
+            { 
+                imageFile = image,
+                mimeType = MimeType
+            };
         }
 
         public async Task<string> UploadImageAsync(IFormFile imageFile,string userId)
@@ -36,6 +54,19 @@ namespace As_SVS.Business.Services
                 return "";
 
             return path;
+        }
+
+        private string GetMimeType(string filePath)
+        {
+            var extensions = Path.GetExtension(filePath);
+            var avilabeExtensions = ImageSettings.AllowedExtentions.Split(',').ToList();
+            
+            return extensions switch
+            {
+                ".jpg" or ".jpeg" => "image/jpg",
+                ".png" => "image/png",
+                _ => "application/octec-stream",
+            };
         }
     }
 }

@@ -30,5 +30,19 @@ namespace As_SVS.API.Controllers
             return Ok(path);
         }
 
+        [HttpGet("Get/{fileName}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public IActionResult GetImage(string fileName)
+        {
+            var imageFile = _imageServices.GetImage(fileName);
+
+            if (imageFile is null)
+                return NotFound("No Image was found");
+
+            return File(imageFile.imageFile, imageFile.mimeType);
+        }
+
     }
 }
