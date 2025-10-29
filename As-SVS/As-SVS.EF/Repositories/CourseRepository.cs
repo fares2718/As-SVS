@@ -33,5 +33,14 @@ namespace AsSVS.EF.Repositories
                 .SingleOrDefaultAsync(c => c.Id == Id);
             return course ?? new Course();
         }
+
+        public async Task<IEnumerable<Course>> SearchByNameAsync(string name)
+        {
+            var coursesWithName = await _context.Courses
+                .Where(c => c.Name.Contains(name))
+                .AsNoTracking()
+                .ToListAsync();
+            return coursesWithName;
+        }
     }
 }

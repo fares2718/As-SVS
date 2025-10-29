@@ -10,5 +10,6 @@ namespace As_SVS.Core.Interfaces
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(int Id);
+        Task<IEnumerable<T>> SearchByNameAsync(string name);
     }
 }

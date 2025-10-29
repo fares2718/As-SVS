@@ -27,7 +27,7 @@ namespace As_SVS.API.Controllers
         {
             var coursesList = await _courseServices.GetAllAsync();
 
-            if(coursesList.Count()==0)
+            if (coursesList.Count() == 0)
                 return NotFound("No courses was found");
 
             return Ok(coursesList);
@@ -49,6 +49,20 @@ namespace As_SVS.API.Controllers
                 return NotFound("Course was not found");
 
             return Ok(course);
+        }
+
+        [HttpGet("SearchByName/{name}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> SearchByNameAsync(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return BadRequest("Invalid name");
+            var coursesWithName = await _courseServices.SearchByNameAsync(name);
+            if (coursesWithName is null || coursesWithName.Count() == 0)
+                return NotFound($"{name} was not found");
+            return Ok(coursesWithName);
         }
 
         #endregion

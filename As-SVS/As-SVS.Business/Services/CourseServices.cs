@@ -27,5 +27,10 @@ namespace As_SVS.Business.Services
         {
             return await _baseRepository.GetByIdAsync(Id);
         }
+
+        public async Task<IEnumerable<Course>> SearchByNameAsync(string name)
+        {
+            return await _baseRepository.SearchByNameAsync(name);
+        }
     }
 }
