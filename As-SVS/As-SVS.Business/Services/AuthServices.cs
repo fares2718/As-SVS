@@ -41,13 +41,6 @@ namespace As_SVS.Business.Services
                 return new AuthModel { Message = $"{model.Username} alredy exists" };
 
             var user = _mapper.Map<ApplicationUser>(model);
-            if(user.ImageUrl is not null)
-            {
-                string imageName = $"{Guid.NewGuid().ToString()}{Path.GetExtension(model.ImageUrl.FileName)}";
-                var path = Path.Combine(_imagePath, imageName);
-                using var stream = File.Create(path);
-                await user.ImageUrl.CopyToAsync(stream);
-            }
             var result = await _userManager.CreateAsync(user, model.Password);
             if(!result.Succeeded)
             {

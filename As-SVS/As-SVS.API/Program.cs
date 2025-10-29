@@ -44,6 +44,7 @@ namespace As_SVS.API
                 });
             builder.Services.AddScoped<IAuthServices,AuthServices>();
             builder.Services.AddTransient(typeof(IAuthServices), typeof(AuthServices));
+            builder.Services.AddTransient(typeof(IImageServices), typeof(ImageServices));
             builder.Services.AddTransient(typeof(PasswordHasher<>));
             builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 
