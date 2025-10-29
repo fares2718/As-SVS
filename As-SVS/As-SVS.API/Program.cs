@@ -1,8 +1,10 @@
 using As_SVS.Business.Helpers;
 using As_SVS.Business.Interfaces;
 using As_SVS.Business.Services;
+using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
 using As_SVS.EF;
+using AsSVS.EF.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +45,7 @@ namespace As_SVS.API
                     };
                 });
             builder.Services.AddScoped<IAuthServices,AuthServices>();
+            builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
             builder.Services.AddTransient(typeof(IAuthServices), typeof(AuthServices));
             builder.Services.AddTransient(typeof(IImageServices), typeof(ImageServices));
             builder.Services.AddTransient(typeof(PasswordHasher<>));

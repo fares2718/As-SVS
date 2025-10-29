@@ -8,9 +8,7 @@ namespace As_SVS.Core.Interfaces
 {
     public interface IBaseRepository <T> where T : class
     {
-        Task<IEnumerable<T>>? GetAllAsync();
-        Task<T>? GetByIdAsync(int id);
-        Task<bool> AddAsync (T entity);
-        Task<bool> UpdateAsync (T entity);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(int Id);
     }
 }
