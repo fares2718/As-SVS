@@ -9,15 +9,12 @@ public partial class Enrolment
 
     public int CourseId { get; set; }
 
-    public int TeacherId { get; set; }
+    public DateTime? EnrolmentDate { get; set; }
 
-    public DateOnly? EnrolmentDate { get; set; }
-
-    public DateOnly? CompletionDate { get; set; }
+    public DateTime? CompletionDate { get; set; }
 
     public virtual Course Course { get; set; } = default!;
 
     public virtual Student Student { get; set; } = default!;
 
-    public virtual Teacher Teacher { get; set; } = default!;
 }

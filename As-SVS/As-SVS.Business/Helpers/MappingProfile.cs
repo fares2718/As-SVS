@@ -8,6 +8,9 @@ namespace As_SVS.Business.Helpers
         public MappingProfile()
         {
             CreateMap<RegisterModel, ApplicationUser>();
+            CreateMap<ApplicationUser, Admin>();
+            CreateMap<ApplicationUser, Teacher>();
+            CreateMap<ApplicationUser, Student>();
         }
     }
 }

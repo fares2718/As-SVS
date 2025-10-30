@@ -12,5 +12,7 @@ namespace As_SVS.Business.Interfaces
         Task<IEnumerable<Course>> GetAllAsync();
         Task<Course> GetByIdAsync(int Id);
         Task<IEnumerable<Course>> SearchByNameAsync(string name);
+        Task<IEnumerable<Course>> GetEnrolledCourses(int studentId);
+        Task EnrollInCourseAsync(int studentId, int courseId);
     }
 }

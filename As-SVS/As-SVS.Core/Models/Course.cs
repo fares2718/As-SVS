@@ -16,6 +16,8 @@ public partial class Course
     public string? CourseCode { get; set; }
 
     public int GradeId { get; set; }
+    public int TeacherId { get; set; }
+    public virtual Teacher Teacher { get; set; }
 
     public virtual ICollection<Annoucement> Annoucements { get; set; } = new List<Annoucement>();
 

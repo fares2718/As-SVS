@@ -11,25 +11,29 @@ using As_SVS.Business.Helpers;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
+using As_SVS.EF;
+using As_SVS.Core.Consts;
 
 namespace As_SVS.Business.Services
 {
     public class AuthServices : IAuthServices
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly As_SVSContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly JWT _jwt;
         private readonly string _imagePath;
 
         public AuthServices(UserManager<ApplicationUser> userManager, IMapper mapper, IOptions<JWT> jwt,
-            RoleManager<IdentityRole> roleManager, string imagePath)
+            RoleManager<IdentityRole> roleManager, string imagePath, As_SVSContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
             _jwt = jwt.Value;
             _imagePath = imagePath;
+            _context = context;
         }
 
         public async Task<AuthModel> RegisterAsync(RegisterModel model)
@@ -121,7 +125,23 @@ namespace As_SVS.Business.Services
                 await _userManager.RemoveFromRoleAsync(user, "None");
 
             var result = await _userManager.AddToRoleAsync(user, model.Role);
-
+            switch (model.Role.ToLower())
+            {
+                case "admin":
+                    var admin = _mapper.Map<Admin>(model);
+                    admin.Salary = SalarySettings.adminSalary;
+                    await _context.Admins.AddAsync(admin);
+                    break;
+                case "teacher":
+                    var teacher = _mapper.Map<Teacher>(model);
+                    teacher.Salary = SalarySettings.teacherSalary;
+                    await _context.Teachers.AddAsync(teacher);
+                    break;
+                case "student":
+                    var student = _mapper.Map<Student>(model);
+                    await _context.Students.AddAsync(student);
+                    break;
+            }
             return result.Succeeded? string.Empty:"Something went wrong";
         }
 

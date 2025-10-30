@@ -18,6 +18,8 @@ namespace As_SVS.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            #region JWTandEF
             builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<As_SVSContext>();
@@ -44,13 +46,20 @@ namespace As_SVS.API
                         ClockSkew = TimeSpan.Zero,
                     };
                 });
-            builder.Services.AddScoped<IAuthServices,AuthServices>();
-            builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
-            builder.Services.AddTransient(typeof(IAuthServices), typeof(AuthServices));
-            builder.Services.AddTransient(typeof(IImageServices), typeof(ImageServices));
-            builder.Services.AddTransient(typeof(PasswordHasher<>));
-            builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
+            #endregion
 
+            #region Repositories
+            builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
+            builder.Services.AddTransient(typeof(IBaseRepository<Course>), typeof(CourseRepository));
+            builder.Services.AddTransient(typeof(ICourseRepository), typeof(CourseRepository));
+            #endregion
+
+            #region Services
+            builder.Services.AddScoped(typeof(IAuthServices), typeof(AuthServices));
+            builder.Services.AddTransient(typeof(IImageServices), typeof(ImageServices));
+            builder.Services.AddTransient(typeof(ICourseServices), typeof(CourseServices));
+            builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
+            #endregion
 
 
             // Add services to the container.
