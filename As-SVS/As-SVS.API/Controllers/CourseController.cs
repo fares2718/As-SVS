@@ -83,7 +83,7 @@ namespace As_SVS.API.Controllers
         }
 
         [Authorize("Student")]
-        [HttpGet("Courses/Enrollements/{studentId}")]
+        [HttpGet("Courses/{courseId}/Modules")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

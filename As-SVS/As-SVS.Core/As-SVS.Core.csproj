@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="assets\images\user\" />
+    <Folder Include="assets\courses\" />
   </ItemGroup>
 
 </Project>
