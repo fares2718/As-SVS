@@ -72,9 +72,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
         {
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Password)
-                .HasMaxLength(50)
-                .HasColumnName("password");
             entity.Property(e => e.applicationUserId).HasColumnName("applicationUser_id");
             entity.Property(e => e.Salary)
                 .HasColumnType("money")
@@ -204,7 +201,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.CourseId).HasColumnName("course_id");
             entity.Property(e => e.EnrolmentDate).HasColumnName("enrolment_date");
             entity.Property(e => e.StudentId).HasColumnName("student_id");
-            entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
 
             entity.HasOne(d => d.Course).WithMany()
                 .HasForeignKey(d => d.CourseId)
@@ -215,11 +211,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
                 .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Enrolment_Students");
-
-            entity.HasOne(d => d.Teacher).WithMany()
-                .HasForeignKey(d => d.TeacherId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Enrolment_Teachers");
         });
 
         modelBuilder.Entity<Grade>(entity =>

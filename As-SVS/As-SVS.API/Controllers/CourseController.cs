@@ -12,6 +12,7 @@ namespace As_SVS.API.Controllers
     public class CourseController : ControllerBase
     {
         private readonly ICourseServices _courseServices;
+        private readonly IModulesServices _modulesServices;
 
         public CourseController(ICourseServices courseServices)
         {
@@ -80,6 +81,22 @@ namespace As_SVS.API.Controllers
             await _courseServices.EnrollInCourseAsync(studentId, courseId);
             return CreatedAtRoute("Courses/Enroll",new {studentId,courseId});
         }
+
+        [Authorize("Student")]
+        [HttpGet("Courses/Enrollements/{studentId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAllModulesInCourseAsync(int courseId)
+        {
+            if (courseId < 1)
+                return BadRequest("Invalid Id");
+            var modules = await _modulesServices.GetAllModulesInCourseAsync(courseId);
+            if (modules.Count() == 0)
+                return NotFound("No modules were added");
+            return Ok(modules);
+        }
+
 
         #endregion
 

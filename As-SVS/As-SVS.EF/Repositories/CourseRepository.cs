@@ -64,19 +64,21 @@ namespace AsSVS.EF.Repositories
             {
                 return;
             }
-
             var student = await _context.Students.SingleOrDefaultAsync(s => s.Id == studentId);
             var course = await _context.Courses.SingleOrDefaultAsync(c => c.Id == courseId);
-            await _context.Enrolments.AddAsync(
-                new Enrolment
-                {
-                    Student=student,
-                    Course=course,
-                    CourseId=courseId,
-                    StudentId=studentId,
-                    EnrolmentDate= DateTime.UtcNow
-                }
-                );
+            if (student.GradeId == course.GradeId)
+            {
+                await _context.Enrolments.AddAsync(
+                    new Enrolment
+                    {
+                        Student = student,
+                        Course = course,
+                        CourseId = courseId,
+                        StudentId = studentId,
+                        EnrolmentDate = DateTime.UtcNow
+                    }
+                    );
+            }
         }
 
         #endregion
