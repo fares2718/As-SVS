@@ -44,5 +44,10 @@ namespace As_SVS.Business.Services
         {
             await _courseRepository.EnrollInCourseAsync(studentId, courseId); 
         }
+
+        public bool IsStudentEnrolled(int studentId, int courseId)
+        {
+            return _courseRepository.IsStudentEnrolled(studentId, courseId);
+        }
     }
 }

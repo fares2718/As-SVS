@@ -18,9 +18,14 @@ namespace As_SVS.Business.Services
             _lessonsRepository = lessonsRepository;
         }
 
-        public async Task<IEnumerable<Lesson>> GetModulesLessons(int moduleId)
+        public async Task<Lesson> GetLessonsAsync(int courseId, int moduleId, int lessonId)
         {
-            return await _lessonsRepository.GetModulesLessons(moduleId);
+            return await _lessonsRepository.GetLessonsAsync(courseId, moduleId, lessonId);
+        }
+
+        public async Task<IEnumerable<Lesson>> GetModulesLessons(int courseId, int moduleId)
+        {
+            return await _lessonsRepository.GetModulesLessonsAsync(courseId,moduleId);
         }
     }
 }

@@ -19,11 +19,25 @@ namespace AsSVS.EF.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Lesson>> GetModulesLessons(int moduleId)
+        public async Task<Lesson> GetLessonsAsync(int courseId, int moduleId, int lessonId)
         {
-            var module = await _context.Modules.SingleOrDefaultAsync(m => m.Id == moduleId);
+            var course = await _context.Courses.SingleOrDefaultAsync(c => c.Id == courseId);
+            if (course is null)
+                return new Lesson();
+            var module = course.Modules.SingleOrDefault(m => m.Id == moduleId);
+            if (module is null)
+                return new Lesson();
+            return module.Lessons.SingleOrDefault(l => l.Id == lessonId) ?? new Lesson();
+        }
+
+        public async Task<IEnumerable<Lesson>> GetModulesLessonsAsync(int courseId, int moduleId)
+        {
+            var course = await _context.Courses.SingleOrDefaultAsync(c => c.Id == courseId);
+            if(course is null)
+                return Enumerable.Empty<Lesson>();
+            var module = course.Modules.SingleOrDefault(m => m.Id == moduleId);
             if(module is null)
-                return new List<Lesson>();
+                return Enumerable.Empty<Lesson>();
             return module.Lessons;
         }
 

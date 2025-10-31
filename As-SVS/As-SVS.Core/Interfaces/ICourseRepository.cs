@@ -7,5 +7,6 @@ namespace As_SVS.Core.Interfaces
     {
         Task<IEnumerable<Course>> GetEnrolledCoursesAsync(int studentId);
         Task EnrollInCourseAsync(int studentId,int courseId);
+        bool IsStudentEnrolled(int studentId,int courseId);
     }
 }

@@ -13,11 +13,16 @@ namespace As_SVS.API.Controllers
     {
         private readonly ICourseServices _courseServices;
         private readonly IModulesServices _modulesServices;
+        private readonly ILessonsServices _lessonsServices;
+        private readonly IVideoServices _videoServices;
 
-        public CourseController(ICourseServices courseServices, IModulesServices modulesServices)
+        public CourseController(ICourseServices courseServices, IModulesServices modulesServices,
+            ILessonsServices lessonsServices, IVideoServices videoServices)
         {
             _courseServices = courseServices;
             _modulesServices = modulesServices;
+            _lessonsServices = lessonsServices;
+            _videoServices = videoServices;
         }
 
         #region User
@@ -55,7 +60,7 @@ namespace As_SVS.API.Controllers
         #region Student
 
         //[Authorize("Student")]
-        [HttpGet("Courses/Enrollements/{studentId}")]
+        [HttpGet("Enrollements/{studentId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -71,20 +76,7 @@ namespace As_SVS.API.Controllers
         }
 
         //[Authorize("Student")]
-        [HttpPost("Courses/Enroll/{studentId}/{courseId}")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        
-        public async Task<IActionResult> EnrollInCourseAsync(int studentId, int courseId)
-        {
-            if (studentId < 1 || courseId < 1)
-                return BadRequest("Invalid student Id or course Id");
-            await _courseServices.EnrollInCourseAsync(studentId, courseId);
-            return CreatedAtRoute("Courses/Enroll",new {studentId,courseId});
-        }
-
-        //[Authorize("Student")]
-        [HttpGet("Courses/{courseId}/Modules")]
+        [HttpGet("{courseId}/Modules")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -98,6 +90,54 @@ namespace As_SVS.API.Controllers
             return Ok(modules);
         }
 
+        //[Authorize("Student")]
+        [HttpGet("{courseId}/{moduleId}/Lessons")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public async Task<IActionResult> GetModuleLessonsAsync(int courseId,int moduleId)
+        {
+            if (moduleId < 1)
+                return BadRequest("Invalid module Id");
+            var moduleLessons = await _lessonsServices.GetModulesLessons(courseId,moduleId);
+            if (moduleLessons.Count() == 0)
+                return NotFound("No lessons were found");
+            return Ok(moduleLessons);
+        }
+
+        //[Authorize("Student")]
+        [HttpGet("{courseId}/{moduleId}/{lessonId}/watch")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
+        public async Task<IActionResult> WatchLesson(int studentId,int courseId,int moduleId,int lessonId)
+        {
+            if (studentId < 1 || courseId < 1 || moduleId < 1 || lessonId < 1)
+                return BadRequest("Invalid course or module or lesson Id");
+            if (!_courseServices.IsStudentEnrolled(studentId, courseId))
+                return Unauthorized("student did not enroll in this course");
+            var lesson = await _lessonsServices.GetLessonsAsync(courseId, moduleId,lessonId);
+            if (string.IsNullOrEmpty(lesson.Name))
+                return NotFound("lesson was not found");
+            var video = _videoServices.GetVideo(lesson.VideoUrl, lesson.Module.Course.Name);
+            return File(video.videoFile, video.mimeType);
+        }
+
+        //[Authorize("Student")]
+        [HttpPost("Enroll/{studentId}/{courseId}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> EnrollInCourseAsync(int studentId, int courseId)
+        {
+            if (studentId < 1 || courseId < 1)
+                return BadRequest("Invalid student Id or course Id");
+            await _courseServices.EnrollInCourseAsync(studentId, courseId);
+            return CreatedAtRoute("Courses/Enroll", new { studentId, courseId });
+        }
 
         #endregion
 

@@ -82,6 +82,12 @@ namespace AsSVS.EF.Repositories
             }
         }
 
+        public bool IsStudentEnrolled(int studentId, int courseId)
+        {
+           var Enrollment = _context.Enrolments.FirstOrDefault(sc => sc.StudentId == studentId && sc.CourseId == courseId);
+           return Enrollment != null;
+        }
+
         #endregion
     }
 }
