@@ -2,15 +2,8 @@
 using As_SVS.Business.Interfaces;
 using As_SVS.Core.Consts;
 using As_SVS.Core.Interfaces;
-using As_SVS.Core.Models;
-using As_SVS.DTOs.ImageDTO;
 using As_SVS.DTOs.VideoDTO;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace As_SVS.Business.Services
 {

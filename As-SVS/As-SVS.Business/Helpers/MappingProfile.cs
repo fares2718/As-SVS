@@ -14,6 +14,9 @@ namespace As_SVS.Business.Helpers
             CreateMap<ApplicationUser, Student>();
             CreateMap<ModuleDTO,As_SVS.Core.Models.Module>();
             CreateMap<LessonDTO,Lesson>();
+            CreateMap<QuizeDTO,Quize>();
+            CreateMap<QuizeQuestionDTO,QuizQuestion>();
+            CreateMap<QuestionOptionDTO,QuestionOption>();
         }
     }
 }

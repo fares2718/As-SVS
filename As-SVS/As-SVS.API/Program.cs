@@ -54,6 +54,7 @@ namespace As_SVS.API
             builder.Services.AddTransient(typeof(ICourseRepository), typeof(CourseRepository));
             builder.Services.AddTransient(typeof(IModulesRepository), typeof(ModulesRepository));
             builder.Services.AddTransient(typeof(ILessonsRepository), typeof(LessonsRepository));
+            builder.Services.AddTransient(typeof(IQuizeRepository), typeof(QuizeRepository));
             #endregion
 
             #region Services
@@ -62,6 +63,7 @@ namespace As_SVS.API
             builder.Services.AddTransient(typeof(ICourseServices), typeof(CourseServices));
             builder.Services.AddTransient(typeof(IModulesServices), typeof(ModulesServices));
             builder.Services.AddTransient(typeof(ILessonsServices), typeof(LessonServices));
+            builder.Services.AddTransient(typeof(IQuizeServices), typeof(QuizeServices));
             builder.Services.AddTransient(typeof(IVideoServices), typeof(VideoServices));
             builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
             #endregion

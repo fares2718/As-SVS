@@ -16,15 +16,17 @@ namespace As_SVS.API.Controllers
         private readonly ICourseServices _courseServices;
         private readonly IModulesServices _modulesServices;
         private readonly ILessonsServices _lessonsServices;
+        private readonly IQuizeServices _quizeServices;
         private readonly IVideoServices _videoServices;
 
         public CourseController(ICourseServices courseServices, IModulesServices modulesServices,
-            ILessonsServices lessonsServices, IVideoServices videoServices)
+            ILessonsServices lessonsServices, IVideoServices videoServices, IQuizeServices quizeServices)
         {
             _courseServices = courseServices;
             _modulesServices = modulesServices;
             _lessonsServices = lessonsServices;
             _videoServices = videoServices;
+            _quizeServices = quizeServices;
         }
 
         #region User
@@ -182,6 +184,22 @@ namespace As_SVS.API.Controllers
             return CreatedAtRoute($"{courseId}/{moduleId}/add-lesson",lessonId);
         }
 
+        //[Authorize("Teacher")]
+        [HttpPost("{courseId}/{moduleId}/add-quiz")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<IActionResult> CreatQuizeAsync(QuizeDTO quize,int courseId,int moduleId)
+        {
+            if (courseId < 1 || moduleId < 1)
+                return BadRequest("Invalid course or module Id");
+            int quizeId = await _quizeServices.AddNewAsync(quize,courseId,moduleId);
+            if(quizeId == -1)
+                return StatusCode(500, new { error = "Something went wrong" });
+            return CreatedAtRoute($"{courseId}/{moduleId}/add-quiz", quizeId);
+        }
 
         #endregion
 
