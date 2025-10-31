@@ -79,6 +79,7 @@ namespace AsSVS.EF.Repositories
                         StudentId = studentId,
                         EnrolmentDate = DateTime.UtcNow
                     });
+                await _context.SaveChangesAsync();
             }
         }
 

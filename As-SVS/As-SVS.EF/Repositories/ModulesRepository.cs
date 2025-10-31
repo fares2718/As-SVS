@@ -22,6 +22,16 @@ namespace AsSVS.EF.Repositories
             _baseRepository = baseRepository;
         }
 
+        public async Task<int> AddNewAsync(As_SVS.Core.Models.Module module, int courseId)
+        {
+            var course = await _context.Courses.SingleOrDefaultAsync(c => c.Id == courseId);
+            if (course is null)
+                return -1;
+            course.Modules.Add(module);
+            await _context.SaveChangesAsync();
+            return module.Id;
+        }
+
         public async Task<IEnumerable<As_SVS.Core.Models.Module>> GetAllModulesInCourseAsync(int courseId)
         {
             var course = await _baseRepository.GetByIdAsync(courseId);

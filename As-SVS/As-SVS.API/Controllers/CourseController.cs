@@ -1,5 +1,6 @@
 ﻿using As_SVS.Business.Interfaces;
 using As_SVS.Core.Models;
+using As_SVS.DTOs.ModelsDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -138,6 +139,29 @@ namespace As_SVS.API.Controllers
             await _courseServices.EnrollInCourseAsync(studentId, courseId);
             return CreatedAtRoute("Courses/Enroll", new { studentId, courseId });
         }
+
+        #endregion
+
+        #region Teacher
+
+        //[Authorize("Teacher")]
+        [HttpPost("{courseId}/add-model")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<IActionResult> AddNewModuleAsync(ModuleDTO module,int courseId)
+        {
+            if (courseId < 1 || string.IsNullOrEmpty(module.Name))
+                return BadRequest("Invalid Id or model");
+            int moduleId = await _modulesServices.AddNewAsync(module,courseId);
+            if (moduleId == -1)
+                return StatusCode(500, new { error = "Something went wrong" });
+            return CreatedAtRoute($"Courses/{courseId}/add-model",moduleId);
+        }
+
+
 
         #endregion
 
