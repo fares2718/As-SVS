@@ -11,6 +11,7 @@ namespace As_SVS.Business.Interfaces
 {
     public interface IVideoServices
     {
-        VideoFile GetVideo(string imageFile,string courseName);
+        VideoFile GetVideo(string videoFile,string courseName);
+        Task<string> UploadVideoToDatabase(IFormFile videoFile, int courseId, int moduleId);
     }
 }

@@ -12,7 +12,6 @@ namespace As_SVS.Business.Helpers
         public static string GetMimeType(string filePath)
         {
             var extensions = Path.GetExtension(filePath);
-            var avilabeExtensions = ImageSettings.AllowedExtentions.Split(',').ToList();
 
             return extensions switch
             {

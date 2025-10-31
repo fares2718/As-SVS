@@ -24,5 +24,25 @@ namespace AsSVS.EF.Repositories
             var module = await _context.Modules.SingleOrDefaultAsync(m => m.Id == moduleId);
             return module.Lessons;
         }
+
+        public async Task<bool> UploadVideoToDatabase(string fileName, int courseId,int moduleId, int lessonId)
+        {
+            var course = await _context.Courses.SingleOrDefaultAsync(
+                c => c.Id == courseId);
+
+            if (course is null)
+                return false;
+
+            var module = course.Modules.SingleOrDefault(m => m.Id == moduleId);
+
+            if(module is null)
+                return false;
+
+            var lesson = module.Lessons.FirstOrDefault(l => l.Id == lessonId);
+            lesson.VideoUrl = fileName;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
