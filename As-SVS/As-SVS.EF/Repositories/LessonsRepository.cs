@@ -22,6 +22,8 @@ namespace AsSVS.EF.Repositories
         public async Task<IEnumerable<Lesson>> GetModulesLessons(int moduleId)
         {
             var module = await _context.Modules.SingleOrDefaultAsync(m => m.Id == moduleId);
+            if(module is null)
+                return new List<Lesson>();
             return module.Lessons;
         }
 
@@ -39,6 +41,10 @@ namespace AsSVS.EF.Repositories
                 return false;
 
             var lesson = module.Lessons.FirstOrDefault(l => l.Id == lessonId);
+
+            if (lesson is null)
+                return false;
+
             lesson.VideoUrl = fileName;
 
             await _context.SaveChangesAsync();

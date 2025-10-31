@@ -10,6 +10,6 @@ namespace As_SVS.Core.Interfaces
     public interface ILessonsRepository
     {
         Task<IEnumerable<Lesson>> GetModulesLessons(int moduleId);
-        Task<bool> UploadVideoToDatabase(string fileName, int courseId, int moduleId);
+        Task<bool> UploadVideoToDatabase(string fileName, int courseId, int moduleId, int lessonId);
     }
 }

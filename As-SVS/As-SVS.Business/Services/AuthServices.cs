@@ -23,16 +23,14 @@ namespace As_SVS.Business.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly JWT _jwt;
-        private readonly string _imagePath;
 
         public AuthServices(UserManager<ApplicationUser> userManager, IMapper mapper, IOptions<JWT> jwt,
-            RoleManager<IdentityRole> roleManager, string imagePath, As_SVSContext context)
+            RoleManager<IdentityRole> roleManager, As_SVSContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
             _jwt = jwt.Value;
-            _imagePath = imagePath;
             _context = context;
         }
 
@@ -59,7 +57,8 @@ namespace As_SVS.Business.Services
             await _userManager.AddToRoleAsync(user, "None");
 
             var JWTSecurityToken = await CreatJWTToken(user);
-
+            if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.UserName))
+                return new AuthModel { };
             return new AuthModel
             {
                 Email = user.Email,
@@ -86,6 +85,9 @@ namespace As_SVS.Business.Services
             var JWTSecurityToken = await CreatJWTToken(user);
             var roleList = await _userManager.GetRolesAsync(user);
 
+            if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.UserName)||user.RefreshTokens is null)
+                return new AuthModel { };
+
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(JWTSecurityToken);
             authModel.Email = user.Email;
@@ -95,7 +97,7 @@ namespace As_SVS.Business.Services
 
             if(user.RefreshTokens.Any(t => t.IsActive))
             {
-                var activeRefreshToke = user.RefreshTokens.FirstOrDefault(t => t.IsActive);
+                var activeRefreshToke = user.RefreshTokens.First(t => t.IsActive);
                 authModel.RefreshToken = activeRefreshToke.Token;
                 authModel.RefreshTokenExpiration = activeRefreshToke.ExpiresOn;
             }
@@ -148,10 +150,10 @@ namespace As_SVS.Business.Services
         public async Task<AuthModel> RefreshTokenAsync(string token)
         {
             var authModel = new AuthModel { };
+            var user = await _userManager.Users.SingleOrDefaultAsync(u =>
+            u.RefreshTokens.Any(t => t.Token == token));
 
-            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token==token));
-
-            if (user is null)
+            if (user is null || user.RefreshTokens is null)
             {
                 authModel.Message = "Invalid Token";
                 return authModel;
@@ -169,6 +171,9 @@ namespace As_SVS.Business.Services
             var newRefreshToken = GenerateRefreshToken();
             user.RefreshTokens.Add(newRefreshToken);
             await _userManager.UpdateAsync(user);
+
+            if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.UserName))
+                return new AuthModel { };
 
             var JwtToken = await CreatJWTToken(user);
             authModel.IsAuthenticated = true;
@@ -189,7 +194,7 @@ namespace As_SVS.Business.Services
 
             var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
 
-            if (user is null)
+            if (user is null || user.RefreshTokens is null)
                 return false;
 
             var refreshToken = user.RefreshTokens.Single(t => t.Token == token);
@@ -205,12 +210,16 @@ namespace As_SVS.Business.Services
 
         private async Task<JwtSecurityToken> CreatJWTToken(ApplicationUser user)
         {
+            
             var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
             var roleClaims = new List<Claim>();
 
             foreach (var role in roles)
                 roleClaims.Add(new Claim("roles", role));
+
+            if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Email))
+                return new JwtSecurityToken { };
 
             var claims = new[]
             {

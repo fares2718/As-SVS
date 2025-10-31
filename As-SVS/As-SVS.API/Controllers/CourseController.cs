@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace As_SVS.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CourseController : ControllerBase
@@ -14,9 +14,10 @@ namespace As_SVS.API.Controllers
         private readonly ICourseServices _courseServices;
         private readonly IModulesServices _modulesServices;
 
-        public CourseController(ICourseServices courseServices)
+        public CourseController(ICourseServices courseServices, IModulesServices modulesServices)
         {
             _courseServices = courseServices;
+            _modulesServices = modulesServices;
         }
 
         #region User
@@ -53,7 +54,7 @@ namespace As_SVS.API.Controllers
 
         #region Student
 
-        [Authorize("Student")]
+        //[Authorize("Student")]
         [HttpGet("Courses/Enrollements/{studentId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -69,8 +70,8 @@ namespace As_SVS.API.Controllers
             return Ok(enrolledCourses);
         }
 
-        [Authorize("Student")]
-        [HttpGet("Courses/Enroll/{studentId}/{courseId}")]
+        //[Authorize("Student")]
+        [HttpPost("Courses/Enroll/{studentId}/{courseId}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         
@@ -82,7 +83,7 @@ namespace As_SVS.API.Controllers
             return CreatedAtRoute("Courses/Enroll",new {studentId,courseId});
         }
 
-        [Authorize("Student")]
+        //[Authorize("Student")]
         [HttpGet("Courses/{courseId}/Modules")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

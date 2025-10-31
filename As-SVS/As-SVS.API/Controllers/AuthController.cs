@@ -33,7 +33,8 @@ namespace As_SVS.API.Controllers
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);
 
-            AppendRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiration);
+            if(!string.IsNullOrEmpty(result.RefreshToken))
+                AppendRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiration);
 
             return Ok(result);
         }
@@ -57,7 +58,7 @@ namespace As_SVS.API.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("assign-role")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -107,12 +108,17 @@ namespace As_SVS.API.Controllers
         {
             var refreshToken = Request.Cookies["refreshToken"];
 
+            if (string.IsNullOrEmpty(refreshToken))
+                return BadRequest("Something went wrong");
+
             var result = await _authService.RefreshTokenAsync(refreshToken);
 
             if (!result.IsAuthenticated)
                 return BadRequest(result);
 
-            AppendRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiration);
+            if(!string.IsNullOrEmpty(result.RefreshToken))
+                AppendRefreshTokenToCookie(result.RefreshToken, result.RefreshTokenExpiration);
+
             return Ok(result);
         }
 

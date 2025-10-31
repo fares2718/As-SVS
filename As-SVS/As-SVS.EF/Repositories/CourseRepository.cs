@@ -66,6 +66,8 @@ namespace AsSVS.EF.Repositories
             }
             var student = await _context.Students.SingleOrDefaultAsync(s => s.Id == studentId);
             var course = await _context.Courses.SingleOrDefaultAsync(c => c.Id == courseId);
+            if (student is null || course is null)
+                return;
             if (student.GradeId == course.GradeId)
             {
                 await _context.Enrolments.AddAsync(
@@ -76,8 +78,7 @@ namespace AsSVS.EF.Repositories
                         CourseId = courseId,
                         StudentId = studentId,
                         EnrolmentDate = DateTime.UtcNow
-                    }
-                    );
+                    });
             }
         }
 

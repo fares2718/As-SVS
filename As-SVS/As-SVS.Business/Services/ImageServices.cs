@@ -27,7 +27,7 @@ namespace As_SVS.Business.Services
             var filePath = Path.Combine(ImageSettings.ImagesPath, imageFile);
 
             if (!System.IO.File.Exists(filePath))
-                return null;
+                return new ImageFile { };
             var image = System.IO.File.OpenRead(filePath);
             var MimeType = Utl.GetMimeType(filePath);
 

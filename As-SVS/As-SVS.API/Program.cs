@@ -25,7 +25,7 @@ namespace As_SVS.API
                 .AddEntityFrameworkStores<As_SVSContext>();
             builder.Services.AddDbContext<As_SVSContext>(options =>
                     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddAuthentication(options =>
+            _ = builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -52,12 +52,17 @@ namespace As_SVS.API
             builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
             builder.Services.AddTransient(typeof(IBaseRepository<Course>), typeof(CourseRepository));
             builder.Services.AddTransient(typeof(ICourseRepository), typeof(CourseRepository));
+            builder.Services.AddTransient(typeof(IModulesRepository), typeof(ModulesRepository));
+            builder.Services.AddTransient(typeof(ILessonsRepository), typeof(LessonsRepository));
             #endregion
 
             #region Services
             builder.Services.AddScoped(typeof(IAuthServices), typeof(AuthServices));
             builder.Services.AddTransient(typeof(IImageServices), typeof(ImageServices));
             builder.Services.AddTransient(typeof(ICourseServices), typeof(CourseServices));
+            builder.Services.AddTransient(typeof(IModulesServices), typeof(ModulesServices));
+            builder.Services.AddTransient(typeof(ILessonsServices), typeof(LessonServices));
+            builder.Services.AddTransient(typeof(IVideoServices), typeof(VideoServices));
             builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
             #endregion
 

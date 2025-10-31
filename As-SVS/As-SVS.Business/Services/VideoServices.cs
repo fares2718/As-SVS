@@ -2,6 +2,7 @@
 using As_SVS.Business.Interfaces;
 using As_SVS.Core.Consts;
 using As_SVS.Core.Interfaces;
+using As_SVS.Core.Models;
 using As_SVS.DTOs.ImageDTO;
 using As_SVS.DTOs.VideoDTO;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +28,7 @@ namespace As_SVS.Business.Services
             var filePath = Path.Combine($"{VideoSettings.videoPath}/{courseName}", videoFile);
 
             if (!System.IO.File.Exists(filePath))
-                return null;
+                return new VideoFile();
             var video = System.IO.File.OpenRead(filePath);
             var MimeType = Utl.GetMimeType(filePath);
 
@@ -38,7 +39,7 @@ namespace As_SVS.Business.Services
             };
         }
 
-        public async Task<string> UploadVideoToDatabase(IFormFile videoFile, int courseId, int moduleId)
+        public async Task<string> UploadVideoToDatabase(IFormFile videoFile, int courseId, int moduleId, int lessonId)
         {
             var fileName = $"{Guid.NewGuid().ToString()}{Path.GetExtension(videoFile.FileName)}";
             var path = Path.Combine(ImageSettings.ImagesPath, fileName);
@@ -49,7 +50,7 @@ namespace As_SVS.Business.Services
             using (var stream = new FileStream(path, FileMode.Create))
                 await videoFile.CopyToAsync(stream);
 
-            bool isUploaded = await _lessonRepository.UploadVideoToDatabase(fileName,courseId,moduleId);
+            bool isUploaded = await _lessonRepository.UploadVideoToDatabase(fileName, courseId, moduleId,lessonId);
 
             if (!isUploaded)
                 return "";
