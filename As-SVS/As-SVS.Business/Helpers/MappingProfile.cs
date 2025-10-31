@@ -1,4 +1,5 @@
 ﻿using As_SVS.Core.Models;
+using As_SVS.DTOs.ModelsDTO;
 using AutoMapper;
 
 namespace As_SVS.Business.Helpers
@@ -11,7 +12,8 @@ namespace As_SVS.Business.Helpers
             CreateMap<ApplicationUser, Admin>();
             CreateMap<ApplicationUser, Teacher>();
             CreateMap<ApplicationUser, Student>();
-            CreateMap<As_SVS.DTOs.ModelsDTO.ModuleDTO,As_SVS.Core.Models.Module>();
+            CreateMap<ModuleDTO,As_SVS.Core.Models.Module>();
+            CreateMap<LessonDTO,Lesson>();
         }
     }
 }

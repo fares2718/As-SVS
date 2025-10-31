@@ -1,6 +1,7 @@
 ﻿using As_SVS.Business.Interfaces;
 using As_SVS.Core.Models;
 using As_SVS.DTOs.ModelsDTO;
+using As_SVS.DTOs.VideoDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -145,7 +146,7 @@ namespace As_SVS.API.Controllers
         #region Teacher
 
         //[Authorize("Teacher")]
-        [HttpPost("{courseId}/add-model")]
+        [HttpPost("{courseId}/add-module")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -158,9 +159,28 @@ namespace As_SVS.API.Controllers
             int moduleId = await _modulesServices.AddNewAsync(module,courseId);
             if (moduleId == -1)
                 return StatusCode(500, new { error = "Something went wrong" });
-            return CreatedAtRoute($"Courses/{courseId}/add-model",moduleId);
+            return CreatedAtRoute($"Courses/{courseId}/add-module",moduleId);
         }
 
+        //[Authorize("Teacher")]
+        [HttpPost("{courseId}/{moduleId}/add-lesson")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<IActionResult> AddNewLessonAsync(LessonDTO lesson,IFormFile video,int courseId,int moduleId)
+        {
+            if (courseId < 1 || moduleId < 1)
+                return BadRequest("Invalid course or module Id");
+            int lessonId = await _lessonsServices.AddNewAsync(lesson,courseId,moduleId);
+            if(lessonId == -1)
+                return StatusCode(500, new { error = "Something went wrong" });
+            string url = await _videoServices.UploadVideoToDatabase(video, courseId, moduleId, lessonId);
+            if(string.IsNullOrEmpty(url))
+                return StatusCode(500, new { error = "Something went wrong" });
+            return CreatedAtRoute($"{courseId}/{moduleId}/add-lesson",lessonId);
+        }
 
 
         #endregion

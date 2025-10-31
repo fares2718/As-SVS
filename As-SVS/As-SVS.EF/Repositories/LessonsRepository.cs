@@ -13,10 +13,24 @@ namespace AsSVS.EF.Repositories
     public class LessonsRepository : ILessonsRepository
     {
         private readonly As_SVSContext _context;
+        private readonly IBaseRepository<Course> _baseRepository;
 
-        public LessonsRepository(As_SVSContext context)
+        public LessonsRepository(As_SVSContext context, IBaseRepository<Course> baseRepository)
         {
             _context = context;
+            _baseRepository = baseRepository;
+        }
+
+        public async Task<int> AddNewAsync(Lesson lesson, int courseId, int moduleId)
+        {
+            var course = await _baseRepository.GetByIdAsync(courseId);
+            if (course is null)
+                return -1;
+            var module = course.Modules.FirstOrDefault(m => m.Id == moduleId);
+            if (module is null)
+                return -1;
+            module.Lessons.Add(lesson);
+            return lesson.Id;
         }
 
         public async Task<Lesson> GetLessonsAsync(int courseId, int moduleId, int lessonId)
@@ -60,9 +74,12 @@ namespace AsSVS.EF.Repositories
                 return false;
 
             lesson.VideoUrl = fileName;
-
-            await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }
