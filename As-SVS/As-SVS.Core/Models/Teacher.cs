@@ -23,13 +23,7 @@ public partial class Teacher
 
     public decimal Salary { get; set; }
 
-    public virtual ICollection<Annoucement> Annoucements { get; set; } = new List<Annoucement>();
-
-    public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
-
     public virtual Grade Grades { get; set; } = default!;
-
-    public virtual ICollection<LiveSession> LiveSessions { get; set; } = new List<LiveSession>();
 
     public virtual ApplicationUser applicationUser { get; set; } = default!;
 }

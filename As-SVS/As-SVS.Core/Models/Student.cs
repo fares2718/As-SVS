@@ -17,8 +17,6 @@ public partial class Student
 
     public string StudentCode { get; set; } = null!;
 
-    public virtual ICollection<AssignmentSubmission> AssignmentSubmissions { get; set; } = new List<AssignmentSubmission>();
-
     public virtual ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
 
     public virtual Grade Grade { get; set; } = default!;

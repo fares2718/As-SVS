@@ -17,7 +17,5 @@ public partial class Room
 
     public DateOnly? UpdatedAt { get; set; }
 
-    public virtual ICollection<LiveSession> LiveSessions { get; set; } = new List<LiveSession>();
-
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 }

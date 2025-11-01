@@ -44,17 +44,6 @@ namespace AsSVS.EF.Repositories
             return module.Lessons.SingleOrDefault(l => l.Id == lessonId) ?? new Lesson();
         }
 
-        public async Task<IEnumerable<Lesson>> GetModulesLessonsAsync(int courseId, int moduleId)
-        {
-            var course = await _context.Courses.SingleOrDefaultAsync(c => c.Id == courseId);
-            if(course is null)
-                return Enumerable.Empty<Lesson>();
-            var module = course.Modules.SingleOrDefault(m => m.Id == moduleId);
-            if(module is null)
-                return Enumerable.Empty<Lesson>();
-            return module.Lessons;
-        }
-
         public async Task<bool> UploadVideoToDatabase(string fileName, int courseId,int moduleId, int lessonId)
         {
             var course = await _context.Courses.SingleOrDefaultAsync(

@@ -19,9 +19,5 @@ public partial class Course
     public int TeacherId { get; set; }
     public virtual Teacher Teacher { get; set; } = default!;
 
-    public virtual ICollection<Annoucement> Annoucements { get; set; } = new List<Annoucement>();
-
-    public virtual ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
-
     public virtual ICollection<Module> Modules { get; set; } = new List<Module>();
 }

@@ -84,7 +84,7 @@ namespace As_SVS.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAllModulesInCourseAsync(int courseId)
+        public async Task<IActionResult> GetCourseContentAsync(int courseId)
         {
             if (courseId < 1)
                 return BadRequest("Invalid Id");
@@ -92,22 +92,6 @@ namespace As_SVS.API.Controllers
             if (modules.Count() == 0)
                 return NotFound("No modules were added");
             return Ok(modules);
-        }
-
-        //[Authorize("Student")]
-        [HttpGet("{courseId}/{moduleId}/Lessons")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-
-        public async Task<IActionResult> GetModuleLessonsAsync(int courseId,int moduleId)
-        {
-            if (moduleId < 1)
-                return BadRequest("Invalid module Id");
-            var moduleLessons = await _lessonsServices.GetModulesLessons(courseId,moduleId);
-            if (moduleLessons.Count() == 0)
-                return NotFound("No lessons were found");
-            return Ok(moduleLessons);
         }
 
         //[Authorize("Student")]

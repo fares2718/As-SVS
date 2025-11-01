@@ -10,7 +10,6 @@ namespace As_SVS.Business.Interfaces
 {
     public interface ILessonsServices
     {
-        Task<IEnumerable<Lesson>> GetModulesLessons(int courseId,int moduleId);
         Task<int> AddNewAsync(LessonDTO lesson, int courseId, int moduleId);
         Task<Lesson> GetLessonsAsync(int courseId, int moduleId, int lessonId);
         Task SaveAsync();

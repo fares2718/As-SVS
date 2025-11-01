@@ -19,12 +19,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
 
     public virtual DbSet<Admin> Admins { get; set; }
 
-    public virtual DbSet<Annoucement> Annoucements { get; set; }
-
-    public virtual DbSet<Assignment> Assignments { get; set; }
-
-    public virtual DbSet<AssignmentSubmission> AssignmentSubmissions { get; set; }
-
     public virtual DbSet<Certificate> Certificates { get; set; }
 
     public virtual DbSet<Course> Courses { get; set; }
@@ -34,10 +28,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<Grade> Grades { get; set; }
 
     public virtual DbSet<Lesson> Lessons { get; set; }
-
-    public virtual DbSet<LiveAttendance> LiveAttendances { get; set; }
-
-    public virtual DbSet<LiveSession> LiveSessions { get; set; }
 
     public virtual DbSet<Message> Messages { get; set; }
 
@@ -81,79 +71,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
                 .HasForeignKey<Admin>(d => d.applicationUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Admins_People");
-        });
-
-        modelBuilder.Entity<Annoucement>(entity =>
-        {
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Annoucement1).HasColumnName("annoucement");
-            entity.Property(e => e.CourseId).HasColumnName("course_id");
-            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
-            entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
-            entity.Property(e => e.Title)
-                .HasMaxLength(50)
-                .HasColumnName("title");
-
-            entity.HasOne(d => d.Course).WithMany(p => p.Annoucements)
-                .HasForeignKey(d => d.CourseId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Annoucements_Courses");
-
-            entity.HasOne(d => d.Teacher).WithMany(p => p.Annoucements)
-                .HasForeignKey(d => d.TeacherId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Annoucements_Teachers");
-        });
-
-        modelBuilder.Entity<Assignment>(entity =>
-        {
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CourseId).HasColumnName("course_id");
-            entity.Property(e => e.CreatedAt).HasColumnName("created_at");
-            entity.Property(e => e.DueDate).HasColumnName("due_date");
-            entity.Property(e => e.FileUrl)
-                .HasMaxLength(200)
-                .HasColumnName("file_url");
-            entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
-            entity.Property(e => e.Title)
-                .HasMaxLength(50)
-                .HasColumnName("title");
-            entity.Property(e => e.UpdatedDue).HasColumnName("updated_due");
-
-            entity.HasOne(d => d.Course).WithMany(p => p.Assignments)
-                .HasForeignKey(d => d.CourseId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Assignments_Courses");
-
-            entity.HasOne(d => d.Teacher).WithMany(p => p.Assignments)
-                .HasForeignKey(d => d.TeacherId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Assignments_Teachers");
-        });
-
-        modelBuilder.Entity<AssignmentSubmission>(entity =>
-        {
-            entity.ToTable("Assignment_Submissions");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AssignmentId).HasColumnName("assignment_id");
-            entity.Property(e => e.Feedback)
-                .HasMaxLength(200)
-                .HasColumnName("feedback");
-            entity.Property(e => e.FileUrl)
-                .HasMaxLength(200)
-                .HasColumnName("file_url");
-            entity.Property(e => e.StudentId).HasColumnName("student_id");
-
-            entity.HasOne(d => d.Assignment).WithMany(p => p.AssignmentSubmissions)
-                .HasForeignKey(d => d.AssignmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Assignment_Submissions_Assignments");
-
-            entity.HasOne(d => d.Student).WithMany(p => p.AssignmentSubmissions)
-                .HasForeignKey(d => d.StudentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Assignment_Submissions_Students");
         });
 
         modelBuilder.Entity<Certificate>(entity =>
@@ -248,48 +165,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
                 .HasForeignKey(d => d.ModuleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Lesson_Module");
-        });
-
-        modelBuilder.Entity<LiveAttendance>(entity =>
-        {
-            entity
-                .HasKey(e => new { e.SessionId, e.StudentId });
-            entity.ToTable("Live_Attendance");
-            entity.Property(e => e.JoinedAt).HasColumnName("joined_at");
-            entity.Property(e => e.LeftAt).HasColumnName("left_at");
-            entity.Property(e => e.SessionId).HasColumnName("session_id");
-            entity.Property(e => e.StudentId).HasColumnName("student_id");
-
-            entity.HasOne(d => d.Session).WithMany()
-                .HasForeignKey(d => d.SessionId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_LiveAttendance_LiveSessions");
-
-            entity.HasOne(d => d.Student).WithMany()
-                .HasForeignKey(d => d.StudentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_LiveAttendance_Students");
-        });
-
-        modelBuilder.Entity<LiveSession>(entity =>
-        {
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Date).HasColumnName("date");
-            entity.Property(e => e.EndTime).HasColumnName("end_time");
-            entity.Property(e => e.MeetingUrl).HasColumnName("meeting_url");
-            entity.Property(e => e.RoomId).HasColumnName("room_id");
-            entity.Property(e => e.StartTime).HasColumnName("start_time");
-            entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
-
-            entity.HasOne(d => d.Room).WithMany(p => p.LiveSessions)
-                .HasForeignKey(d => d.RoomId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_LiveSessions_Rooms");
-
-            entity.HasOne(d => d.Teacher).WithMany(p => p.LiveSessions)
-                .HasForeignKey(d => d.TeacherId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_LiveSessions_Teachers");
         });
 
         modelBuilder.Entity<Message>(entity =>
