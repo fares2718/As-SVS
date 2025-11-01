@@ -51,6 +51,8 @@ namespace As_SVS.API
             #region Repositories
             builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
             builder.Services.AddTransient(typeof(IBaseRepository<Course>), typeof(CourseRepository));
+            builder.Services.AddTransient(typeof(IBaseRepository<Admin>), typeof(AdminRepository));
+            builder.Services.AddTransient(typeof(IBaseRepository<Teacher>), typeof(TeacherRepository));
             builder.Services.AddTransient(typeof(ICourseRepository), typeof(CourseRepository));
             builder.Services.AddTransient(typeof(IModulesRepository), typeof(ModulesRepository));
             builder.Services.AddTransient(typeof(ILessonsRepository), typeof(LessonsRepository));
@@ -59,6 +61,8 @@ namespace As_SVS.API
 
             #region Services
             builder.Services.AddScoped(typeof(IAuthServices), typeof(AuthServices));
+            builder.Services.AddScoped(typeof(IAdminServices), typeof(AdminServices));
+            builder.Services.AddScoped(typeof(ITeacherServices), typeof(TeacherServices));
             builder.Services.AddTransient(typeof(IImageServices), typeof(ImageServices));
             builder.Services.AddTransient(typeof(ICourseServices), typeof(CourseServices));
             builder.Services.AddTransient(typeof(IModulesServices), typeof(ModulesServices));

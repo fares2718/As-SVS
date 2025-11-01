@@ -365,9 +365,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
                 .HasMaxLength(500)
                 .HasColumnName("feedbacks");
             entity.Property(e => e.GradesId).HasColumnName("grades_id");
-            entity.Property(e => e.NationalNumber)
-                .HasMaxLength(20)
-                .HasColumnName("national_number");
             entity.Property(e => e.applicationUserId).HasColumnName("applicationUser_id");
             entity.Property(e => e.Qualifications)
                 .HasMaxLength(200)

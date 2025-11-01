@@ -127,23 +127,6 @@ namespace As_SVS.Business.Services
                 await _userManager.RemoveFromRoleAsync(user, "None");
 
             var result = await _userManager.AddToRoleAsync(user, model.Role);
-            switch (model.Role.ToLower())
-            {
-                case "admin":
-                    var admin = _mapper.Map<Admin>(model);
-                    admin.Salary = SalarySettings.adminSalary;
-                    await _context.Admins.AddAsync(admin);
-                    break;
-                case "teacher":
-                    var teacher = _mapper.Map<Teacher>(model);
-                    teacher.Salary = SalarySettings.teacherSalary;
-                    await _context.Teachers.AddAsync(teacher);
-                    break;
-                case "student":
-                    var student = _mapper.Map<Student>(model);
-                    await _context.Students.AddAsync(student);
-                    break;
-            }
             return result.Succeeded? string.Empty:"Something went wrong";
         }
 

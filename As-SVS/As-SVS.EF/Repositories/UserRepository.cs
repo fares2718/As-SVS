@@ -20,6 +20,14 @@ namespace AsSVS.EF.Repositories
             _context = context;
         }
 
+        public async Task<ApplicationUser> GetUserByIdAsync(string Id)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == Id);
+            if (user is null)
+                return new ApplicationUser();
+            return user;
+        }
+
         public async Task<bool> UploadImageToDatabase(string fileName,string userId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u =>

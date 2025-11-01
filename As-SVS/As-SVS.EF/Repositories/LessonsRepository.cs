@@ -66,9 +66,5 @@ namespace AsSVS.EF.Repositories
             return true;
         }
 
-        public async Task SaveAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
     }
 }

@@ -27,10 +27,5 @@ namespace As_SVS.Business.Services
         {
             return await _lessonsRepository.GetLessonsAsync(courseId, moduleId, lessonId);
         }
-
-        public async Task SaveAsync()
-        {
-            await _lessonsRepository.SaveAsync();
-        }
     }
 }

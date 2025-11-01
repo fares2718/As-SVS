@@ -90,5 +90,17 @@ namespace AsSVS.EF.Repositories
         }
 
         #endregion
+
+        #region Teacher
+
+        public async Task<int> AddNewAsync(Course entity)
+        {
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        #endregion
+
     }
 }

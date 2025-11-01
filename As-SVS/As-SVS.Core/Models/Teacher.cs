@@ -9,13 +9,11 @@ public partial class Teacher
 
     public string applicationUserId { get; set; } = null!;
 
-    public string Specialization { get; set; } = null!;
-
-    public string NationalNumber { get; set; } = null!;
+    public string? Specialization { get; set; }
 
     public string TeacherCode { get; set; } = null!;
 
-    public string Qualifications { get; set; } = null!;
+    public string? Qualifications { get; set; }
 
     public int GradesId { get; set; }
 
