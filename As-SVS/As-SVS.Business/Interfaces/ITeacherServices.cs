@@ -11,9 +11,9 @@ namespace As_SVS.Business.Interfaces
 {
     public interface ITeacherServices
     {
-        Task<int> AddNewAsync(TeacherDTO teacherDTO);
-        Task<IEnumerable<Teacher>> GetAllAsync();
-        Task<Teacher> GetByIdAsync(int Id);
-        Task<IEnumerable<Teacher>> SearchByNameAsync(string name);
+        Task<int> AddNewAsync(TeacherDTO teacherDTO,string userId);
+        Task<IEnumerable<TeacherDTO>> GetAllAsync();
+        Task<TeacherDTO> GetByIdAsync(int Id);
+        Task<IEnumerable<TeacherDTO>> SearchByNameAsync(string name);
     }
 }

@@ -8,8 +8,11 @@ namespace As_SVS.DTOs.ModelsDTO
 {
     public class ModuleDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
-
         public int Number { get; set; }
+        public string Grade { get; set; } = string.Empty;
+        public string Teacher { get; set; } = string.Empty;
+        public List<LessonDTO> Lessons { get; set; } = new List<LessonDTO>();
     }
 }

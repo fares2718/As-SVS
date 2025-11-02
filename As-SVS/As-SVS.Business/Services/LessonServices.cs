@@ -22,10 +22,5 @@ namespace As_SVS.Business.Services
             var lesson = _mapper.Map<Lesson>(lessonDto);
             return await _lessonsRepository.AddNewAsync(lesson, courseId, moduleId);
         }
-
-        public async Task<Lesson> GetLessonsAsync(int courseId, int moduleId, int lessonId)
-        {
-            return await _lessonsRepository.GetLessonsAsync(courseId, moduleId, lessonId);
-        }
     }
 }

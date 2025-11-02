@@ -1,6 +1,7 @@
 ﻿using As_SVS.Business.Interfaces;
 using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
+using As_SVS.DTOs.ModelsDTO;
 using As_SVS.DTOs.VideoDTO;
 using AutoMapper;
 using System;
@@ -13,37 +14,37 @@ namespace As_SVS.Business.Services
 {
     public class AdminServices : IAdminServices
     {
-        private readonly IBaseRepository<Admin> _baseRepository;
+        private readonly IAdminRepository _adminRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public AdminServices(IBaseRepository<Admin> baseRepository, IMapper mapper, IUserRepository userRepository)
+        public AdminServices(IAdminRepository adminRepository, IMapper mapper, IUserRepository userRepository)
         {
-            _baseRepository = baseRepository;
+            _adminRepository = adminRepository;
             _mapper = mapper;
             _userRepository = userRepository;
         }
 
-        public async Task<int> AddNewAsync(AdminDTO adminDTO)
+        public async Task<int> AddNewAsync(AdminDTO adminDTO,string userId)
         {
             var admin = _mapper.Map<Admin>(adminDTO);
-            admin.applicationUser = await _userRepository.GetUserByIdAsync(adminDTO.applicationUserId);
-            return await _baseRepository.AddNewAsync(admin);
+            admin.applicationUser = await _userRepository.GetUserByIdAsync(userId);
+            return await _adminRepository.AddNewAsync(admin);
         }
 
-        public Task<IEnumerable<Admin>> GetAllAsync()
+        public Task<IEnumerable<AdminDTO>> GetAllAsync()
         {
-            return _baseRepository.GetAllAsync();
+            return _adminRepository.GetAllAsync();
         }
 
-        public async Task<Admin> GetByIdAsync(int Id)
+        public async Task<AdminDTO> GetByIdAsync(int Id)
         {
-            return await _baseRepository.GetByIdAsync(Id);
+            return await _adminRepository.GetByIdAsync(Id);
         }
 
-        public async Task<IEnumerable<Admin>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<AdminDTO>> SearchByNameAsync(string name)
         {
-            return await _baseRepository.SearchByNameAsync(name);
+            return await _adminRepository.SearchByNameAsync(name);
         }
     }
 }

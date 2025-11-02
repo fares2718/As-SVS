@@ -9,7 +9,6 @@ namespace As_SVS.Core.Interfaces
 {
     public interface IModulesRepository
     {
-        Task<IEnumerable<As_SVS.Core.Models.Module>>GetAllModulesInCourseAsync(int courseId);
         Task<int> AddNewAsync(As_SVS.Core.Models.Module module,int courseId);
     }
 }

@@ -13,35 +13,23 @@ namespace AsSVS.EF.Repositories
     public class LessonsRepository : ILessonsRepository
     {
         private readonly As_SVSContext _context;
-        private readonly IBaseRepository<Course> _baseRepository;
 
-        public LessonsRepository(As_SVSContext context, IBaseRepository<Course> baseRepository)
+        public LessonsRepository(As_SVSContext context)
         {
             _context = context;
-            _baseRepository = baseRepository;
         }
 
         public async Task<int> AddNewAsync(Lesson lesson, int courseId, int moduleId)
         {
-            var course = await _baseRepository.GetByIdAsync(courseId);
+            var course = _context.Courses.SingleOrDefault(c => c.Id == courseId);
             if (course is null)
                 return -1;
-            var module = course.Modules.FirstOrDefault(m => m.Id == moduleId);
+            var module = course.Modules.SingleOrDefault(m => m.Id == moduleId);
             if (module is null)
                 return -1;
             module.Lessons.Add(lesson);
+            await _context.SaveChangesAsync();
             return lesson.Id;
-        }
-
-        public async Task<Lesson> GetLessonsAsync(int courseId, int moduleId, int lessonId)
-        {
-            var course = await _context.Courses.SingleOrDefaultAsync(c => c.Id == courseId);
-            if (course is null)
-                return new Lesson();
-            var module = course.Modules.SingleOrDefault(m => m.Id == moduleId);
-            if (module is null)
-                return new Lesson();
-            return module.Lessons.SingleOrDefault(l => l.Id == lessonId) ?? new Lesson();
         }
 
         public async Task<bool> UploadVideoToDatabase(string fileName, int courseId,int moduleId, int lessonId)

@@ -13,37 +13,37 @@ namespace As_SVS.Business.Services
 {
     public class TeacherServices : ITeacherServices
     {
-        private readonly IBaseRepository<Teacher> _baseRepository;
+        private readonly ITeacherRepository _teacherRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public TeacherServices(IBaseRepository<Teacher> baseRepository, IMapper mapper, IUserRepository userRepository)
+        public TeacherServices(ITeacherRepository teacherRepository, IMapper mapper, IUserRepository userRepository)
         {
-            _baseRepository = baseRepository;
+            _teacherRepository = teacherRepository;
             _mapper = mapper;
             _userRepository = userRepository;
         }
 
-        public async Task<int> AddNewAsync(TeacherDTO teacherDTO)
+        public async Task<int> AddNewAsync(TeacherDTO teacherDTO,string userId)
         {
             var teacher = _mapper.Map<Teacher>(teacherDTO);
-            teacher.applicationUser = await _userRepository.GetUserByIdAsync(teacherDTO.applicationUserId);
-            return await _baseRepository.AddNewAsync(teacher);
+            teacher.applicationUser = await _userRepository.GetUserByIdAsync(userId);
+            return await _teacherRepository.AddNewAsync(teacher);
         }
 
-        public async Task<IEnumerable<Teacher>> GetAllAsync()
+        public async Task<IEnumerable<TeacherDTO>> GetAllAsync()
         {
-            return await _baseRepository.GetAllAsync();
+            return await _teacherRepository.GetAllAsync();
         }
 
-        public async Task<Teacher> GetByIdAsync(int Id)
+        public async Task<TeacherDTO> GetByIdAsync(int Id)
         {
-            return await _baseRepository.GetByIdAsync(Id);
+            return await _teacherRepository.GetByIdAsync(Id);
         }
 
-        public async Task<IEnumerable<Teacher>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<TeacherDTO>> SearchByNameAsync(string name)
         {
-            return await _baseRepository.SearchByNameAsync(name);
+            return await _teacherRepository.SearchByNameAsync(name);
         }
     }
 }

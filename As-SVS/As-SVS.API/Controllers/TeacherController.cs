@@ -27,7 +27,7 @@ namespace As_SVS.API.Controllers
         {
             if (string.IsNullOrEmpty(userId) || teacher is null)
                 return BadRequest("Invalid Data");
-            int teacherId = await _teacherServices.AddNewAsync(teacher);
+            int teacherId = await _teacherServices.AddNewAsync(teacher,userId);
             return CreatedAtRoute($"complete-profile/{userId}", teacherId);
         }
     }

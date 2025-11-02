@@ -17,11 +17,6 @@ namespace As_SVS.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Module>> GetAllModulesInCourseAsync(int courseId)
-        {
-            return await _modulesRepository.GetAllModulesInCourseAsync(courseId);
-        }
-
         public async Task<int> AddNewAsync(ModuleDTO moduleDTO,int courseId)
         {
             var module = _mapper.Map<Module>(moduleDTO);

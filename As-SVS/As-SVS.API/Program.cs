@@ -50,7 +50,6 @@ namespace As_SVS.API
 
             #region Repositories
             builder.Services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
-            builder.Services.AddTransient(typeof(IBaseRepository<Course>), typeof(CourseRepository));
             builder.Services.AddTransient(typeof(IAdminRepository), typeof(AdminRepository));
             builder.Services.AddTransient(typeof(ITeacherRepository), typeof(TeacherRepository));
             builder.Services.AddTransient(typeof(IStudentRepository), typeof(StudentRepository));

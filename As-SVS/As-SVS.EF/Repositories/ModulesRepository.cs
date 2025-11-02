@@ -14,12 +14,10 @@ namespace AsSVS.EF.Repositories
     public class ModulesRepository : IModulesRepository
     {
         private readonly As_SVSContext _context;
-        private readonly IBaseRepository<Course> _baseRepository;
 
-        public ModulesRepository(As_SVSContext context, IBaseRepository<Course> baseRepository)
+        public ModulesRepository(As_SVSContext context)
         {
             _context = context;
-            _baseRepository = baseRepository;
         }
 
         public async Task<int> AddNewAsync(As_SVS.Core.Models.Module module, int courseId)
@@ -32,11 +30,5 @@ namespace AsSVS.EF.Repositories
             return module.Id;
         }
 
-        public async Task<IEnumerable<As_SVS.Core.Models.Module>> GetAllModulesInCourseAsync(int courseId)
-        {
-            var course = await _baseRepository.GetByIdAsync(courseId);
-            return course.Modules
-                .ToList();
-        }
     }
 }

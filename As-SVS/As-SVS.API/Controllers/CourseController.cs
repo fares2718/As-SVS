@@ -78,40 +78,23 @@ namespace As_SVS.API.Controllers
                 return NotFound("No course was found");
             return Ok(enrolledCourses);
         }
-
         //[Authorize("Student")]
-        [HttpGet("{courseId}/Modules")]
+        [HttpGet("{courseId}/{moduleId}/{studentId}/watch/{lessonId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetCourseContentAsync(int courseId)
-        {
-            if (courseId < 1)
-                return BadRequest("Invalid Id");
-            var modules = await _modulesServices.GetAllModulesInCourseAsync(courseId);
-            if (modules.Count() == 0)
-                return NotFound("No modules were added");
-            return Ok(modules);
-        }
 
-        //[Authorize("Student")]
-        [HttpGet("{courseId}/{moduleId}/{lessonId}/watch")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-
-        public async Task<IActionResult> WatchLesson(int studentId,int courseId,int moduleId,int lessonId)
+        public async Task<IActionResult> WatchLessonAsync(int studentId,int courseId,int moduleId,int lessonId)
         {
             if (studentId < 1 || courseId < 1 || moduleId < 1 || lessonId < 1)
-                return BadRequest("Invalid course or module or lesson Id");
-            if (!_courseServices.IsStudentEnrolled(studentId, courseId))
-                return Unauthorized("student did not enroll in this course");
-            var lesson = await _lessonsServices.GetLessonsAsync(courseId, moduleId,lessonId);
-            if (string.IsNullOrEmpty(lesson.Name))
-                return NotFound("lesson was not found");
-            var video = _videoServices.GetVideo(lesson.VideoUrl, lesson.Module.Course.Name);
-            return File(video.videoFile, video.mimeType);
+                return BadRequest("Invalid Data");
+            var course = await _courseServices.GetByIdAsync(courseId);
+            var lesson = course.Modules.Single(m => m.Id ==  moduleId)
+                .Lessons.Single(l => l.Id == lessonId);
+            var video = _videoServices.GetVideo(lesson.VideoUrl,course.Name);
+            if (string.IsNullOrEmpty(video.mimeType) || video.videoFile is null)
+                return StatusCode(500, new { error = "some thing went wrong"});
+            return File(video.videoFile,video.mimeType);
         }
 
         //[Authorize("Student")]

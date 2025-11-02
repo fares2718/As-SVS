@@ -1,11 +1,12 @@
 ﻿using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
+using As_SVS.DTOs.ModelsDTO;
 using As_SVS.EF;
 using Microsoft.EntityFrameworkCore;
 
 namespace AsSVS.EF.Repositories
 {
-    public class CourseRepository : IBaseRepository<Course> , ICourseRepository
+    public class CourseRepository :  ICourseRepository
     {
         private readonly As_SVSContext _context;
 
@@ -14,47 +15,145 @@ namespace AsSVS.EF.Repositories
         {
             _context = context;
         }
+
         #region User
-        public async Task<IEnumerable<Course>> GetAllAsync()
+        public async Task<IEnumerable<CourseDTO>> GetAllAsync()
         {
-            return await _context.Courses
-                .AsNoTracking()
-                .ToListAsync();
+            var query =
+                await _context.Courses
+                    .Select(
+                    course => new CourseDTO
+                    {
+                        Id = course.Id,
+                        Name = course.Name,
+                        CourseCode = course.CourseCode,
+                        Description = course.Description,
+                        Room = course.Room.Title,
+                        Modules = course.Modules
+                            .Select(
+                                module => new ModuleDTO
+                                {
+                                    Id = module.Id,
+                                    Name = module.Name,
+                                    Grade = course.Grade.GradeLevel,
+                                    Number = module.Number,
+                                    Teacher = course.Teacher.applicationUser.FullName,
+                                    Lessons = module.Lessons
+                                        .Select(
+                                        lesson => new LessonDTO
+                                        {
+                                            Id = lesson.Id,
+                                            Name = lesson.Name,
+                                            VideoUrl = lesson.VideoUrl,
+                                            CourseOrder = lesson.CourseOrder,
+                                            LessonDetails = lesson.LessonDetails,
+                                            Number = lesson.Number
+                                        }
+                                        ).ToList(),
+                                }
+                            ).ToList()
+                    }
+                    ).ToListAsync();
+            return query;
         }
-        public async Task<Course> GetByIdAsync(int Id)
+        public async Task<CourseDTO> GetByIdAsync(int Id)
         {
-            var course = await _context.Courses
-                .AsNoTracking()
-                .SingleOrDefaultAsync(c => c.Id == Id);
-            return course ?? new Course();
+             var query =
+                await _context.Courses.Where(c => c.Id == Id)
+                    .Select(
+                    course => new CourseDTO
+                    {
+                        Id = course.Id,
+                        Name = course.Name,
+                        CourseCode = course.CourseCode,
+                        Description = course.Description,
+                        Room = course.Room.Title,
+                        Modules = course.Modules
+                            .Select(
+                                module => new ModuleDTO
+                                {
+                                    Id = module.Id,
+                                    Name = module.Name,
+                                    Grade = course.Grade.GradeLevel,
+                                    Number = module.Number,
+                                    Teacher = course.Teacher.applicationUser.FullName,
+                                    Lessons = module.Lessons
+                                        .Select(
+                                        lesson => new LessonDTO
+                                        {
+                                            Id = lesson.Id,
+                                            Name = lesson.Name,
+                                            VideoUrl = lesson.VideoUrl,
+                                            CourseOrder = lesson.CourseOrder,
+                                            LessonDetails = lesson.LessonDetails,
+                                            Number = lesson.Number
+                                        }
+                                        ).ToList(),
+                                }
+                            ).ToList()
+                    }
+                    ).SingleOrDefaultAsync();
+            return query ?? new CourseDTO();
         }
 
-        public async Task<IEnumerable<Course>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<CourseDTO>> SearchByNameAsync(string name)
         {
-            var coursesWithName = await _context.Courses
-                .Where(c => c.Name.Contains(name))
-                .AsNoTracking()
-                .ToListAsync();
-            return coursesWithName;
+            var query =
+                await _context.Courses.Where(c => c.Name.ToLower().Contains(name.ToLower()))
+                    .Select(
+                    course => new CourseDTO
+                    {
+                        Id = course.Id,
+                        Name = course.Name,
+                        CourseCode = course.CourseCode,
+                        Description = course.Description,
+                        Room = course.Room.Title,
+                        Modules = course.Modules
+                            .Select(
+                                module => new ModuleDTO
+                                {
+                                    Id = module.Id,
+                                    Name = module.Name,
+                                    Grade = course.Grade.GradeLevel,
+                                    Number = module.Number,
+                                    Teacher = course.Teacher.applicationUser.FullName,
+                                    Lessons = module.Lessons
+                                        .Select(
+                                        lesson => new LessonDTO
+                                        {
+                                            Id = lesson.Id,
+                                            Name = lesson.Name,
+                                            VideoUrl = lesson.VideoUrl,
+                                            CourseOrder = lesson.CourseOrder,
+                                            LessonDetails = lesson.LessonDetails,
+                                            Number = lesson.Number
+                                        }
+                                        ).ToList(),
+                                }
+                            ).ToList()
+                    }
+                    ).ToListAsync();
+            return query;
         }
 
         #endregion
 
         #region Student
-        public async Task<IEnumerable<Course>> GetEnrolledCoursesAsync(int studentId)
+        public async Task<IEnumerable<EnrollmentDTO>> GetEnrolledCoursesAsync(int studentId)
         {
-            if (!_context.Students.Any(s => s.Id == studentId))
-                return new List<Course>();
-            else
-            {
-                var enrolledCourses = await _context.Enrolments
-                .Where(e => e.StudentId == studentId)
-                .AsNoTracking()
-                .ToListAsync();
-                return enrolledCourses
-                    .Select(ec => ec.Course)
-                    .OrderBy(ec => ec.Name);
-            }
+            var query =
+                from course in _context.Courses
+                join enrolment in _context.Enrolments
+                    on course.Id equals enrolment.CourseId
+                join student in _context.Students
+                    on enrolment.StudentId equals student.Id
+                select new EnrollmentDTO
+                {
+                    Student = student.applicationUser.FullName,
+                    Course = course.Name,
+                    EnrollmentDate = enrolment.EnrolmentDate,
+                };
+            return await query.ToListAsync();
         }
 
         public async Task EnrollInCourseAsync(int studentId, int courseId)
@@ -100,7 +199,7 @@ namespace AsSVS.EF.Repositories
             return entity.Id;
         }
 
-        #endregion
+        #endregion(
 
     }
 }

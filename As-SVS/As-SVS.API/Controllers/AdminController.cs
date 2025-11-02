@@ -1,4 +1,5 @@
 ﻿using As_SVS.Business.Interfaces;
+using As_SVS.DTOs.ModelsDTO;
 using As_SVS.DTOs.VideoDTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,7 @@ namespace As_SVS.API.Controllers
         {
             if (string.IsNullOrEmpty(userId) || admin is null)
                 return BadRequest("Invalid Data");
-            int adminId = await _adminServices.AddNewAsync(admin);
+            int adminId = await _adminServices.AddNewAsync(admin,userId);
             return CreatedAtRoute($"complete-profile/{userId}",adminId);
         }
     }

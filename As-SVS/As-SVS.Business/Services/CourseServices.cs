@@ -1,36 +1,35 @@
 ﻿using As_SVS.Business.Interfaces;
 using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
+using As_SVS.DTOs.ModelsDTO;
 
 namespace As_SVS.Business.Services
 {
     public class CourseServices : ICourseServices
     {
-        private readonly IBaseRepository<Course> _baseRepository;
         private readonly ICourseRepository _courseRepository;
 
-        public CourseServices(IBaseRepository<Course> baseRepository, ICourseRepository courseRepository)
+        public CourseServices(ICourseRepository courseRepository)
         {
-            _baseRepository = baseRepository;
             _courseRepository = courseRepository;
         }
 
-        public async Task<IEnumerable<Course>> GetAllAsync()
+        public async Task<IEnumerable<CourseDTO>> GetAllAsync()
         {
-            return await _baseRepository.GetAllAsync();
+            return await _courseRepository.GetAllAsync();
         }
 
-        public async Task<Course> GetByIdAsync(int Id)
+        public async Task<CourseDTO> GetByIdAsync(int Id)
         {
-            return await _baseRepository.GetByIdAsync(Id);
+            return await _courseRepository.GetByIdAsync(Id);
         }
 
-        public async Task<IEnumerable<Course>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<CourseDTO>> SearchByNameAsync(string name)
         {
-            return await _baseRepository.SearchByNameAsync(name);
+            return await _courseRepository.SearchByNameAsync(name);
         }
 
-        public async Task<IEnumerable<Course>> GetEnrolledCourses(int studentId)
+        public async Task<IEnumerable<EnrollmentDTO>> GetEnrolledCourses(int studentId)
         {
             return await _courseRepository.GetEnrolledCoursesAsync(studentId); 
         }
