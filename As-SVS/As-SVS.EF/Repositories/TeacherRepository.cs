@@ -1,5 +1,6 @@
 ﻿using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
+using As_SVS.DTOs.ModelsDTO;
 using As_SVS.EF;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AsSVS.EF.Repositories
 {
-    public class TeacherRepository : IBaseRepository<Teacher>
+    public class TeacherRepository : ITeacherRepository
     {
         private readonly As_SVSContext _context;
 
@@ -26,30 +27,86 @@ namespace AsSVS.EF.Repositories
             return entity.Id;
         }
 
-        public async Task<IEnumerable<Teacher>> GetAllAsync()
+        public async Task<IEnumerable<TeacherDTO>> GetAllAsync()
         {
-            return await _context.Teachers
-                .AsNoTracking()
-                .ToListAsync();
+            var query =
+                from teacher in _context.Teachers
+                join user in _context.Users
+                    on teacher.applicationUserId equals user.Id
+                join grade in _context.Grades
+                    on teacher.Id equals grade.Id
+                join course in _context.Courses
+                    on teacher.Id equals course.TeacherId
+                select new TeacherDTO
+                {
+                    Id = teacher.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    TeacherCode = teacher.TeacherCode,
+                    Specialization = teacher.Specialization,
+                    Qualifications = teacher.Qualifications,
+                    Course = course.Name,
+                    Grade = grade.GradeLevel,
+                    Salary = teacher.Salary
+                };
+            return await query.ToListAsync();
         }
 
-        public async Task<Teacher> GetByIdAsync(int Id)
+        public async Task<TeacherDTO> GetByIdAsync(int Id)
         {
-            var teacher = await _context.Teachers.SingleOrDefaultAsync(t => t.Id == Id);
-            if (teacher is null)
-                return new Teacher();
-            return teacher;
+                        var query =
+                from teacher in _context.Teachers
+                join user in _context.Users
+                    on teacher.applicationUserId equals user.Id
+                join grade in _context.Grades
+                    on teacher.Id equals grade.Id
+                join course in _context.Courses
+                    on teacher.Id equals course.TeacherId
+                where teacher.Id == Id
+                select new TeacherDTO
+                {
+                    Id = teacher.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    TeacherCode = teacher.TeacherCode,
+                    Specialization = teacher.Specialization,
+                    Qualifications = teacher.Qualifications,
+                    Course = course.Name,
+                    Grade = grade.GradeLevel,
+                    Salary = teacher.Salary,
+                    ImageUrl = user.ImageUrl
+                };
+            var Teacher = await query.FirstOrDefaultAsync();
+            return Teacher ?? new TeacherDTO();
         }
 
-        public async Task<IEnumerable<Teacher>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<TeacherDTO>> SearchByNameAsync(string name)
         {
-            var teacherList = await _context.Teachers
-                .Where(t => t.applicationUser.FullName.Contains(name))
-                .AsNoTracking()
-                .ToListAsync();
-            if (!teacherList.Any())
-                return Enumerable.Empty<Teacher>();
-            return teacherList;
+                        var query =
+                from teacher in _context.Teachers
+                join user in _context.Users
+                    on teacher.applicationUserId equals user.Id
+                join grade in _context.Grades
+                    on teacher.Id equals grade.Id
+                join course in _context.Courses
+                    on teacher.Id equals course.TeacherId
+                    where (user.FullName.ToLower().Contains(name.ToLower()))
+                select new TeacherDTO
+                {
+                    Id = teacher.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    TeacherCode = teacher.TeacherCode,
+                    Specialization = teacher.Specialization,
+                    Qualifications = teacher.Qualifications,
+                    Course = course.Name,
+                    Grade = grade.GradeLevel,
+                    Salary = teacher.Salary
+                };
+            return await query.ToListAsync();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using As_SVS.Core.Interfaces;
 using As_SVS.Core.Models;
+using As_SVS.DTOs.ModelsDTO;
 using As_SVS.EF;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AsSVS.EF.Repositories
 {
-    public class AdminRepository : IBaseRepository<Admin>
+    public class AdminRepository : IAdminRepository
     {
         private readonly As_SVSContext _context;
 
@@ -26,30 +27,75 @@ namespace AsSVS.EF.Repositories
             return entity.Id;
         }
 
-        public async Task<IEnumerable<Admin>> GetAllAsync()
+        public async Task<IEnumerable<AdminDTO>> GetAllAsync()
         {
-            return await _context.Admins
-                .AsNoTracking()
-                .ToListAsync();
+            var query =
+                from admin in _context.Admins
+                join user in _context.Users
+                    on admin.applicationUserId equals user.Id
+                join userRole in _context.UserRoles
+                    on user.Id equals userRole.UserId
+                join role in _context.Roles
+                    on userRole.RoleId equals role.Id
+                select new AdminDTO
+                {
+                    Id = admin.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    Role = role.Name,
+                    Salary = admin.Salary
+                };
+            return await query.ToListAsync();
         }
 
-        public async Task<Admin> GetByIdAsync(int Id)
+        public async Task<AdminDTO> GetByIdAsync(int Id)
         {
-            var admin = await _context.Admins.SingleOrDefaultAsync(a => a.Id == Id);
-            if(admin is null)
-                return new Admin();
-            return admin;
+            var query =
+                from admin in _context.Admins
+                join user in _context.Users
+                    on admin.applicationUserId equals user.Id
+                join userRole in _context.UserRoles
+                    on user.Id equals userRole.UserId
+                join role in _context.Roles
+                    on userRole.RoleId equals role.Id
+                where admin.Id == Id
+                select new AdminDTO
+                {
+                    Id = admin.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    Role = role.Name,
+                    Salary = admin.Salary,
+                    ImageUrl = user.ImageUrl
+                };
+            var Admin = await query.FirstOrDefaultAsync();
+            return  Admin ?? new AdminDTO();
         }
 
-        public async Task<IEnumerable<Admin>> SearchByNameAsync(string name)
+        public async Task<IEnumerable<AdminDTO>> SearchByNameAsync(string name)
         {
-            var adminsList = await _context.Admins
-                .Where(a => a.applicationUser.FullName.Contains(name))
-                .AsNoTracking()
-                .ToListAsync();
-            if(adminsList is null)
-                return Enumerable.Empty<Admin>();
-            return adminsList;
+            var query =
+               from admin in _context.Admins
+               join user in _context.Users
+                   on admin.applicationUserId equals user.Id
+               join userRole in _context.UserRoles
+                   on user.Id equals userRole.UserId
+               join role in _context.Roles
+                   on userRole.RoleId equals role.Id
+               where user.FullName.ToLower()
+                        .Contains(name.ToLower())
+               select new AdminDTO
+               {
+                   Id = admin.Id,
+                   FirstName = user.FirstName,
+                   LastName = user.LastName,
+                   UserName = user.UserName,
+                   Role = role.Name,
+                   Salary = admin.Salary
+               };
+            return await query.ToListAsync();
         }
     }
 }

@@ -6,20 +6,15 @@ using System.Threading.Tasks;
 
 namespace As_SVS.DTOs.ModelsDTO
 {
-    public class TeacherDTO
+    public class TeacherDTO : UserDTO
     {
-        public string applicationUserId { get; set; } = null!;
-
-        public string? Specialization { get; set; }
-
+        public string Specialization { get; set; } = string.Empty;
         public string TeacherCode { get; set; } = null!;
-
-        public string? Qualifications { get; set; }
-
-        public int GradesId { get; set; }
-
-        public string? Feedbacks { get; set; }
-
+        public string Qualifications { get; set; } = string.Empty;
+        public string Feedbacks { get; set; } = string.Empty;
+        public string Grade { get; set; } = string.Empty;
+        public string Course { get; set; } = string.Empty;
+        public string CourseCode { get; set; } = string.Empty;
         public decimal Salary { get; set; }
     }
 }
