@@ -63,6 +63,7 @@ namespace As_SVS.API
             builder.Services.AddScoped(typeof(IAuthServices), typeof(AuthServices));
             builder.Services.AddScoped(typeof(IAdminServices), typeof(AdminServices));
             builder.Services.AddScoped(typeof(ITeacherServices), typeof(TeacherServices));
+            builder.Services.AddScoped(typeof(IStudentServices), typeof(StudentServices));
             builder.Services.AddTransient(typeof(IImageServices), typeof(ImageServices));
             builder.Services.AddTransient(typeof(ICourseServices), typeof(CourseServices));
             builder.Services.AddTransient(typeof(IModulesServices), typeof(ModulesServices));
@@ -71,7 +72,6 @@ namespace As_SVS.API
             builder.Services.AddTransient(typeof(IVideoServices), typeof(VideoServices));
             builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
             #endregion
-
 
             // Add services to the container.
 
