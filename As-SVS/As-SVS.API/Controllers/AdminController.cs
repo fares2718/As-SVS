@@ -14,11 +14,13 @@ namespace As_SVS.API.Controllers
     {
         private readonly IAdminServices _adminServices;
         private readonly ITeacherServices _teacherServices;
+        private readonly IStudentServices _studentServices;
 
-        public AdminController(IAdminServices adminServices, ITeacherServices teacherServices)
+        public AdminController(IAdminServices adminServices, ITeacherServices teacherServices, IStudentServices studentServices)
         {
             _adminServices = adminServices;
             _teacherServices = teacherServices;
+            _studentServices = studentServices;
         }
 
         [HttpPost("complete-profile/{userId}")]
@@ -78,6 +80,67 @@ namespace As_SVS.API.Controllers
             if (!teachers.Any())
                 return NotFound("No teacher found with this name");
             return Ok(teachers);
+        }
+
+        [HttpGet("get-all-students")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public async Task<IActionResult> GetAllstudentAsync()
+        {
+            var students = await _studentServices.GetAllAsync();
+            if (!students.Any())
+                return NotFound("No student was found");
+            return Ok(students);
+        }
+
+        [HttpGet("get-student/{studentId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public async Task<IActionResult> GetStudentByIdAsync(int studentId)
+        {
+            if (studentId < 1)
+                return BadRequest("Invalid Id");
+            var student = await _studentServices.GetByIdAsync(studentId);
+            if (student is null || string.IsNullOrEmpty(student.UserName))
+                return NotFound("No student was found");
+            return Ok(student);
+        }
+
+        [HttpGet("get-students-in-grade/{gradeName}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public async Task<IActionResult> GetStudentsInGrade(string gradeName)
+        {
+            if (string.IsNullOrEmpty(gradeName))
+                return BadRequest("Invalid grade name");
+            var students = await _studentServices.GetInGradeAsync(gradeName);
+            if (!students.Any())
+                return NotFound("No students was found");
+            return Ok(students);
+        }
+
+        [HttpGet("search-student/{name}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public async Task<IActionResult> SearchstudentWithName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return BadRequest("Invalid name");
+            var students = await _studentServices.SearchByNameAsync(name);
+            if (!students.Any())
+                return NotFound("No student found with this name");
+            return Ok(students);
         }
     }
 }

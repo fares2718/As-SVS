@@ -42,6 +42,14 @@ namespace As_SVS.Business.Services
             return await _studentRepository.GetByIdAsync(Id);
         }
 
+        public async Task<IEnumerable<StudentDTO>> GetInGradeAsync(string gradeName)
+        {
+            var students = await GetAllAsync();
+            return students.Where(s =>
+                s.Grade == gradeName
+            ).ToList();
+        }
+
         public async Task<IEnumerable<StudentDTO>> SearchByNameAsync(string name)
         {
             return await _studentRepository.SearchByNameAsync(name);
