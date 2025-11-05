@@ -115,7 +115,7 @@ namespace As_SVS.Business.Services
                 return authModel;
         }
 
-        public async Task<string> AssignRoleAsync(AssignRoleModel model)
+        public async Task<string> AssignRoleAsync(RoleModel model)
         {
             var user = await _userManager.FindByIdAsync(model.UserId);
 
@@ -272,6 +272,21 @@ namespace As_SVS.Business.Services
                 };
             request.Message = "Password has been rest";
             return request;
+        }
+
+        public async Task<string> DeactivateUser(RoleModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.UserId);
+
+            if (user is null || !await _roleManager.RoleExistsAsync(model.Role))
+                return "Invalid User Id or Role";
+
+            if (!await _userManager.IsInRoleAsync(user, model.Role))
+                return $"User {user.UserName} is not in role {model.Role}";
+
+            var result = await _userManager.RemoveFromRoleAsync(user, model.Role);
+            return result.Succeeded ? string.Empty : "Somthing went wrong";
+                
         }
     }
 }

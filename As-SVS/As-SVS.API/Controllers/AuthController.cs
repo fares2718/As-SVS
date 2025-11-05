@@ -65,7 +65,7 @@ namespace As_SVS.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> AssignRoleAsync([FromBody] AssignRoleModel model)
+        public async Task<IActionResult> AssignRoleAsync([FromBody] RoleModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
