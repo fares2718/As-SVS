@@ -2,6 +2,7 @@
 using As_SVS.Business.Services;
 using As_SVS.Core.Models;
 using As_SVS.DTOs.ModelsDTO;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -124,6 +125,13 @@ namespace As_SVS.API.Controllers
             if (string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(request.Email))
                 return BadRequest(request.Message);
             return Ok(result);
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] string token)
+        {
+            await _authService.RevokeTokenAsync(token);
+            return Ok(new { message = "Logged out successfully" });
         }
 
         #endregion
