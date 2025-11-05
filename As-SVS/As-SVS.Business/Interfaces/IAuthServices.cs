@@ -1,4 +1,5 @@
 ﻿using As_SVS.Core.Models;
+using As_SVS.DTOs.ModelsDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace As_SVS.Business.Interfaces
         Task<string> AssignRoleAsync(AssignRoleModel model);
         Task<AuthModel> RefreshTokenAsync(string token);
         Task<bool> RevokeTokenAsync(string token);
-
+        Task<ForgetPasswordDTO> ForgetPassword(ForgetPasswordDTO request);
+        Task<RestPasswordDTO> RestPassword(RestPasswordDTO request);
     }
 }

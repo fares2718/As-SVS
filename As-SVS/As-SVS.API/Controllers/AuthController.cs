@@ -96,6 +96,36 @@ namespace As_SVS.API.Controllers
             return Ok("Great");
         }
 
+        [HttpPost("forget-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordDTO request)
+        {
+            if(!ModelState.IsValid || request is null)
+                return BadRequest("Invalid data");
+            await _authService.ForgetPassword(request);
+            if (string.IsNullOrEmpty(request.Token))
+                return BadRequest("Something went wrong");
+            /*
+             send email functionalty
+             */
+            return Ok(request);
+        }
+
+        [HttpPost("rest-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> RestPassword(RestPasswordDTO request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid data");
+            var result = await _authService.RestPassword(request);
+            if (string.IsNullOrEmpty(request.Token) || string.IsNullOrEmpty(request.Email))
+                return BadRequest(request.Message);
+            return Ok(result);
+        }
+
         #endregion
 
         #region GET

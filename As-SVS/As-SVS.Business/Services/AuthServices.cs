@@ -13,6 +13,8 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using As_SVS.EF;
 using As_SVS.Core.Consts;
+using As_SVS.DTOs.ModelsDTO;
+using System.Threading.Tasks;
 
 namespace As_SVS.Business.Services
 {
@@ -240,6 +242,36 @@ namespace As_SVS.Business.Services
                 ExpiresOn = DateTime.UtcNow.AddDays(10),
                 CreatedOn = DateTime.UtcNow,
             };
+        }
+
+        public async Task<ForgetPasswordDTO> ForgetPassword(ForgetPasswordDTO request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user is null)
+                return new ForgetPasswordDTO();
+            request.Token =  await _userManager.GeneratePasswordResetTokenAsync(user);
+            if (string.IsNullOrEmpty(request.Token))
+                return new ForgetPasswordDTO();
+            var callBackUrl = $"https://localhost:7184/restpass?code={request.Token}&email={user.Email}";
+            return request;
+        }
+
+        public async Task<RestPasswordDTO> RestPassword(RestPasswordDTO request)
+        {
+            var user = await _userManager.FindByEmailAsync(request.Email);
+            if (user is null)
+                return new RestPasswordDTO
+                {
+                    Message = "user dose not exist"
+                };
+            var result = await _userManager.ResetPasswordAsync(user,request.Token,request.Password);
+            if (!result.Succeeded)
+                return new RestPasswordDTO
+                {
+                    Message = "Something went wrong"
+                };
+            request.Message = "Password has been rest";
+            return request;
         }
     }
 }
