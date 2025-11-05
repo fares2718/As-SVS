@@ -46,5 +46,10 @@ namespace As_SVS.Business.Services
         {
             return await _adminRepository.SearchByNameAsync(name);
         }
+
+        public async Task<bool> UpdateAdminSalaryAsync(int adminId, decimal newSalary)
+        {
+            return await _adminRepository.UpdateAdminSalaryAsync(adminId, newSalary);
+        }
     }
 }

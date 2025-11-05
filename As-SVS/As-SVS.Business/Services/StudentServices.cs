@@ -32,6 +32,11 @@ namespace As_SVS.Business.Services
             return await _studentRepository.AddNewAsync(student);
         }
 
+        public async Task<bool> DeleteStudentAsync(int studentId)
+        {
+            return await _studentRepository.DeleteStudentAsync(studentId);
+        }
+
         public async Task<IEnumerable<StudentDTO>> GetAllAsync()
         {
             return await _studentRepository.GetAllAsync();

@@ -70,7 +70,7 @@ namespace AsSVS.EF.Repositories
                     Salary = admin.Salary,
                     ImageUrl = user.ImageUrl
                 };
-            var Admin = await query.FirstOrDefaultAsync();
+            var Admin = await query.SingleOrDefaultAsync();
             return  Admin ?? new AdminDTO();
         }
 
@@ -95,7 +95,19 @@ namespace AsSVS.EF.Repositories
                    Role = role.Name,
                    Salary = admin.Salary
                };
-            return await query.ToListAsync();
+            return await query.
+                AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<bool> UpdateAdminSalaryAsync(int adminId,decimal newSalary)
+        {
+            if (!await _context.Admins.AnyAsync(a => a.Id == adminId))
+                return false;
+            var admin = await _context.Admins.SingleAsync(a => a.Id == adminId);
+            admin.Salary = newSalary;
+            await _context.SaveChangesAsync();
+            return admin.Salary == newSalary;
         }
     }
 }

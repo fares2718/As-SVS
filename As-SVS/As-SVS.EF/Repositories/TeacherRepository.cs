@@ -50,7 +50,9 @@ namespace AsSVS.EF.Repositories
                     Grade = grade.GradeLevel,
                     Salary = teacher.Salary
                 };
-            return await query.ToListAsync();
+            return await query
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<TeacherDTO> GetByIdAsync(int Id)
@@ -106,7 +108,20 @@ namespace AsSVS.EF.Repositories
                     Grade = grade.GradeLevel,
                     Salary = teacher.Salary
                 };
-            return await query.ToListAsync();
+            return await query
+                .AsNoTracking()
+                .ToListAsync();
         }
+
+        public async Task<bool> UpdateTeacherSalaryAsync(int teacherId, decimal newSalary)
+        {
+            if (!await _context.Teachers.AnyAsync(a => a.Id == teacherId))
+                return false;
+            var teacher = await _context.Teachers.SingleAsync(a => a.Id == teacherId);
+            teacher.Salary = newSalary;
+            await _context.SaveChangesAsync();
+            return teacher.Salary == newSalary;
+        }
+
     }
 }

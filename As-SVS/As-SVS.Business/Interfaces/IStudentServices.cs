@@ -14,5 +14,6 @@ namespace As_SVS.Business.Interfaces
         Task<StudentDTO> GetByIdAsync(int Id);
         Task<IEnumerable<StudentDTO>> GetInGradeAsync(string gradeName);
         Task<IEnumerable<StudentDTO>> SearchByNameAsync(string name);
+        Task<bool> DeleteStudentAsync(int studentId);
     }
 }

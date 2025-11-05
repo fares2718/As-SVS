@@ -1,4 +1,5 @@
 ﻿using As_SVS.Business.Interfaces;
+using As_SVS.Business.Services;
 using As_SVS.DTOs.ModelsDTO;
 using As_SVS.DTOs.VideoDTO;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +30,17 @@ namespace As_SVS.API.Controllers
                 return BadRequest("Invalid Data");
             int teacherId = await _teacherServices.AddNewAsync(teacher,userId);
             return CreatedAtRoute($"complete-profile/{userId}", teacherId);
+        }
+
+        [HttpPatch("update-salary")]
+
+        public async Task<IActionResult> UpdateTeacherSalary(int teacherId, decimal newSalary)
+        {
+            if (teacherId < 1 || newSalary < 0)
+                return BadRequest("Invalid data");
+            if (!await _teacherServices.UpdateTeacherSalaryAsync(teacherId, newSalary))
+                return StatusCode(500, new { error = "Something went wrong" });
+            return Ok("salary updated successfully");
         }
     }
 }

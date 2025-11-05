@@ -142,5 +142,16 @@ namespace As_SVS.API.Controllers
                 return NotFound("No student found with this name");
             return Ok(students);
         }
+
+        [HttpPatch("update-salary")]
+
+        public async Task<IActionResult> UpdateAdminSalary(int adminId,decimal newSalary)
+        {
+            if (adminId < 1 || newSalary < 0)
+                return BadRequest("Invalid data");
+            if (!await _adminServices.UpdateAdminSalaryAsync(adminId, newSalary))
+                return StatusCode(500,new {error = "Something went wrong"});
+            return Ok("salary updated successfully");
+        }
     }
 }

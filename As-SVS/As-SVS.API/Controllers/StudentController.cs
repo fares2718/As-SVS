@@ -29,5 +29,16 @@ namespace As_SVS.API.Controllers
             int studentId = await _studentServices.AddNewAsync(student, userId);
             return CreatedAtRoute($"complete-profile/{userId}", studentId);
         }
+
+        [HttpDelete("delete-account")]
+
+        public async Task<IActionResult> DeleteAccountAsync(int studentId)
+        {
+            if (studentId < 1)
+                return BadRequest("Invalid data");
+            if (!await _studentServices.DeleteStudentAsync(studentId))
+                return StatusCode(500, new { error = "something went wrong" });
+            return Ok("account has been deleted");
+        }
     }
 }

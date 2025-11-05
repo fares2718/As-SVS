@@ -14,5 +14,6 @@ namespace As_SVS.Core.Interfaces
         Task<IEnumerable<StudentDTO>> GetAllAsync();
         Task<StudentDTO> GetByIdAsync(int Id);
         Task<IEnumerable<StudentDTO>> SearchByNameAsync(string name);
+        Task<bool> DeleteStudentAsync(int studentId);
     }
 }

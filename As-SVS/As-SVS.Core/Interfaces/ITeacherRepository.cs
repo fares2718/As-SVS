@@ -14,5 +14,6 @@ namespace As_SVS.Core.Interfaces
         Task<IEnumerable<TeacherDTO>> GetAllAsync();
         Task<TeacherDTO> GetByIdAsync(int Id);
         Task<IEnumerable<TeacherDTO>> SearchByNameAsync(string name);
+        Task<bool> UpdateTeacherSalaryAsync(int teacherId, decimal newSalary);
     }
 }
