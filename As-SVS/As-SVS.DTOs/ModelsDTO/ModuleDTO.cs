@@ -14,5 +14,6 @@ namespace As_SVS.DTOs.ModelsDTO
         public string Grade { get; set; } = string.Empty;
         public string Teacher { get; set; } = string.Empty;
         public List<LessonDTO> Lessons { get; set; } = new List<LessonDTO>();
+        public QuizeDTO Quize { get; set; } = new QuizeDTO();
     }
 }

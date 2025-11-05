@@ -21,6 +21,7 @@ namespace As_SVS.Business.Helpers
             CreateMap<QuizeDTO,Quize>();
             CreateMap<QuizeQuestionDTO,QuizQuestion>();
             CreateMap<QuestionOptionDTO,QuestionOption>();
+            CreateMap<QuizeAttempDTO,StudentQuizAttemp>();
         }
     }
 }

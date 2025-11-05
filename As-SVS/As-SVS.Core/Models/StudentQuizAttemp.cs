@@ -9,7 +9,7 @@ public partial class StudentQuizAttemp
 
     public int QuizId { get; set; }
 
-    public DateOnly? AttempDate { get; set; }
+    public DateTime? AttempDate { get; set; }
 
     public double ScoreAchived { get; set; }
 

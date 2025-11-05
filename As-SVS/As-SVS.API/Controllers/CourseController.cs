@@ -110,6 +110,33 @@ namespace As_SVS.API.Controllers
             return CreatedAtRoute("Courses/Enroll", new { studentId, courseId });
         }
 
+        [HttpGet("{courseId}/quize/{quizeId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
+        public async Task<IActionResult> GetQuizeToAttempAsync(int courseId,int quizeId)
+        {
+            if (courseId < 1|| quizeId < 1)
+                return BadRequest("Invalid data");
+            var quize = await _quizeServices.GetQuizeToAttempAsync(courseId, quizeId);
+            if (quize is null)
+                return NotFound("no quize was found");
+            return Ok(quize);
+        }
+
+        [HttpGet("{courseId}/attemp-quize/{quizeId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> AttempQuizeAsync(QuizeAttempDTO quizeAttempDTO, int courseId, int moduleId)
+        {
+            if (courseId < 1 || moduleId < 1 || quizeAttempDTO is null)
+                return BadRequest("Invalid data");
+            double grade = await _quizeServices.AttempQuizeAsync(quizeAttempDTO,courseId, moduleId);
+            return Ok(grade);
+        }
+
         #endregion
 
         #region Teacher

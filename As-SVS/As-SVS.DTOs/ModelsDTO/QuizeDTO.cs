@@ -4,6 +4,7 @@ namespace As_SVS.DTOs.ModelsDTO
 {
     public class QuizeDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
 
         public int Number { get; set; }
