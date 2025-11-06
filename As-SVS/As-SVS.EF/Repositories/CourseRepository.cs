@@ -1,10 +1,4 @@
-﻿using As_SVS.Core.Interfaces;
-using As_SVS.Core.Models;
-using As_SVS.DTOs.ModelsDTO;
-using As_SVS.EF;
-using Microsoft.EntityFrameworkCore;
-
-namespace AsSVS.EF.Repositories
+﻿namespace AsSVS.EF.Repositories
 {
     public class CourseRepository :  ICourseRepository
     {
@@ -26,8 +20,8 @@ namespace AsSVS.EF.Repositories
                     {
                         Id = course.Id,
                         Name = course.Name,
-                        CourseCode = course.CourseCode,
-                        Description = course.Description,
+                        CourseCode = course.CourseCode??string.Empty,
+                        Description = course.Description??string.Empty,
                         Room = course.Room.Title,
                         Modules = course.Modules
                             .Select(
@@ -53,7 +47,9 @@ namespace AsSVS.EF.Repositories
                                 }
                             ).ToList()
                     }
-                    ).ToListAsync();
+                    )
+                    .AsNoTracking()
+                    .ToListAsync();
             return query;
         }
         public async Task<CourseDTO> GetByIdAsync(int Id)
@@ -65,8 +61,8 @@ namespace AsSVS.EF.Repositories
                     {
                         Id = course.Id,
                         Name = course.Name,
-                        CourseCode = course.CourseCode,
-                        Description = course.Description,
+                        CourseCode = course.CourseCode ?? string.Empty,
+                        Description = course.Description ?? string.Empty,
                         Room = course.Room.Title,
                         Modules = course.Modules
                             .Select(
@@ -95,7 +91,6 @@ namespace AsSVS.EF.Repositories
                     ).SingleOrDefaultAsync();
             return query ?? new CourseDTO();
         }
-
         public async Task<IEnumerable<CourseDTO>> SearchByNameAsync(string name)
         {
             var query =
@@ -105,8 +100,8 @@ namespace AsSVS.EF.Repositories
                     {
                         Id = course.Id,
                         Name = course.Name,
-                        CourseCode = course.CourseCode,
-                        Description = course.Description,
+                        CourseCode = course.CourseCode ?? string.Empty,
+                        Description = course.Description?? string.Empty,
                         Room = course.Room.Title,
                         Modules = course.Modules
                             .Select(
@@ -153,9 +148,10 @@ namespace AsSVS.EF.Repositories
                     Course = course.Name,
                     EnrollmentDate = enrolment.EnrolmentDate,
                 };
-            return await query.ToListAsync();
+            return await query
+                .AsNoTracking()
+                .ToListAsync();
         }
-
         public async Task EnrollInCourseAsync(int studentId, int courseId)
         {
             if(!_context.Students.Any(s => s.Id == studentId)
@@ -181,7 +177,6 @@ namespace AsSVS.EF.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-
         public bool IsStudentEnrolled(int studentId, int courseId)
         {
            var Enrollment = _context.Enrolments.FirstOrDefault(sc => sc.StudentId == studentId && sc.CourseId == courseId);

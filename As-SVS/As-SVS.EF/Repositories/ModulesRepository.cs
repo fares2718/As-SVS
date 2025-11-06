@@ -20,6 +20,7 @@ namespace AsSVS.EF.Repositories
             _context = context;
         }
 
+        #region Creat
         public async Task<int> AddNewAsync(As_SVS.Core.Models.Module module, int courseId)
         {
             var course = await _context.Courses.SingleOrDefaultAsync(c => c.Id == courseId);
@@ -29,6 +30,6 @@ namespace AsSVS.EF.Repositories
             await _context.SaveChangesAsync();
             return module.Id;
         }
-
+        #endregion
     }
 }

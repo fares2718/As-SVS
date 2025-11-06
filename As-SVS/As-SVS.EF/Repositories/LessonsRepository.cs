@@ -1,14 +1,4 @@
-﻿using As_SVS.Core.Interfaces;
-using As_SVS.Core.Models;
-using As_SVS.EF;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AsSVS.EF.Repositories
+﻿namespace AsSVS.EF.Repositories
 {
     public class LessonsRepository : ILessonsRepository
     {
@@ -19,6 +9,7 @@ namespace AsSVS.EF.Repositories
             _context = context;
         }
 
+        #region Creat
         public async Task<int> AddNewAsync(Lesson lesson, int courseId, int moduleId)
         {
             var course = _context.Courses.SingleOrDefault(c => c.Id == courseId);
@@ -31,7 +22,6 @@ namespace AsSVS.EF.Repositories
             await _context.SaveChangesAsync();
             return lesson.Id;
         }
-
         public async Task<bool> UploadVideoToDatabase(string fileName, int courseId,int moduleId, int lessonId)
         {
             var course = await _context.Courses.SingleOrDefaultAsync(
@@ -53,6 +43,7 @@ namespace AsSVS.EF.Repositories
             lesson.VideoUrl = fileName;
             return true;
         }
+        #endregion
 
     }
 }

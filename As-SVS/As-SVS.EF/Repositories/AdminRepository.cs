@@ -1,15 +1,4 @@
-﻿using As_SVS.Core.Interfaces;
-using As_SVS.Core.Models;
-using As_SVS.DTOs.ModelsDTO;
-using As_SVS.EF;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AsSVS.EF.Repositories
+﻿namespace AsSVS.EF.Repositories
 {
     public class AdminRepository : IAdminRepository
     {
@@ -20,13 +9,16 @@ namespace AsSVS.EF.Repositories
             _context = context;
         }
 
+        #region Creat
         public async Task<int> AddNewAsync(Admin entity)
         {
             await _context.Admins.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
+        #endregion
 
+        #region Read
         public async Task<IEnumerable<AdminDTO>> GetAllAsync()
         {
             var query =
@@ -42,11 +34,13 @@ namespace AsSVS.EF.Repositories
                     Id = admin.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    UserName = user.UserName,
-                    Role = role.Name,
+                    UserName = user.UserName??string.Empty,
+                    Role = role.Name??string.Empty,
                     Salary = admin.Salary
                 };
-            return await query.ToListAsync();
+            return await query
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<AdminDTO> GetByIdAsync(int Id)
@@ -65,10 +59,10 @@ namespace AsSVS.EF.Repositories
                     Id = admin.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    UserName = user.UserName,
-                    Role = role.Name,
+                    UserName = user.UserName ?? string.Empty,
+                    Role = role.Name ?? string.Empty,
                     Salary = admin.Salary,
-                    ImageUrl = user.ImageUrl
+                    ImageUrl = user.ImageUrl ?? string.Empty
                 };
             var Admin = await query.SingleOrDefaultAsync();
             return  Admin ?? new AdminDTO();
@@ -91,8 +85,8 @@ namespace AsSVS.EF.Repositories
                    Id = admin.Id,
                    FirstName = user.FirstName,
                    LastName = user.LastName,
-                   UserName = user.UserName,
-                   Role = role.Name,
+                   UserName = user.UserName ?? string.Empty,
+                   Role = role.Name ?? string.Empty,
                    Salary = admin.Salary
                };
             return await query.
@@ -100,6 +94,9 @@ namespace AsSVS.EF.Repositories
                 .ToListAsync();
         }
 
+        #endregion
+
+        #region Update
         public async Task<bool> UpdateAdminSalaryAsync(int adminId,decimal newSalary)
         {
             if (!await _context.Admins.AnyAsync(a => a.Id == adminId))
@@ -109,5 +106,6 @@ namespace AsSVS.EF.Repositories
             await _context.SaveChangesAsync();
             return admin.Salary == newSalary;
         }
+        #endregion
     }
 }

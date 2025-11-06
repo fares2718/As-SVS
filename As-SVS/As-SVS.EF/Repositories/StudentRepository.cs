@@ -1,15 +1,4 @@
-﻿using As_SVS.Core.Interfaces;
-using As_SVS.Core.Models;
-using As_SVS.DTOs.ModelsDTO;
-using As_SVS.EF;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AsSVS.EF.Repositories
+﻿namespace AsSVS.EF.Repositories
 {
     public class StudentRepository : IStudentRepository
     {
@@ -20,13 +9,16 @@ namespace AsSVS.EF.Repositories
             _context = context;
         }
 
+        #region Creat
         public async Task<int> AddNewAsync(Student entity)
         {
             await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
+        #endregion
 
+        #region Delete
         public async Task<bool> DeleteStudentAsync(int studentId)
         {
             if (!await _context.Students.AnyAsync(s => s.Id == studentId))
@@ -36,7 +28,9 @@ namespace AsSVS.EF.Repositories
             await _context.SaveChangesAsync();
             return await _context.Students.AnyAsync(s => s.Id == studentId);
         }
+        #endregion
 
+        #region Read
         public async Task<IEnumerable<StudentDTO>> GetAllAsync()
         {
             var query =
@@ -55,7 +49,9 @@ namespace AsSVS.EF.Repositories
                     Grade = grade.GradeLevel,
                     Average = student.Average,
                 };
-            return await query.ToListAsync();
+            return await query
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<StudentDTO> GetByIdAsync(int Id)
@@ -76,13 +72,11 @@ namespace AsSVS.EF.Repositories
                     studentCode = student.StudentCode,
                     Grade = grade.GradeLevel,
                     Average = student.Average,
-                    ImageUrl = user.ImageUrl
+                    ImageUrl = user.ImageUrl??string.Empty
                 };
             var Student = await query.FirstOrDefaultAsync();
             return Student ?? new StudentDTO();
         }
-
-
         public async Task<IEnumerable<StudentDTO>> SearchByNameAsync(string name)
         {
                                     var query =
@@ -101,9 +95,12 @@ namespace AsSVS.EF.Repositories
                     studentCode = student.StudentCode,
                     Grade = grade.GradeLevel,
                     Average = student.Average,
-                    ImageUrl = user.ImageUrl
+                    ImageUrl = user.ImageUrl??string.Empty
                 };
-            return await query.ToListAsync();
+            return await query
+                .AsNoTracking()
+                .ToListAsync();
         }
+        #endregion
     }
 }

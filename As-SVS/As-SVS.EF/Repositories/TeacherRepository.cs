@@ -20,13 +20,16 @@ namespace AsSVS.EF.Repositories
             _context = context;
         }
 
+        #region Creat
         public async Task<int> AddNewAsync(Teacher entity)
         {
             await _context.Teachers.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
+        #endregion
 
+        #region Read
         public async Task<IEnumerable<TeacherDTO>> GetAllAsync()
         {
             var query =
@@ -42,10 +45,10 @@ namespace AsSVS.EF.Repositories
                     Id = teacher.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    UserName = user.UserName,
+                    UserName = user.UserName??string.Empty,
                     TeacherCode = teacher.TeacherCode,
-                    Specialization = teacher.Specialization,
-                    Qualifications = teacher.Qualifications,
+                    Specialization = teacher.Specialization ?? string.Empty,
+                    Qualifications = teacher.Qualifications ?? string.Empty,
                     Course = course.Name,
                     Grade = grade.GradeLevel,
                     Salary = teacher.Salary
@@ -54,7 +57,6 @@ namespace AsSVS.EF.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
-
         public async Task<TeacherDTO> GetByIdAsync(int Id)
         {
                         var query =
@@ -71,19 +73,18 @@ namespace AsSVS.EF.Repositories
                     Id = teacher.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    UserName = user.UserName,
+                    UserName = user.UserName ?? string.Empty,
                     TeacherCode = teacher.TeacherCode,
-                    Specialization = teacher.Specialization,
-                    Qualifications = teacher.Qualifications,
+                    Specialization = teacher.Specialization ?? string.Empty,
+                    Qualifications = teacher.Qualifications ?? string.Empty,
                     Course = course.Name,
                     Grade = grade.GradeLevel,
                     Salary = teacher.Salary,
-                    ImageUrl = user.ImageUrl
+                    ImageUrl = user.ImageUrl ?? string.Empty
                 };
             var Teacher = await query.FirstOrDefaultAsync();
             return Teacher ?? new TeacherDTO();
         }
-
         public async Task<IEnumerable<TeacherDTO>> SearchByNameAsync(string name)
         {
                         var query =
@@ -100,10 +101,10 @@ namespace AsSVS.EF.Repositories
                     Id = teacher.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    UserName = user.UserName,
+                    UserName = user.UserName ?? string.Empty,
                     TeacherCode = teacher.TeacherCode,
-                    Specialization = teacher.Specialization,
-                    Qualifications = teacher.Qualifications,
+                    Specialization = teacher.Specialization ?? string.Empty,
+                    Qualifications = teacher.Qualifications ?? string.Empty,
                     Course = course.Name,
                     Grade = grade.GradeLevel,
                     Salary = teacher.Salary
@@ -112,7 +113,9 @@ namespace AsSVS.EF.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+        #endregion
 
+        #region Update
         public async Task<bool> UpdateTeacherSalaryAsync(int teacherId, decimal newSalary)
         {
             if (!await _context.Teachers.AnyAsync(a => a.Id == teacherId))
@@ -122,6 +125,6 @@ namespace AsSVS.EF.Repositories
             await _context.SaveChangesAsync();
             return teacher.Salary == newSalary;
         }
-
+        #endregion
     }
 }

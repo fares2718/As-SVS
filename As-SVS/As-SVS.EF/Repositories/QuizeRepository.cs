@@ -20,11 +20,14 @@ namespace AsSVS.EF.Repositories
         {
             _context = context;
         }
+        #region Creat
         public async Task<int> AddNewAsync(Quize quize, int courseId, int moduleId)
         {
             var course = await _context.Courses.SingleOrDefaultAsync(c => c.Id == courseId);
+            if(course is null)
+                return -1;
             var module = course.Modules.SingleOrDefault(m => m.Id == moduleId);
-            if (course is null || module is null)
+            if (module is null)
                 return -1;
             module.Quizes.Add(quize);
             await _context.SaveChangesAsync();
@@ -36,7 +39,9 @@ namespace AsSVS.EF.Repositories
             await _context.StudentQuizAttemps.AddAsync(studentQuizAttemp);
             await _context.SaveChangesAsync();
         }
+        #endregion
 
+        #region Read
         public async Task<QuizeDTO> GetQuizeToAttemoAsync(int courseId, int quizeId)
         {
             var query =
@@ -69,8 +74,12 @@ namespace AsSVS.EF.Repositories
                                     }
                                 ).ToList(),
                         }
-                    ).ToListAsync();
+                    )
+                    .AsNoTracking()
+                    .ToListAsync();
             return query.SingleOrDefault(q => q.Id == quizeId)??new QuizeDTO();
         }
+        #endregion
+
     }
 }
