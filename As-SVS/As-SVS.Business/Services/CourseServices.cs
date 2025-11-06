@@ -1,9 +1,4 @@
-﻿using As_SVS.Business.Interfaces;
-using As_SVS.Core.Interfaces;
-using As_SVS.Core.Models;
-using As_SVS.DTOs.ModelsDTO;
-
-namespace As_SVS.Business.Services
+﻿namespace As_SVS.Business.Services
 {
     public class CourseServices : ICourseServices
     {

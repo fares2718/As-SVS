@@ -1,9 +1,4 @@
-﻿using As_SVS.Core.Models;
-using As_SVS.DTOs.ModelsDTO;
-using As_SVS.DTOs.VideoDTO;
-using AutoMapper;
-
-namespace As_SVS.Business.Helpers
+﻿namespace As_SVS.Business.Helpers
 {
     public class MappingProfile : Profile
     {

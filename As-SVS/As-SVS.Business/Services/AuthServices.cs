@@ -1,22 +1,4 @@
-﻿using As_SVS.Business.Interfaces;
-using As_SVS.Core.Models;
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using As_SVS.Business.Helpers;
-using System.Linq.Expressions;
-using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore;
-using As_SVS.EF;
-using As_SVS.Core.Consts;
-using As_SVS.DTOs.ModelsDTO;
-using System.Threading.Tasks;
-
-namespace As_SVS.Business.Services
+﻿namespace As_SVS.Business.Services
 {
     public class AuthServices : IAuthServices
     {

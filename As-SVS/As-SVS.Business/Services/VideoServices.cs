@@ -1,11 +1,4 @@
-﻿using As_SVS.Business.Helpers;
-using As_SVS.Business.Interfaces;
-using As_SVS.Core.Consts;
-using As_SVS.Core.Interfaces;
-using As_SVS.DTOs.VideoDTO;
-using Microsoft.AspNetCore.Http;
-
-namespace As_SVS.Business.Services
+﻿namespace As_SVS.Business.Services
 {
     public class VideoServices : IVideoServices
     {
