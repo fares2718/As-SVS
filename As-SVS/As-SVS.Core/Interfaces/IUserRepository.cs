@@ -1,6 +1,4 @@
-﻿using As_SVS.Core.Models;
-
-namespace As_SVS.Core.Interfaces
+﻿namespace As_SVS.Core.Interfaces
 {
     public interface IUserRepository
     {

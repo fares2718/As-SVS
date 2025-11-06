@@ -8,7 +8,7 @@ namespace As_SVS.DTOs.ImageDTO
 {
     public class ImageFile
     {
-        public FileStream imageFile { get; set; } 
-        public string mimeType { get; set; }
+        public FileStream imageFile { get; set; } = default!;
+        public string mimeType { get; set; } = string.Empty ;
     }
 }

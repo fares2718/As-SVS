@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace As_SVS.Core.Models;
-
+﻿namespace As_SVS.Core.Models;
 public partial class Certificate
 {
     public int Id { get; set; }

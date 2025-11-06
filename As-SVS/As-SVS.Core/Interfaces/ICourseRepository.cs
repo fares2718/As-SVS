@@ -1,8 +1,4 @@
-﻿using As_SVS.Core.Models;
-using As_SVS.DTOs.ModelsDTO;
-
-
-namespace As_SVS.Core.Interfaces
+﻿namespace As_SVS.Core.Interfaces
 {
     public interface ICourseRepository
     {
