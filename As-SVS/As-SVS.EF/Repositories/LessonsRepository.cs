@@ -22,6 +22,13 @@
             await _context.SaveChangesAsync();
             return lesson.Id;
         }
+
+        public async Task CompleteLessonAsync(StudentLesson studentLesson)
+        {
+            await _context.StudentLessons.AddAsync(studentLesson);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<bool> UploadVideoToDatabase(string fileName, int courseId,int moduleId, int lessonId)
         {
             var course = await _context.Courses.SingleOrDefaultAsync(

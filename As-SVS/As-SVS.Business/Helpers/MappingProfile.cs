@@ -15,6 +15,7 @@
             CreateMap<StudentProfile, Student>();
             CreateMap<ModuleDTO,As_SVS.Core.Models.Module>();
             CreateMap<LessonDTO,Lesson>();
+            CreateMap<StudentLessonDTO,StudentLesson>();
             CreateMap<QuizeDTO,Quize>();
             CreateMap<QuizeQuestionDTO,QuizQuestion>();
             CreateMap<QuestionOptionDTO,QuestionOption>();

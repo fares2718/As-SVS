@@ -1,5 +1,6 @@
 ﻿using As_SVS.DTOs.ModelsDTO;
 using As_SVS.DTOs.VideoDTO;
+using Microsoft.EntityFrameworkCore;
 
 namespace As_SVS.Business.Services
 {
@@ -20,6 +21,12 @@ namespace As_SVS.Business.Services
         {
             var lesson = _mapper.Map<Lesson>(lessonDto);
             return await _lessonsRepository.AddNewAsync(lesson, courseId, moduleId);
+        }
+
+        public async Task CompleteLessonAsync(StudentLessonDTO studentLessonDTO)
+        {
+            var studentLesson = _mapper.Map<StudentLesson>(studentLessonDTO);
+            await _lessonsRepository.CompleteLessonAsync(studentLesson);
         }
 
         public async Task<bool> DeleteLessonAsync(int Id,string videoFile, string courseName)

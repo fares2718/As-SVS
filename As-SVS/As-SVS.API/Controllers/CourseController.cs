@@ -97,6 +97,18 @@ namespace As_SVS.API.Controllers
             return File(video.videoFile,video.mimeType);
         }
 
+        [HttpPost("complete-lesson/{lessonId}",Name = "complete-lesson")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        public async Task<IActionResult> CompleteLesson(StudentLessonDTO studentLesson)
+        {
+            if (studentLesson is null)
+                return BadRequest("Invalid data");
+            await _lessonsServices.CompleteLesson(studentLesson);
+            return Ok("Lesson has been completed");
+        }
+
         //[Authorize("Student")]
         [HttpPost("Enroll/{studentId}/{courseId}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
