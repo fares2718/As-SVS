@@ -142,7 +142,7 @@ namespace As_SVS.API.Controllers
         #region Teacher
 
         //[Authorize("Teacher")]
-        [HttpPost("{courseId}/add-module")]
+        [HttpPost("{courseId}/add-module",Name = "add-module")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -155,11 +155,11 @@ namespace As_SVS.API.Controllers
             int moduleId = await _modulesServices.AddNewAsync(module,courseId);
             if (moduleId == -1)
                 return StatusCode(500, new { error = "Something went wrong" });
-            return CreatedAtRoute($"Courses/{courseId}/add-module",moduleId);
+            return CreatedAtRoute("add-module",moduleId);
         }
 
         //[Authorize("Teacher")]
-        [HttpPost("{courseId}/{moduleId}/add-lesson")]
+        [HttpPost("{courseId}/{moduleId}/add-lesson",Name = "add-lesson")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -175,11 +175,11 @@ namespace As_SVS.API.Controllers
             string url = await _videoServices.UploadVideoToDatabase(video, courseId, moduleId, lessonId);
             if(string.IsNullOrEmpty(url))
                 return StatusCode(500, new { error = "Something went wrong" });
-            return CreatedAtRoute($"{courseId}/{moduleId}/add-lesson",lessonId);
+            return CreatedAtRoute("add-lesson",lessonId);
         }
 
         //[Authorize("Teacher")]
-        [HttpPost("{courseId}/{moduleId}/add-quiz")]
+        [HttpPost("{courseId}/{moduleId}/add-quiz",Name = "add-quiz")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -192,9 +192,45 @@ namespace As_SVS.API.Controllers
             int quizeId = await _quizeServices.AddNewAsync(quize,courseId,moduleId);
             if(quizeId == -1)
                 return StatusCode(500, new { error = "Something went wrong" });
-            return CreatedAtRoute($"{courseId}/{moduleId}/add-quiz", quizeId);
+            return CreatedAtRoute("add-quiz", quizeId);
         }
 
+        [HttpDelete("{lessonId}/delete-lesson")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<IActionResult> DeleteLessonAsync(int lessonId)
+        {
+            if (lessonId < 1)
+                return BadRequest("Invalid data");
+            if (!await _lessonsServices.DeleteLessonAsync(lessonId))
+                return NotFound("lesson dose not exist");
+            return Ok("lesson has been deleted");
+        }
+
+
+        [HttpPut("{lessonId}/update-lesson")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<IActionResult> UpdateLessonAsync(UpdateLessonDTO lessonDTO,IFormFile video, int courseId, int moduleId)
+        {
+            if (lessonDTO is null || lessonDTO.Id < 1 || string.IsNullOrEmpty(lessonDTO.LessonDetails)|| courseId < 1 || moduleId < 1)
+                return BadRequest("Invalid data");
+            if (!await _lessonsServices.UpdateLessonAsync(lessonDTO))
+                return StatusCode(500, "error");
+            string url = await _videoServices.UploadVideoToDatabase(video, courseId, moduleId, lessonDTO.Id);
+            if (string.IsNullOrEmpty(url))
+                return StatusCode(500, new { error = "Something went wrong" });
+            return Ok("updated successfully");
+
+        }
         #endregion
 
     }

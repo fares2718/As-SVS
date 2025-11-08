@@ -9,6 +9,16 @@
             _lessonRepository = lessonRepository;
         }
 
+        public bool DeleteVideo(string videoFile, string courseName)
+        {
+            var filePath = Path.Combine($"{VideoSettings.videoPath}/{courseName}", videoFile);
+
+            if (!System.IO.File.Exists(filePath))
+                return false;
+            System.IO.File.Delete(filePath);
+            return true;
+        }
+
         public VideoFile GetVideo(string videoFile,string courseName)
         {
             var filePath = Path.Combine($"{VideoSettings.videoPath}/{courseName}", videoFile);

@@ -41,8 +41,35 @@
                 return false;
 
             lesson.VideoUrl = fileName;
+            await _context.SaveChangesAsync();
             return true;
         }
+        #endregion
+
+        #region Delete
+
+        public async Task<bool> DeleteLessonAsync(int Id)
+        {
+            if(!_context.Lessons.Any(l => l.Id == Id))
+                return false;
+            _context.Lessons.Remove(await _context.Lessons.SingleAsync(l => l.Id == Id));
+            await _context.SaveChangesAsync();
+            return true;    
+        }
+
+        #endregion
+
+        #region Update
+
+        public async Task<bool> UpdateLessonAsync(Lesson updatedLesson)
+        {
+            if (!_context.Lessons.Any(l => l.Id == updatedLesson.Id))
+                return false;
+            _context.Lessons.Update(updatedLesson);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         #endregion
 
     }

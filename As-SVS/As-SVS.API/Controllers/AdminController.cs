@@ -117,7 +117,7 @@ namespace As_SVS.API.Controllers
         public async Task<IActionResult> GetStudentsInGrade(int gradeNumber)
         {
             if (gradeNumber < 1)
-                return BadRequest("Invalid grade name");
+                return BadRequest("Invalid grade");
             var students = await _studentServices.GetInGradeAsync(gradeNumber);
             if (!students.Any())
                 return NotFound("No students was found");
