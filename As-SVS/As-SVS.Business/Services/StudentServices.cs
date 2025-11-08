@@ -59,11 +59,11 @@
             return await _studentRepository.GetByIdAsync(Id);
         }
 
-        public async Task<IEnumerable<StudentDTO>> GetInGradeAsync(string gradeName)
+        public async Task<IEnumerable<StudentDTO>> GetInGradeAsync(int gradeNumber)
         {
             var students = await GetAllAsync();
             return students.Where(s =>
-                s.Grade == gradeName
+                s.Grade == gradeNumber.ToString()
             ).ToList();
         }
 

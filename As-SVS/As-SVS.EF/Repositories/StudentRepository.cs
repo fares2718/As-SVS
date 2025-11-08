@@ -46,7 +46,7 @@
                     LastName = user.LastName,
                     motherName = student.MotherName,
                     studentCode = student.StudentCode,
-                    Grade = grade.GradeLevel,
+                    Grade = grade.Number.ToString(),
                     Average = student.Average,
                 };
             return await query

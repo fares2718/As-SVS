@@ -114,11 +114,11 @@ namespace As_SVS.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> GetStudentsInGrade(string gradeName)
+        public async Task<IActionResult> GetStudentsInGrade(int gradeNumber)
         {
-            if (string.IsNullOrEmpty(gradeName))
+            if (gradeNumber < 1)
                 return BadRequest("Invalid grade name");
-            var students = await _studentServices.GetInGradeAsync(gradeName);
+            var students = await _studentServices.GetInGradeAsync(gradeNumber);
             if (!students.Any())
                 return NotFound("No students was found");
             return Ok(students);
