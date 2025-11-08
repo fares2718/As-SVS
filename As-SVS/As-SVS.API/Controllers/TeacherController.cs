@@ -18,18 +18,18 @@ namespace As_SVS.API.Controllers
             _teacherServices = teacherServices;
         }
 
-        [HttpPost("complete-profile/{userId}")]
+        [HttpPost("complete-profile/{userId}",Name = "complete-teacher-profile")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> CompleteProfile(string userId, TeacherDTO teacher)
+        public async Task<IActionResult> CompleteProfile(string userId, TeacherProfile teacher)
         {
             if (string.IsNullOrEmpty(userId) || teacher is null)
                 return BadRequest("Invalid Data");
             int teacherId = await _teacherServices.AddNewAsync(teacher,userId);
-            return CreatedAtRoute($"complete-profile/{userId}", teacherId);
+            return CreatedAtRoute($"complete-teacher-profile", teacherId);
         }
 
         [HttpPatch("update-salary")]

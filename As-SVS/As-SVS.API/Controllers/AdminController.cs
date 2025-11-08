@@ -1,8 +1,5 @@
 ﻿using As_SVS.Business.Interfaces;
 using As_SVS.DTOs.ModelsDTO;
-using As_SVS.DTOs.VideoDTO;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace As_SVS.API.Controllers
@@ -23,18 +20,18 @@ namespace As_SVS.API.Controllers
             _studentServices = studentServices;
         }
 
-        [HttpPost("complete-profile/{userId}")]
+        [HttpPost("complete-profile/{userId}",Name = "complete-admin-profile")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> CompleteProfile(string userId,AdminDTO admin)
+        public async Task<IActionResult> CompleteProfile(string userId)
         {
-            if (string.IsNullOrEmpty(userId) || admin is null)
+            if (string.IsNullOrEmpty(userId))
                 return BadRequest("Invalid Data");
-            int adminId = await _adminServices.AddNewAsync(admin,userId);
-            return CreatedAtRoute($"complete-profile/{userId}",adminId);
+            int adminId = await _adminServices.AddNewAsync(userId);
+            return CreatedAtRoute($"complete-admin-profile",adminId);
         }
 
         [HttpGet("get-all-teachers")]

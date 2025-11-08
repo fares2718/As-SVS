@@ -4,19 +4,23 @@
     {
         private readonly ITeacherRepository _teacherRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IGradeRepository _gradeRepository;
         private readonly IMapper _mapper;
 
-        public TeacherServices(ITeacherRepository teacherRepository, IMapper mapper, IUserRepository userRepository)
+        public TeacherServices(ITeacherRepository teacherRepository, IMapper mapper, IUserRepository userRepository, IGradeRepository gradeRepository)
         {
             _teacherRepository = teacherRepository;
-            _mapper = mapper;
             _userRepository = userRepository;
+            _gradeRepository = gradeRepository;
+            _mapper = mapper;
         }
 
-        public async Task<int> AddNewAsync(TeacherDTO teacherDTO,string userId)
+        public async Task<int> AddNewAsync(TeacherProfile teacherDTO,string userId)
         {
             var teacher = _mapper.Map<Teacher>(teacherDTO);
             teacher.applicationUser = await _userRepository.GetUserByIdAsync(userId);
+            teacher.TeacherCode = $"{Guid.NewGuid().ToString()}";
+            teacher.Grades = await _gradeRepository.GetByNumberAsync(teacherDTO.Grade);
             return await _teacherRepository.AddNewAsync(teacher);
         }
 

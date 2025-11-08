@@ -13,10 +13,14 @@
             _userRepository = userRepository;
         }
 
-        public async Task<int> AddNewAsync(AdminDTO adminDTO,string userId)
+        public async Task<int> AddNewAsync(string userId)
         {
-            var admin = _mapper.Map<Admin>(adminDTO);
-            admin.applicationUser = await _userRepository.GetUserByIdAsync(userId);
+            var admin = new Admin
+            {
+                Salary = SalarySettings.adminSalary,
+                applicationUser = await _userRepository.GetUserByIdAsync(userId),
+            };
+            
             return await _adminRepository.AddNewAsync(admin);
         }
 

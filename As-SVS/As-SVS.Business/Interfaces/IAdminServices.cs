@@ -2,7 +2,7 @@
 {
     public interface IAdminServices
     {
-        Task<int> AddNewAsync(AdminDTO adminDTO,string userId);
+        Task<int> AddNewAsync(string userId);
         Task<IEnumerable<AdminDTO>> GetAllAsync();
         Task<AdminDTO> GetByIdAsync(int Id);
         Task<IEnumerable<AdminDTO>> SearchByNameAsync(string name);

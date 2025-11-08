@@ -57,6 +57,7 @@ namespace As_SVS.API
             builder.Services.AddTransient(typeof(IModulesRepository), typeof(ModulesRepository));
             builder.Services.AddTransient(typeof(ILessonsRepository), typeof(LessonsRepository));
             builder.Services.AddTransient(typeof(IQuizeRepository), typeof(QuizeRepository));
+            builder.Services.AddTransient(typeof(IGradeRepository), typeof(GradeRepository));
             #endregion
 
             #region Services

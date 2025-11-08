@@ -16,18 +16,20 @@ namespace As_SVS.API.Controllers
             _studentServices = studentServices;
         }
 
-        [HttpPost("complete-profile/{userId}")]
+        [HttpPost("complete-profile/{userId}",Name = "complete-student-profile")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> CompleteProfile(string userId, StudentDTO student)
+        public async Task<IActionResult> CompleteProfile(string userId, StudentProfile student)
         {
             if (string.IsNullOrEmpty(userId) || student is null)
                 return BadRequest("Invalid Data");
             int studentId = await _studentServices.AddNewAsync(student, userId);
-            return CreatedAtRoute($"complete-profile/{userId}", studentId);
+            if (studentId == -1)
+                return StatusCode(500, "Something went wrong");
+            return CreatedAtRoute($"complete-student-profile", studentId);
         }
 
         [HttpDelete("delete-account")]

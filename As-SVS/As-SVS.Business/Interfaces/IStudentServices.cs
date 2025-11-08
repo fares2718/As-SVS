@@ -2,7 +2,7 @@
 {
     public interface IStudentServices 
     {
-        Task<int> AddNewAsync(StudentDTO studentDTO, string userId);
+        Task<int> AddNewAsync(StudentProfile studentDTO, string userId);
         Task<IEnumerable<StudentDTO>> GetAllAsync();
         Task<StudentDTO> GetByIdAsync(int Id);
         Task<IEnumerable<StudentDTO>> GetInGradeAsync(string gradeName);

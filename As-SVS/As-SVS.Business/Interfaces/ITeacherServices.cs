@@ -2,7 +2,7 @@
 {
     public interface ITeacherServices
     {
-        Task<int> AddNewAsync(TeacherDTO teacherDTO,string userId);
+        Task<int> AddNewAsync(TeacherProfile teacherDTO,string userId);
         Task<IEnumerable<TeacherDTO>> GetAllAsync();
         Task<TeacherDTO> GetByIdAsync(int Id);
         Task<IEnumerable<TeacherDTO>> SearchByNameAsync(string name);
