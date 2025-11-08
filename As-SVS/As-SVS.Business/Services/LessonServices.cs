@@ -1,4 +1,7 @@
-﻿namespace As_SVS.Business.Services
+﻿using As_SVS.DTOs.ModelsDTO;
+using As_SVS.DTOs.VideoDTO;
+
+namespace As_SVS.Business.Services
 {
     public class LessonServices : ILessonsServices
     {
@@ -19,8 +22,10 @@
             return await _lessonsRepository.AddNewAsync(lesson, courseId, moduleId);
         }
 
-        public async Task<bool> DeleteLessonAsync(int Id)
+        public async Task<bool> DeleteLessonAsync(int Id,string videoFile, string courseName)
         {
+            if(!_videoServices.DeleteVideo(videoFile,courseName))
+                return false;
             return await _lessonsRepository.DeleteLessonAsync(Id);
         }
 

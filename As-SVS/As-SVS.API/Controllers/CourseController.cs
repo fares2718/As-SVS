@@ -202,11 +202,11 @@ namespace As_SVS.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IActionResult> DeleteLessonAsync(int lessonId)
+        public async Task<IActionResult> DeleteLessonAsync(int lessonId, string videoFile, string courseName)
         {
             if (lessonId < 1)
                 return BadRequest("Invalid data");
-            if (!await _lessonsServices.DeleteLessonAsync(lessonId))
+            if (!await _lessonsServices.DeleteLessonAsync(lessonId,videoFile,courseName))
                 return NotFound("lesson dose not exist");
             return Ok("lesson has been deleted");
         }
