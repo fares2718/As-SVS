@@ -9,12 +9,7 @@ public partial class Message
     public string applicationUserId { get; set; } = null!;
 
     public string MessageContent { get; set; } = null!;
-
-    public string? Attachments { get; set; }
-
     public DateOnly CreatedAt { get; set; }
-
-    public DateOnly? EditedAt { get; set; }
 
     public virtual ApplicationUser applicationUser { get; set; } = default!;
 

@@ -19,6 +19,10 @@ namespace As_SVS.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            #region SignalR
+            builder.Services.AddSignalR();
+            #endregion
+
             #region JWTandEF
             builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -58,6 +62,8 @@ namespace As_SVS.API
             builder.Services.AddTransient(typeof(ILessonsRepository), typeof(LessonsRepository));
             builder.Services.AddTransient(typeof(IQuizeRepository), typeof(QuizeRepository));
             builder.Services.AddTransient(typeof(IGradeRepository), typeof(GradeRepository));
+            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddSingleton<IMessageQueueRepository, IMessageQueueRepository>();
             #endregion
 
             #region Services
@@ -72,6 +78,7 @@ namespace As_SVS.API
             builder.Services.AddTransient(typeof(IQuizeServices), typeof(QuizeServices));
             builder.Services.AddTransient(typeof(IVideoServices), typeof(VideoServices));
             builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
+            builder.Services.AddHostedService<MessageSaverHostedService>();
             #endregion
 
             // Add services to the container.
@@ -97,6 +104,8 @@ namespace As_SVS.API
 
 
             app.MapControllers();
+
+            app.MapHub<Hubs.ChatHub>("/ChatHub");
 
             app.Run();
         }

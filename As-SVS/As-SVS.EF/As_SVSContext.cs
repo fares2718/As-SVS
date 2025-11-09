@@ -170,11 +170,7 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<Message>(entity =>
         {
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Attachments)
-                .HasMaxLength(200)
-                .HasColumnName("attachments");
             entity.Property(e => e.CreatedAt).HasColumnName("created_at");
-            entity.Property(e => e.EditedAt).HasColumnName("edited_at");
             entity.Property(e => e.MessageContent)
                 .HasMaxLength(200)
                 .HasColumnName("message_content");
@@ -272,7 +268,6 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Title)
                 .HasMaxLength(50)
                 .HasColumnName("title");
-            entity.Property(e => e.UpdatedAt).HasColumnName("updated_at");
         });
 
         modelBuilder.Entity<Student>(entity =>

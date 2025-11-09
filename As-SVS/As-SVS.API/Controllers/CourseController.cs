@@ -105,7 +105,7 @@ namespace As_SVS.API.Controllers
         {
             if (studentLesson is null)
                 return BadRequest("Invalid data");
-            await _lessonsServices.CompleteLesson(studentLesson);
+            await _lessonsServices.CompleteLessonAsync(studentLesson);
             return Ok("Lesson has been completed");
         }
 

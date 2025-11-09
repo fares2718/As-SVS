@@ -11,8 +11,5 @@ public partial class Room
     public string Title { get; set; } = null!;
 
     public DateOnly CreatedAt { get; set; }
-
-    public DateOnly? UpdatedAt { get; set; }
-
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 }
