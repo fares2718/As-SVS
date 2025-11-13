@@ -52,9 +52,7 @@ public partial class As_SVSContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<Teacher> Teachers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-O1ENIR6;User ID=sa;Password=sa123456;
-            Database=As-SVSDb;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;
-            Application Intent=ReadWrite;Multi Subnet Failover=False");
+        => optionsBuilder.UseSqlServer(@"Server=localhost,1433;Database=As-SVSDb;User Id=sa;Password=Sherlock@71;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

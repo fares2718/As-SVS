@@ -63,7 +63,7 @@ namespace As_SVS.API
             builder.Services.AddTransient(typeof(IQuizeRepository), typeof(QuizeRepository));
             builder.Services.AddTransient(typeof(IGradeRepository), typeof(GradeRepository));
             builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-            builder.Services.AddSingleton<IMessageQueueRepository, IMessageQueueRepository>();
+            builder.Services.AddScoped<IMessageQueueRepository, MessageQueueRepository>();
             #endregion
 
             #region Services

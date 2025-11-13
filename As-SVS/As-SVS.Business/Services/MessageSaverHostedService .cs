@@ -5,21 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace As_SVS.Business.Services
 {
     public class MessageSaverHostedService : BackgroundService
     {
-        private readonly IMessageQueueRepository _queueRepository;
-        private readonly IMessageRepository _repository;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<MessageSaverHostedService> _logger;
 
-        public MessageSaverHostedService(IMessageQueueRepository queueRepository,
-                                         IMessageRepository repository,
+        public MessageSaverHostedService(IServiceProvider serviceProvider,
                                          ILogger<MessageSaverHostedService> logger)
         {
-            _queueRepository = queueRepository;
-            _repository = repository;
+            _serviceProvider = serviceProvider;
             _logger = logger;
         }
 
@@ -29,16 +27,32 @@ namespace As_SVS.Business.Services
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                var batch = await _queueRepository.DequeueBatchAsync(stoppingToken);
-
-                if (batch.Any())
+                try
                 {
-                    await _repository.SaveMessageBatchAsync(batch);
-                    _logger.LogInformation($"Saved {batch.Count()} messages to DB.");
-                }
+                   
+                    using (var scope = _serviceProvider.CreateScope())
+                    {
+                        var queueRepo = scope.ServiceProvider.GetRequiredService<IMessageQueueRepository>();
+                        var repo = scope.ServiceProvider.GetRequiredService<IMessageRepository>();
 
-                await Task.Delay(1000, stoppingToken); 
+                        var batch = await queueRepo.DequeueBatchAsync(stoppingToken);
+
+                        if (batch.Any())
+                        {
+                            await repo.SaveMessageBatchAsync(batch);
+                            _logger.LogInformation($"✅ Saved {batch.Count()} messages to DB.");
+                        }
+                    }
+
+                    await Task.Delay(1000, stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error occurred in MessageSaverHostedService.");
+                }
             }
+
+            _logger.LogInformation("MessageSaverHostedService stopped.");
         }
     }
 }

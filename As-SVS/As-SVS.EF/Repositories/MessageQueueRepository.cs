@@ -2,7 +2,7 @@
 
 namespace AsSVS.EF.Repositories
 {
-    internal class MessageQueueRepository : IMessageQueueRepository
+    public class MessageQueueRepository : IMessageQueueRepository
 {
         private readonly Channel<Message> _queue = Channel.CreateUnbounded<Message>();
         private readonly As_SVSContext _context;
