@@ -77,7 +77,7 @@ Key Features of the Platform
 
 Fully Online Delivery – all courses are adapted for remote learning, removing the need for physical attendance.
 
-Interactive Learning – virtual classrooms, live discussions, and digital assignments.
+Interactive Learning
 
 Values & Character Building – moral education and collaborative projects to support social and emotional growth.
 
